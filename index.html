@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="ocean">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCEND v1.2.1 - Your Growth Dashboard</title>
+    <title>ASCEND v1.3 - Your Growth Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         /* ============================================
@@ -31,78 +32,172 @@
 
         /* THEMES */
         [data-theme="ocean"] {
-            --bg-primary: #0a0e27; --bg-secondary: #151932; --bg-tertiary: #1e2541;
-            --accent-primary: #00d4ff; --accent-secondary: #0095ff;
-            --text-primary: #e0e7ff; --text-secondary: #94a3b8; --text-tertiary: #64748b;
-            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
-            --glass-bg: rgba(30, 37, 65, 0.6); --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-tertiary: #1e2541;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #0095ff;
+            --text-primary: #e0e7ff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --glass-bg: rgba(30, 37, 65, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
+
         [data-theme="sakura"] {
-            --bg-primary: #1a0a1e; --bg-secondary: #2d1432; --bg-tertiary: #3d1f45;
-            --accent-primary: #ff6b9d; --accent-secondary: #c084fc;
-            --text-primary: #fce7f3; --text-secondary: #e9d5ff; --text-tertiary: #c4b5fd;
-            --success: #34d399; --warning: #fbbf24; --danger: #f87171;
-            --glass-bg: rgba(61, 31, 69, 0.6); --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-primary: #1a0a1e;
+            --bg-secondary: #2d1432;
+            --bg-tertiary: #3d1f45;
+            --accent-primary: #ff6b9d;
+            --accent-secondary: #c084fc;
+            --text-primary: #fce7f3;
+            --text-secondary: #e9d5ff;
+            --text-tertiary: #c4b5fd;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --glass-bg: rgba(61, 31, 69, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
+
         [data-theme="cyber"] {
-            --bg-primary: #0a1a0f; --bg-secondary: #0f2818; --bg-tertiary: #1a3d2a;
-            --accent-primary: #00ff88; --accent-secondary: #00cc6a;
-            --text-primary: #d1fae5; --text-secondary: #86efac; --text-tertiary: #4ade80;
-            --success: #22c55e; --warning: #eab308; --danger: #ef4444;
-            --glass-bg: rgba(26, 61, 42, 0.6); --glass-border: rgba(0, 255, 136, 0.2);
+            --bg-primary: #0a1a0f;
+            --bg-secondary: #0f2818;
+            --bg-tertiary: #1a3d2a;
+            --accent-primary: #00ff88;
+            --accent-secondary: #00cc6a;
+            --text-primary: #d1fae5;
+            --text-secondary: #86efac;
+            --text-tertiary: #4ade80;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --glass-bg: rgba(26, 61, 42, 0.6);
+            --glass-border: rgba(0, 255, 136, 0.2);
         }
+
         [data-theme="coral"] {
-            --bg-primary: #1a0f0a; --bg-secondary: #2d1812; --bg-tertiary: #452620;
-            --accent-primary: #ff6b6b; --accent-secondary: #ff8787;
-            --text-primary: #ffe4e6; --text-secondary: #fecdd3; --text-tertiary: #fda4af;
-            --success: #10b981; --warning: #f59e0b; --danger: #dc2626;
-            --glass-bg: rgba(69, 38, 32, 0.6); --glass-border: rgba(255, 107, 107, 0.2);
+            --bg-primary: #1a0f0a;
+            --bg-secondary: #2d1812;
+            --bg-tertiary: #452620;
+            --accent-primary: #ff6b6b;
+            --accent-secondary: #ff8787;
+            --text-primary: #ffe4e6;
+            --text-secondary: #fecdd3;
+            --text-tertiary: #fda4af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --glass-bg: rgba(69, 38, 32, 0.6);
+            --glass-border: rgba(255, 107, 107, 0.2);
         }
+
         [data-theme="emerald"] {
-            --bg-primary: #0a1f1a; --bg-secondary: #0f2e27; --bg-tertiary: #1a3d35;
-            --accent-primary: #10b981; --accent-secondary: #059669;
-            --text-primary: #d1fae5; --text-secondary: #a7f3d0; --text-tertiary: #6ee7b7;
-            --success: #22c55e; --warning: #f59e0b; --danger: #ef4444;
-            --glass-bg: rgba(26, 61, 53, 0.6); --glass-border: rgba(16, 185, 129, 0.2);
+            --bg-primary: #0a1f1a;
+            --bg-secondary: #0f2e27;
+            --bg-tertiary: #1a3d35;
+            --accent-primary: #10b981;
+            --accent-secondary: #059669;
+            --text-primary: #d1fae5;
+            --text-secondary: #a7f3d0;
+            --text-tertiary: #6ee7b7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --glass-bg: rgba(26, 61, 53, 0.6);
+            --glass-border: rgba(16, 185, 129, 0.2);
         }
+
         [data-theme="lavender"] {
-            --bg-primary: #14102a; --bg-secondary: #1e1538; --bg-tertiary: #2d1f4d;
-            --accent-primary: #a78bfa; --accent-secondary: #8b5cf6;
-            --text-primary: #ede9fe; --text-secondary: #ddd6fe; --text-tertiary: #c4b5fd;
-            --success: #34d399; --warning: #fbbf24; --danger: #f87171;
-            --glass-bg: rgba(45, 31, 77, 0.6); --glass-border: rgba(167, 139, 250, 0.2);
+            --bg-primary: #14102a;
+            --bg-secondary: #1e1538;
+            --bg-tertiary: #2d1f4d;
+            --accent-primary: #a78bfa;
+            --accent-secondary: #8b5cf6;
+            --text-primary: #ede9fe;
+            --text-secondary: #ddd6fe;
+            --text-tertiary: #c4b5fd;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --glass-bg: rgba(45, 31, 77, 0.6);
+            --glass-border: rgba(167, 139, 250, 0.2);
         }
+
         [data-theme="crimson"] {
-            --bg-primary: #1a0a0a; --bg-secondary: #2d1414; --bg-tertiary: #451f1f;
-            --accent-primary: #ef4444; --accent-secondary: #dc2626;
-            --text-primary: #fee2e2; --text-secondary: #fecaca; --text-tertiary: #fca5a5;
-            --success: #10b981; --warning: #f59e0b; --danger: #dc2626;
-            --glass-bg: rgba(69, 31, 31, 0.6); --glass-border: rgba(239, 68, 68, 0.2);
+            --bg-primary: #1a0a0a;
+            --bg-secondary: #2d1414;
+            --bg-tertiary: #451f1f;
+            --accent-primary: #ef4444;
+            --accent-secondary: #dc2626;
+            --text-primary: #fee2e2;
+            --text-secondary: #fecaca;
+            --text-tertiary: #fca5a5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --glass-bg: rgba(69, 31, 31, 0.6);
+            --glass-border: rgba(239, 68, 68, 0.2);
         }
+
         [data-theme="gold"] {
-            --bg-primary: #1a1504; --bg-secondary: #2d2408; --bg-tertiary: #45360d;
-            --accent-primary: #fbbf24; --accent-secondary: #f59e0b;
-            --text-primary: #fef3c7; --text-secondary: #fde68a; --text-tertiary: #fcd34d;
-            --success: #10b981; --warning: #f97316; --danger: #ef4444;
-            --glass-bg: rgba(69, 54, 13, 0.6); --glass-border: rgba(251, 191, 36, 0.2);
+            --bg-primary: #1a1504;
+            --bg-secondary: #2d2408;
+            --bg-tertiary: #45360d;
+            --accent-primary: #fbbf24;
+            --accent-secondary: #f59e0b;
+            --text-primary: #fef3c7;
+            --text-secondary: #fde68a;
+            --text-tertiary: #fcd34d;
+            --success: #10b981;
+            --warning: #f97316;
+            --danger: #ef4444;
+            --glass-bg: rgba(69, 54, 13, 0.6);
+            --glass-border: rgba(251, 191, 36, 0.2);
         }
+
         [data-theme="arctic"] {
-            --bg-primary: #0a1621; --bg-secondary: #0f1f2e; --bg-tertiary: #1a2d3f;
-            --accent-primary: #38bdf8; --accent-secondary: #0ea5e9;
-            --text-primary: #e0f2fe; --text-secondary: #bae6fd; --text-tertiary: #7dd3fc;
-            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
-            --glass-bg: rgba(26, 45, 63, 0.6); --glass-border: rgba(56, 189, 248, 0.2);
+            --bg-primary: #0a1621;
+            --bg-secondary: #0f1f2e;
+            --bg-tertiary: #1a2d3f;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #0ea5e9;
+            --text-primary: #e0f2fe;
+            --text-secondary: #bae6fd;
+            --text-tertiary: #7dd3fc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --glass-bg: rgba(26, 45, 63, 0.6);
+            --glass-border: rgba(56, 189, 248, 0.2);
         }
+
         [data-theme="midnight"] {
-            --bg-primary: #0f0a1a; --bg-secondary: #1a0f2e; --bg-tertiary: #271a42;
-            --accent-primary: #818cf8; --accent-secondary: #6366f1;
-            --text-primary: #e0e7ff; --text-secondary: #c7d2fe; --text-tertiary: #a5b4fc;
-            --success: #34d399; --warning: #fbbf24; --danger: #f87171;
-            --glass-bg: rgba(39, 26, 66, 0.6); --glass-border: rgba(129, 140, 248, 0.2);
+            --bg-primary: #0f0a1a;
+            --bg-secondary: #1a0f2e;
+            --bg-tertiary: #271a42;
+            --accent-primary: #818cf8;
+            --accent-secondary: #6366f1;
+            --text-primary: #e0e7ff;
+            --text-secondary: #c7d2fe;
+            --text-tertiary: #a5b4fc;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --glass-bg: rgba(39, 26, 66, 0.6);
+            --glass-border: rgba(129, 140, 248, 0.2);
         }
 
         /* BASE STYLES */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
@@ -110,244 +205,483 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: var(--radius-full); }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+        }
 
         .bg-gradient {
-            position: fixed; width: 600px; height: 600px; border-radius: 50%;
-            filter: blur(120px); opacity: 0.15; pointer-events: none; z-index: 0;
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
         }
+
         .bg-gradient-1 {
-            top: -200px; left: -200px; background: var(--accent-primary);
+            top: -200px;
+            left: -200px;
+            background: var(--accent-primary);
             animation: float 20s ease-in-out infinite;
         }
+
         .bg-gradient-2 {
-            bottom: -200px; right: -200px; background: var(--accent-secondary);
+            bottom: -200px;
+            right: -200px;
+            background: var(--accent-secondary);
             animation: float 25s ease-in-out infinite reverse;
         }
+
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -50px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, -50px) rotate(120deg);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
         }
 
         /* SIDEBAR */
         .sidebar {
-            position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh;
-            background: var(--glass-bg); backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
             border-right: 1px solid var(--glass-border);
-            display: flex; flex-direction: column; z-index: var(--z-sticky);
+            display: flex;
+            flex-direction: column;
+            z-index: var(--z-sticky);
             transition: width var(--transition-base);
+            overflow: hidden;
         }
-        .sidebar.collapsed { width: var(--sidebar-collapsed); }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
+        }
+
         .sidebar-header {
-            padding: var(--space-lg); border-bottom: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: space-between;
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: var(--sidebar-width);
+            flex-shrink: 0;
         }
+
         .sidebar-logo {
-            display: flex; align-items: center; gap: var(--space-sm);
-            transition: opacity var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: opacity var(--transition-base);
+            overflow: hidden;
         }
-        .sidebar.collapsed .sidebar-logo { opacity: 0; }
-        .sidebar-logo-icon { font-size: 1.5rem; }
+
+        .sidebar.collapsed .sidebar-logo {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-logo-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
         .sidebar-logo-text {
-            font-size: 1.25rem; font-weight: 700;
+            font-size: 1.25rem;
+            font-weight: 700;
+            white-space: nowrap;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         .sidebar-toggle {
-            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-            background: var(--bg-secondary); border: 1px solid var(--glass-border);
-            border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition-fast);
-        }
-        .sidebar-toggle:hover {
-            background: var(--bg-tertiary); border-color: var(--accent-primary);
-        }
-        .sidebar-nav {
-            flex: 1; padding: var(--space-md); overflow-y: auto;
-        }
-        .nav-item {
-            display: flex; align-items: center; gap: var(--space-md);
-            padding: var(--space-md); border-radius: var(--radius-md);
-            color: var(--text-secondary); cursor: pointer;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
             transition: all var(--transition-fast);
-            position: relative; margin-bottom: var(--space-xs);
         }
+
+        .sidebar-toggle:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md);
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-width: var(--sidebar-width);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            margin-bottom: var(--space-xs);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
         .nav-item::before {
-            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px;
-            background: var(--accent-primary); transform: scaleY(0);
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--accent-primary);
+            transform: scaleY(0);
             transition: transform var(--transition-fast);
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
         }
-        .nav-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
         .nav-item.active {
-            background: var(--bg-tertiary); color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            color: var(--accent-primary);
         }
-        .nav-item.active::before { transform: scaleY(1); }
-        .nav-item-icon { font-size: 1.25rem; min-width: 24px; }
+
+        .nav-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item-icon {
+            font-size: 1.25rem;
+            min-width: 24px;
+            flex-shrink: 0;
+        }
+
         .nav-item-text {
-            font-weight: 500; white-space: nowrap;
-            transition: opacity var(--transition-fast);
+            font-weight: 500;
+            white-space: nowrap;
+            transition: opacity var(--transition-base);
         }
-        .sidebar.collapsed .nav-item-text { opacity: 0; width: 0; }
+
+        .sidebar.collapsed .nav-item-text {
+            opacity: 0;
+        }
+
         .sidebar-footer {
-            padding: var(--space-lg); border-top: 1px solid var(--glass-border);
+            padding: var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--glass-border);
+            transition: opacity var(--transition-base);
         }
-        .theme-selector {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-sm);
+
+        .sidebar.collapsed .sidebar-footer {
+            opacity: 0;
+            pointer-events: none;
         }
-        .sidebar.collapsed .theme-selector { grid-template-columns: 1fr; }
-        .theme-option {
-            width: 32px; height: 32px; border-radius: var(--radius-sm);
-            cursor: pointer; border: 2px solid transparent;
-            transition: all var(--transition-fast);
+
+        .sidebar-footer-hint {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            letter-spacing: 0.05em;
         }
-        .theme-option:hover { transform: scale(1.1); }
-        .theme-option.active {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 10px var(--accent-primary);
-        }
-        .theme-ocean { background: linear-gradient(135deg, #00d4ff, #0095ff); }
-        .theme-sakura { background: linear-gradient(135deg, #ff6b9d, #c084fc); }
-        .theme-cyber { background: linear-gradient(135deg, #00ff88, #00cc6a); }
-        .theme-coral { background: linear-gradient(135deg, #ff6b6b, #ff8787); }
-        .theme-emerald { background: linear-gradient(135deg, #10b981, #059669); }
-        .theme-lavender { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
-        .theme-crimson { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .theme-gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
-        .theme-arctic { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
-        .theme-midnight { background: linear-gradient(135deg, #818cf8, #6366f1); }
+
+        /* THEME CARDS moved to Settings — sidebar is clean */
 
         /* MAIN CONTENT */
-        .app-container { display: flex; min-height: 100vh; }
-        .main-content {
-            flex: 1; margin-left: var(--sidebar-width); padding: var(--space-xl);
-            transition: margin-left var(--transition-base);
-            position: relative; z-index: 1;
+        .app-container {
+            display: flex;
+            min-height: 100vh;
         }
-        .main-content.sidebar-collapsed { margin-left: var(--sidebar-collapsed); }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: var(--space-xl);
+            transition: margin-left var(--transition-base);
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content.sidebar-collapsed {
+            margin-left: var(--sidebar-collapsed);
+        }
+
         .page {
-            display: none; max-width: 1400px; margin: 0 auto;
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
             animation: fadeInUp 0.5s ease;
         }
-        .page.active { display: block; }
-        .page-header { margin-bottom: var(--space-2xl); }
-        .page-title {
-            font-size: 2.5rem; font-weight: 700; margin-bottom: var(--space-sm);
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+        .page.active {
+            display: block;
         }
-        .page-subtitle { color: var(--text-secondary); font-size: 1.125rem; }
+
+        .page-header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
 
         /* COMPONENTS */
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--space-lg); margin-bottom: var(--space-2xl);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
         }
+
         .stat-card {
-            background: var(--glass-bg); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
-            padding: var(--space-lg); transition: all var(--transition-base);
-            position: relative; overflow: hidden;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
         }
+
         .stat-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
             background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            transform: scaleX(0); transition: transform var(--transition-base);
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
         }
+
         .stat-card:hover {
-            transform: translateY(-8px); border-color: var(--accent-primary);
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
-        .stat-card:hover::before { transform: scaleX(1); }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
         .stat-label {
-            font-size: 0.875rem; font-weight: 500; text-transform: uppercase;
-            letter-spacing: 0.05em; color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
             margin-bottom: var(--space-sm);
         }
+
         .stat-value {
-            font-size: 2.5rem; font-weight: 700; color: var(--accent-primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
         }
+
         .btn {
-            display: inline-flex; align-items: center; gap: var(--space-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
             padding: 0.75rem 1.5rem;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: var(--bg-primary); border: none; border-radius: var(--radius-md);
-            font-weight: 600; cursor: pointer; transition: all var(--transition-fast);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
         }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
+
         .btn-secondary {
-            background: var(--bg-tertiary); color: var(--text-primary);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             border: 1px solid var(--glass-border);
         }
+
         .btn-secondary:hover {
-            background: var(--bg-secondary); border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            border-color: var(--accent-primary);
         }
+
         .btn-danger {
-            background: var(--danger); color: white;
+            background: var(--danger);
+            color: white;
         }
+
         .card {
-            background: var(--glass-bg); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
-            padding: var(--space-lg); margin-bottom: var(--space-lg);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
         }
+
         .form-group {
-            display: flex; gap: var(--space-md); margin-bottom: var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
         }
-        .form-input, .form-select {
-            flex: 1; padding: 0.75rem 1rem;
-            background: var(--bg-secondary); border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md); color: var(--text-primary);
-            font-size: 1rem; transition: all var(--transition-fast);
+
+        .form-input,
+        .form-select {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
         }
-        .form-input:focus, .form-select:focus {
-            outline: none; border-color: var(--accent-primary);
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
             box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
         }
 
         /* CALENDAR */
         .calendar-controls {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: var(--space-lg);
         }
+
         .calendar-nav {
-            display: flex; gap: var(--space-md); align-items: center;
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
         }
+
         .calendar-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr);
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
             gap: var(--space-sm);
         }
+
         .calendar-day-header {
-            text-align: center; padding: var(--space-sm);
-            color: var(--text-secondary); font-size: 0.875rem;
+            text-align: center;
+            padding: var(--space-sm);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
             font-weight: 600;
         }
+
         .calendar-day {
-            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background: var(--bg-secondary); border: 1px solid var(--glass-border);
-            border-radius: var(--radius-sm); cursor: pointer;
-            transition: all var(--transition-fast); position: relative;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
         }
+
         .calendar-day:hover {
-            transform: scale(1.05); border-color: var(--accent-primary);
+            transform: scale(1.05);
+            border-color: var(--accent-primary);
         }
-        .calendar-day.empty { background: transparent; border: none; cursor: default; }
-        .calendar-day.empty:hover { transform: none; }
+
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        .calendar-day.empty:hover {
+            transform: none;
+        }
+
         .calendar-day.today {
-            border-color: var(--accent-primary); border-width: 2px;
+            border-color: var(--accent-primary);
+            border-width: 2px;
         }
+
         .calendar-day-number {
-            font-size: 0.875rem; font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 500;
         }
-        .calendar-day[data-completion="0"] { background: var(--bg-secondary); }
-        .calendar-day[data-completion="1"] { background: rgba(0, 212, 255, 0.2); }
-        .calendar-day[data-completion="2"] { background: rgba(0, 212, 255, 0.4); }
-        .calendar-day[data-completion="3"] { background: rgba(0, 212, 255, 0.6); }
-        .calendar-day[data-completion="4"] { background: rgba(0, 212, 255, 0.8); }
+
+        .calendar-day[data-completion="0"] {
+            background: var(--bg-secondary);
+        }
+
+        .calendar-day[data-completion="1"] {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .calendar-day[data-completion="2"] {
+            background: rgba(0, 212, 255, 0.4);
+        }
+
+        .calendar-day[data-completion="3"] {
+            background: rgba(0, 212, 255, 0.6);
+        }
+
+        .calendar-day[data-completion="4"] {
+            background: rgba(0, 212, 255, 0.8);
+        }
+
         .calendar-day[data-completion="5"] {
             background: var(--accent-primary);
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
@@ -355,107 +689,220 @@
 
         /* HABIT ITEM */
         .habit-item {
-            background: var(--glass-bg); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
-            padding: var(--space-lg); display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: var(--space-md);
-            transition: all var(--transition-base); position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            transition: all var(--transition-base);
+            position: relative;
         }
+
         .habit-item::before {
-            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px;
-            background: var(--accent-primary); transform: scaleY(0);
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--accent-primary);
+            transform: scaleY(0);
             transition: transform var(--transition-fast);
         }
+
         .habit-item:hover {
-            transform: translateX(8px); border-color: var(--accent-primary);
+            transform: translateX(8px);
+            border-color: var(--accent-primary);
         }
-        .habit-item:hover::before { transform: scaleY(1); }
-        .habit-item.completed { opacity: 0.7; }
+
+        .habit-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .habit-item.completed {
+            opacity: 0.7;
+        }
+
         .habit-content {
-            display: flex; align-items: center; gap: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
         }
+
         .habit-checkbox {
-            width: 24px; height: 24px; border: 2px solid var(--accent-primary);
-            border-radius: var(--radius-sm); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--accent-primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all var(--transition-fast);
         }
-        .habit-checkbox:hover { background: rgba(0, 212, 255, 0.1); }
+
+        .habit-checkbox:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
         .habit-item.completed .habit-checkbox {
-            background: var(--success); border-color: var(--success);
+            background: var(--success);
+            border-color: var(--success);
         }
+
         .habit-item.completed .habit-checkbox::after {
-            content: '✓'; color: white; font-weight: bold;
+            content: '✓';
+            color: white;
+            font-weight: bold;
         }
-        .habit-name { font-size: 1.125rem; font-weight: 500; }
+
+        .habit-name {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
         .habit-item.completed .habit-name {
-            text-decoration: line-through; color: var(--text-secondary);
+            text-decoration: line-through;
+            color: var(--text-secondary);
         }
+
         .habit-streak {
-            display: flex; align-items: center; gap: var(--space-sm);
-            color: var(--warning); font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--warning);
+            font-weight: 600;
         }
 
         /* TOAST */
         .toast-container {
-            position: fixed; top: var(--space-xl); right: var(--space-xl);
-            z-index: var(--z-toast); display: flex; flex-direction: column;
+            position: fixed;
+            top: var(--space-xl);
+            right: var(--space-xl);
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
             gap: var(--space-md);
         }
+
         .toast {
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: var(--radius-md);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
             padding: var(--space-md) var(--space-lg);
-            display: flex; align-items: center; gap: var(--space-md);
-            min-width: 300px; animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
         }
-        .toast-icon { font-size: 1.5rem; }
-        .toast.success { border-color: var(--success); }
-        .toast.success .toast-icon { color: var(--success); }
-        .toast.info { border-color: var(--accent-primary); }
-        .toast.info .toast-icon { color: var(--accent-primary); }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast.success {
+            border-color: var(--success);
+        }
+
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+
+        .toast.info {
+            border-color: var(--accent-primary);
+        }
+
+        .toast.info .toast-icon {
+            color: var(--accent-primary);
+        }
 
         /* MODAL */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 14, 39, 0.9); backdrop-filter: blur(10px);
-            z-index: var(--z-modal); align-items: center; justify-content: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: var(--z-modal);
+            align-items: center;
+            justify-content: center;
         }
-        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
         .modal-content {
-            background: var(--bg-secondary); border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg); padding: var(--space-xl);
-            max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
             animation: scaleIn 0.3s ease;
         }
-        .modal-header { margin-bottom: var(--space-lg); }
-        .modal-title { font-size: 1.5rem; font-weight: 600; }
-        .modal-body { margin-bottom: var(--space-lg); }
+
+        .modal-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            margin-bottom: var(--space-lg);
+        }
+
         .modal-footer {
-            display: flex; gap: var(--space-md); justify-content: flex-end;
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
         }
 
         /* SETTINGS */
         .settings-section {
             margin-bottom: var(--space-2xl);
         }
+
         .settings-section-title {
-            font-size: 1.25rem; font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: var(--space-lg);
             padding-bottom: var(--space-sm);
             border-bottom: 2px solid var(--glass-border);
         }
+
         .settings-item {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: var(--space-md) 0;
             border-bottom: 1px solid var(--glass-border);
         }
+
         .settings-label {
             font-weight: 500;
         }
+
         .settings-description {
-            font-size: 0.875rem; color: var(--text-secondary);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
+
         .danger-zone {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid var(--danger);
@@ -465,75 +912,879 @@
 
         /* ANIMATIONS */
         @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* MOBILE */
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.mobile-open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .page-title { font-size: 2rem; }
-            .calendar-grid { gap: 2px; }
-            .calendar-day { font-size: 0.75rem; }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .calendar-grid {
+                gap: 2px;
+            }
+
+            .calendar-day {
+                font-size: 0.75rem;
+            }
         }
 
         .mobile-menu-btn {
-            display: none; position: fixed; bottom: var(--space-lg); right: var(--space-lg);
-            width: 56px; height: 56px;
+            display: none;
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: var(--radius-full); align-items: center; justify-content: center;
-            font-size: 1.5rem; cursor: pointer; z-index: 999;
+            border-radius: var(--radius-full);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 999;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
+
         @media (max-width: 768px) {
-            .mobile-menu-btn { display: flex; }
+            .mobile-menu-btn {
+                display: flex;
+            }
         }
 
         #confetti-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 999;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
         }
 
         .empty-state {
-            text-align: center; padding: var(--space-2xl);
+            text-align: center;
+            padding: var(--space-2xl);
             color: var(--text-secondary);
         }
+
         .empty-state-icon {
-            font-size: 4rem; margin-bottom: var(--space-lg); opacity: 0.5;
+            font-size: 4rem;
+            margin-bottom: var(--space-lg);
+            opacity: 0.5;
         }
 
         .chart-container {
-            position: relative; height: 300px; margin-bottom: var(--space-xl);
+            position: relative;
+            height: 300px;
+            margin-bottom: var(--space-xl);
         }
 
         .table {
-            width: 100%; border-collapse: collapse;
+            width: 100%;
+            border-collapse: collapse;
         }
-        .table th, .table td {
-            padding: var(--space-md); text-align: left;
+
+        .table th,
+        .table td {
+            padding: var(--space-md);
+            text-align: left;
             border-bottom: 1px solid var(--glass-border);
         }
+
         .table th {
-            font-weight: 600; color: var(--text-secondary);
-            text-transform: uppercase; font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        /* ============================================
+           V1.2.2 NEW STYLES
+           ============================================ */
+
+        /* CALENDAR: View toggle buttons */
+        .cal-view-toggle {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .cal-view-btn {
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all var(--transition-fast);
+        }
+
+        .cal-view-btn.active,
+        .cal-view-btn:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* CALENDAR: Today badge */
+        .calendar-day.today .today-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-primary);
+        }
+
+        .calendar-day:hover {
+            box-shadow: 0 0 0 2px var(--accent-primary) inset;
+        }
+
+        /* CALENDAR: Year view grid */
+        .year-view {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+
+        @media (max-width: 900px) {
+            .year-view {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .year-view {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .year-month-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .year-month-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .year-month-name {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-sm);
+            text-align: center;
+        }
+
+        .year-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .year-mini-day {
+            aspect-ratio: 1;
+            border-radius: 2px;
+            background: var(--bg-tertiary);
+        }
+
+        .year-mini-day.has-data-1 {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .year-mini-day.has-data-2 {
+            background: rgba(0, 212, 255, 0.45);
+        }
+
+        .year-mini-day.has-data-3 {
+            background: rgba(0, 212, 255, 0.7);
+        }
+
+        .year-mini-day.has-data-4 {
+            background: var(--accent-primary);
+        }
+
+        .year-mini-day.empty-day {
+            background: transparent;
+        }
+
+        .year-month-avg {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: var(--space-sm);
+        }
+
+        /* CALENDAR: Day modal navigation arrows */
+        .modal-day-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+
+        .modal-day-nav h3 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .nav-arrow {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 1rem;
+            color: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+        .nav-arrow:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* ANALYTICS: Insights panel */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        @media (max-width: 768px) {
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .insight-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+        }
+
+        .insight-icon {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .insight-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .insight-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .insight-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .momentum-up {
+            color: #10b981;
+        }
+
+        .momentum-stable {
+            color: var(--warning);
+        }
+
+        .momentum-down {
+            color: var(--danger);
+        }
+
+        /* ANALYTICS: Day of week chart */
+        .dow-chart-container {
+            position: relative;
+            height: 200px;
+        }
+
+        /* SETTINGS: Habit templates */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .template-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+        }
+
+        .template-card:hover::before {
+            opacity: 0.08;
+        }
+
+        .template-emoji {
+            font-size: 2rem;
+            margin-bottom: var(--space-sm);
+            position: relative;
+        }
+
+        .template-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+            position: relative;
+        }
+
+        .template-habits {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* SETTINGS: Enhanced about stats */
+        .about-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .about-stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .about-stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            display: block;
+        }
+
+        .about-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* COUNT-UP animation helper */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .count-up {
+            animation: countUp 0.4s ease forwards;
+        }
+
+        /* EMPTY STATE with CTA */
+        .empty-state-cta {
+            margin-top: var(--space-lg);
+        }
+
+        /* ============================================
+           V1.3 — JOURNAL STYLES
+           ============================================ */
+
+        /* Journal page layout */
+        .journal-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+
+        @media (max-width: 1100px) {
+            .journal-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .journal-write-panel {
+                order: -1;
+            }
+        }
+
+        /* Write panel */
+        .journal-write-panel {
+            position: sticky;
+            top: var(--space-xl);
+        }
+
+        .journal-write-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .journal-write-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .journal-write-date {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .journal-write-stats {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .journal-prompt {
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .journal-prompt-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .journal-textarea {
+            width: 100%;
+            min-height: 260px;
+            padding: var(--space-lg);
+            background: transparent;
+            border: none;
+            resize: vertical;
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.7;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .journal-textarea::placeholder {
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
+        .journal-write-footer {
+            padding: var(--space-sm) var(--space-lg);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .journal-save-status {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            transition: color var(--transition-fast);
+        }
+
+        .journal-save-status.saved {
+            color: var(--success);
+        }
+
+        .journal-word-count {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Journal entry feed */
+        .journal-feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+        }
+
+        .journal-feed-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .journal-entry-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+        }
+
+        .journal-entry-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .journal-entry-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleY(0);
+            transition: transform var(--transition-fast);
+            transform-origin: top;
+        }
+
+        .journal-entry-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
+        .journal-entry-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .journal-entry-card.active-entry {
+            border-color: var(--accent-primary);
+        }
+
+        .journal-entry-card.active-entry::before {
+            transform: scaleY(1);
+        }
+
+        .journal-entry-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-sm);
+        }
+
+        .journal-entry-date {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .journal-entry-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .journal-entry-badge.perfect {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .journal-entry-preview {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .journal-entry-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-top: var(--space-sm);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Calendar journal dot */
+        .journal-dot {
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--warning);
+            border-radius: 50%;
+        }
+
+        /* Journal stats row */
+        .journal-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .journal-stat-pill {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .journal-stat-pill .stat-val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            display: block;
+        }
+
+        .journal-stat-pill .stat-lbl {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Empty journal state */
+        .journal-empty {
+            text-align: center;
+            padding: var(--space-2xl) var(--space-lg);
+            color: var(--text-secondary);
+        }
+
+        .journal-empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: var(--space-md);
+            opacity: 0.5;
+        }
+
+        /* Settings: Theme section */
+        .settings-theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .settings-theme-card {
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            border: 2px solid var(--glass-border);
+            transition: all var(--transition-fast);
+            overflow: hidden;
+        }
+
+        .settings-theme-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .settings-theme-card.active {
+            border-color: white;
+            box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+        }
+
+        .settings-theme-swatch {
+            height: 48px;
+            width: 100%;
+        }
+
+        .settings-theme-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: var(--bg-secondary);
+        }
+
+        .settings-theme-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .settings-theme-check {
+            font-size: 0.7rem;
+            color: var(--success);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .settings-theme-card.active .settings-theme-check {
+            opacity: 1;
+        }
+
+        /* Theme swatch gradients */
+        .st-ocean .settings-theme-swatch {
+            background: linear-gradient(135deg, #00d4ff, #0095ff);
+        }
+
+        .st-sakura .settings-theme-swatch {
+            background: linear-gradient(135deg, #ff6b9d, #c084fc);
+        }
+
+        .st-cyber .settings-theme-swatch {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+        }
+
+        .st-coral .settings-theme-swatch {
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+        }
+
+        .st-emerald .settings-theme-swatch {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .st-lavender .settings-theme-swatch {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+        }
+
+        .st-crimson .settings-theme-swatch {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .st-gold .settings-theme-swatch {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .st-arctic .settings-theme-swatch {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        }
+
+        .st-midnight .settings-theme-swatch {
+            background: linear-gradient(135deg, #818cf8, #6366f1);
         }
     </style>
 </head>
+
 <body>
     <div class="bg-gradient bg-gradient-1"></div>
     <div class="bg-gradient bg-gradient-2"></div>
@@ -567,6 +1818,10 @@
                     <span class="nav-item-icon">📅</span>
                     <span class="nav-item-text">Calendar</span>
                 </div>
+                <div class="nav-item" onclick="navigateTo('journal')" data-page="journal">
+                    <span class="nav-item-icon">📝</span>
+                    <span class="nav-item-text">Journal</span>
+                </div>
                 <div class="nav-item" onclick="navigateTo('analytics')" data-page="analytics">
                     <span class="nav-item-icon">📈</span>
                     <span class="nav-item-text">Analytics</span>
@@ -578,19 +1833,80 @@
             </nav>
 
             <div class="sidebar-footer">
-                <div class="theme-selector">
-                    <div class="theme-option theme-ocean active" onclick="setTheme('ocean')" title="Ocean"></div>
-                    <div class="theme-option theme-sakura" onclick="setTheme('sakura')" title="Sakura"></div>
-                    <div class="theme-option theme-cyber" onclick="setTheme('cyber')" title="Cyber"></div>
-                    <div class="theme-option theme-coral" onclick="setTheme('coral')" title="Coral"></div>
-                    <div class="theme-option theme-emerald" onclick="setTheme('emerald')" title="Emerald"></div>
-                    <div class="theme-option theme-lavender" onclick="setTheme('lavender')" title="Lavender"></div>
-                    <div class="theme-option theme-crimson" onclick="setTheme('crimson')" title="Crimson"></div>
-                    <div class="theme-option theme-gold" onclick="setTheme('gold')" title="Gold"></div>
-                    <div class="theme-option theme-arctic" onclick="setTheme('arctic')" title="Arctic"></div>
-                    <div class="theme-option theme-midnight" onclick="setTheme('midnight')" title="Midnight"></div>
-                </div>
-            </div>
+                <div class="theme-selector" id="theme-selector">
+                    <div class="theme-card theme-ocean active" onclick="setTheme('ocean')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Ocean</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-sakura" onclick="setTheme('sakura')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Sakura</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-cyber" onclick="setTheme('cyber')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Cyber</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-coral" onclick="setTheme('coral')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Coral</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-emerald" onclick="setTheme('emerald')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Emerald</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-lavender" onclick="setTheme('lavender')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Lavender</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-crimson" onclick="setTheme('crimson')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Crimson</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-gold" onclick="setTheme('gold')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Gold</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-arctic" onclick="setTheme('arctic')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Arctic</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="theme-card theme-midnight" onclick="setTheme('midnight')">
+                        <div class="theme-card-swatch"></div>
+                        <div class="theme-card-label">
+                            <span class="theme-card-name">Midnight</span>
+                            <span class="theme-card-badge">✓</span>
+                        </div>
+                    </div>
+                    <div class="sidebar-footer">
+                        <div class="sidebar-footer-hint" id="sidebar-theme-hint"></div>
+                    </div>
         </aside>
 
         <!-- Main Content -->
@@ -664,19 +1980,91 @@
                 <div class="card">
                     <div class="calendar-controls">
                         <div class="calendar-nav">
-                            <button class="btn-secondary btn" onclick="previousMonth()">◀ Prev</button>
+                            <button class="btn-secondary btn" id="cal-prev-btn" onclick="calPrev()">◀ Prev</button>
                             <button class="btn-secondary btn" onclick="goToToday()">Today</button>
-                            <button class="btn-secondary btn" onclick="nextMonth()">Next ▶</button>
+                            <button class="btn-secondary btn" id="cal-next-btn" onclick="calNext()">Next ▶</button>
                         </div>
                         <h2 id="calendar-month-year"></h2>
+                        <div class="cal-view-toggle">
+                            <button class="cal-view-btn active" id="view-month"
+                                onclick="setCalView('month')">Month</button>
+                            <button class="cal-view-btn" id="view-year" onclick="setCalView('year')">Year</button>
+                        </div>
                     </div>
 
-                    <div class="calendar-grid" id="calendar-grid"></div>
+                    <!-- Month view -->
+                    <div id="cal-month-view">
+                        <div class="calendar-grid" id="calendar-grid"></div>
+                    </div>
+
+                    <!-- Year view -->
+                    <div id="cal-year-view" style="display:none;">
+                        <div class="year-view" id="year-grid"></div>
+                    </div>
                 </div>
 
                 <div class="card" id="day-detail" style="display: none;">
                     <h3 id="day-detail-title"></h3>
                     <div id="day-detail-content"></div>
+                </div>
+            </div>
+
+            <!-- Journal Page -->
+            <div class="page" id="page-journal">
+                <div class="page-header">
+                    <h1 class="page-title">Journal</h1>
+                    <p class="page-subtitle">Write. Reflect. Grow.</p>
+                </div>
+
+                <!-- Stats row -->
+                <div class="journal-stats-row">
+                    <div class="journal-stat-pill">
+                        <span class="stat-val" id="journal-stat-entries">0</span>
+                        <span class="stat-lbl">Total Entries</span>
+                    </div>
+                    <div class="journal-stat-pill">
+                        <span class="stat-val" id="journal-stat-streak">0</span>
+                        <span class="stat-lbl">Writing Streak</span>
+                    </div>
+                    <div class="journal-stat-pill">
+                        <span class="stat-val" id="journal-stat-words">0</span>
+                        <span class="stat-lbl">Total Words</span>
+                    </div>
+                </div>
+
+                <div class="journal-layout">
+                    <!-- Left: Entry feed -->
+                    <div class="journal-feed">
+                        <div class="journal-feed-header">
+                            <span class="journal-feed-title">Past Entries</span>
+                            <span class="journal-entry-count" id="journal-count-badge">0 entries</span>
+                        </div>
+                        <div id="journal-feed"></div>
+                    </div>
+
+                    <!-- Right: Write panel -->
+                    <div class="journal-write-panel">
+                        <div class="journal-write-card">
+                            <div class="journal-write-header">
+                                <div>
+                                    <div class="journal-write-date" id="journal-write-date">Today</div>
+                                    <div class="journal-write-stats" id="journal-write-habit-stats"></div>
+                                </div>
+                                <div class="journal-save-status" id="journal-save-status">—</div>
+                            </div>
+                            <div class="journal-prompt" id="journal-prompt-bar">
+                                <span class="journal-prompt-icon">💡</span>
+                                <span id="journal-prompt-text"></span>
+                            </div>
+                            <textarea class="journal-textarea" id="journal-textarea" placeholder="Start writing…"
+                                oninput="onJournalInput()"></textarea>
+                            <div class="journal-write-footer">
+                                <span class="journal-word-count" id="journal-wc">0 words</span>
+                                <button class="btn btn-secondary" style="padding:0.4rem 1rem; font-size:0.8rem;"
+                                    onclick="clearJournalEntry()">Clear</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -687,17 +2075,56 @@
                     <p class="page-subtitle">Insights into your progress</p>
                 </div>
 
+                <!-- Quick Insights Panel -->
+                <div class="insights-grid" id="insights-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="insight-card">
+                        <div class="insight-icon">📅</div>
+                        <div class="insight-label">Best Day of Week</div>
+                        <div class="insight-value" id="insight-best-day">—</div>
+                        <div class="insight-sub" id="insight-best-day-sub">Complete habits to see</div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">🏆</div>
+                        <div class="insight-label">Most Consistent</div>
+                        <div class="insight-value" id="insight-consistent">—</div>
+                        <div class="insight-sub" id="insight-consistent-sub">Add habits to see</div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">📊</div>
+                        <div class="insight-label">Momentum</div>
+                        <div class="insight-value" id="insight-momentum">—</div>
+                        <div class="insight-sub" id="insight-momentum-sub">Track for 14 days to see</div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">✍️</div>
+                        <div class="insight-label">Journal Streak</div>
+                        <div class="insight-value" id="insight-journal-streak">0</div>
+                        <div class="insight-sub" id="insight-journal-streak-sub">consecutive days</div>
+                    </div>
+                </div>
+
                 <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <h3>Completion Trend</h3>
-                        <select class="form-select" style="width: auto;" id="analytics-range" onchange="updateAnalytics()">
+                        <select class="form-select" style="width: auto;" id="analytics-range"
+                            onchange="updateAnalytics()">
                             <option value="7">Last 7 Days</option>
                             <option value="30" selected>Last 30 Days</option>
                             <option value="90">Last 90 Days</option>
                         </select>
                     </div>
-                    <div class="chart-container">
+                    <div class="chart-container" id="trend-chart-wrap">
                         <canvas id="trend-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Day of Week Performance</h3>
+                    <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:1rem;">Average completion %
+                        by day — last 90 days</p>
+                    <div class="dow-chart-container">
+                        <canvas id="dow-chart"></canvas>
                     </div>
                 </div>
 
@@ -732,9 +2159,101 @@
                 </div>
 
                 <div class="settings-section">
+                    <h3 class="settings-section-title">Appearance</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:var(--space-lg);">Choose a
+                        theme that matches your energy.</p>
+                    <div class="settings-theme-grid" id="settings-theme-grid">
+                        <div class="settings-theme-card st-ocean" onclick="setTheme('ocean')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Ocean</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-sakura" onclick="setTheme('sakura')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Sakura</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-cyber" onclick="setTheme('cyber')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Cyber</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-coral" onclick="setTheme('coral')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Coral</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-emerald" onclick="setTheme('emerald')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Emerald</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-lavender" onclick="setTheme('lavender')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Lavender</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-crimson" onclick="setTheme('crimson')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Crimson</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-gold" onclick="setTheme('gold')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Gold</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-arctic" onclick="setTheme('arctic')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Arctic</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                        <div class="settings-theme-card st-midnight" onclick="setTheme('midnight')">
+                            <div class="settings-theme-swatch"></div>
+                            <div class="settings-theme-label"><span class="settings-theme-name">Midnight</span><span
+                                    class="settings-theme-check">✓ Active</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Habit Templates</h3>
+                    <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Quick-start with
+                        pre-built habit sets. Click any card to add all 3 habits instantly.</p>
+                    <div class="templates-grid">
+                        <div class="template-card" onclick="applyTemplate('morning')">
+                            <div class="template-emoji">🌅</div>
+                            <div class="template-name">Morning Routine</div>
+                            <div class="template-habits">Meditate · Exercise · Journal</div>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('fitness')">
+                            <div class="template-emoji">💪</div>
+                            <div class="template-name">Fitness</div>
+                            <div class="template-habits">Workout · Drink 8 glasses of water · Eat protein</div>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('study')">
+                            <div class="template-emoji">🧠</div>
+                            <div class="template-name">Study</div>
+                            <div class="template-habits">Read 30 minutes · Practice skills · Review notes</div>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('evening')">
+                            <div class="template-emoji">😴</div>
+                            <div class="template-name">Evening Routine</div>
+                            <div class="template-habits">Unplug from devices · Stretch · Sleep before 11pm</div>
+                        </div>
+                        <div class="template-card" onclick="applyTemplate('productivity')">
+                            <div class="template-emoji">🎯</div>
+                            <div class="template-name">Productivity</div>
+                            <div class="template-habits">2 hours deep work · No social media · Plan tomorrow</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
                     <h3 class="settings-section-title">Data Management</h3>
                     <div class="card">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                             <button class="btn" onclick="exportCSV()">
                                 <span>📊</span><span>Export CSV</span>
                             </button>
@@ -744,7 +2263,8 @@
                             <button class="btn-secondary btn" onclick="document.getElementById('import-file').click()">
                                 <span>📥</span><span>Import Data</span>
                             </button>
-                            <input type="file" id="import-file" accept=".json,.csv" style="display: none;" onchange="importData(event)">
+                            <input type="file" id="import-file" accept=".json,.csv" style="display: none;"
+                                onchange="importData(event)">
                         </div>
                     </div>
                 </div>
@@ -772,9 +2292,27 @@
                 <div class="settings-section">
                     <h3 class="settings-section-title">About</h3>
                     <div class="card">
+                        <div class="about-stats-grid">
+                            <div class="about-stat-card">
+                                <span class="about-stat-value" id="about-days">0</span>
+                                <span class="about-stat-label">Total Days Tracked</span>
+                            </div>
+                            <div class="about-stat-card">
+                                <span class="about-stat-value" id="about-completions">0</span>
+                                <span class="about-stat-label">Total Completions</span>
+                            </div>
+                            <div class="about-stat-card">
+                                <span class="about-stat-value" id="about-longest">0</span>
+                                <span class="about-stat-label">Longest Streak Ever</span>
+                            </div>
+                            <div class="about-stat-card">
+                                <span class="about-stat-value" id="about-storage">0 KB</span>
+                                <span class="about-stat-label">Storage Used</span>
+                            </div>
+                        </div>
                         <div class="settings-item">
                             <div class="settings-label">Version</div>
-                            <div>v1.2.1</div>
+                            <div>v1.3</div>
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Last Sync</div>
@@ -794,7 +2332,13 @@
     <div class="modal" id="day-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="modal-day-title"></h3>
+                <div class="modal-day-nav">
+                    <button class="nav-arrow" id="modal-prev-day" onclick="navigateDay(-1)"
+                        title="Previous day (←)">◀</button>
+                    <h3 class="modal-title" id="modal-day-title"></h3>
+                    <button class="nav-arrow" id="modal-next-day" onclick="navigateDay(1)"
+                        title="Next day (→)">▶</button>
+                </div>
             </div>
             <div class="modal-body" id="modal-day-content"></div>
             <div class="modal-footer">
@@ -819,11 +2363,16 @@
 
     <script>
         // APP STATE
-        let habits = JSON.parse(localStorage.getItem('ascend-habits-v1.2.1')) || 
-                     JSON.parse(localStorage.getItem('ascend-habits-v1.2')) || [];
+        let habits = JSON.parse(localStorage.getItem('ascend-habits-v1.2.1')) ||
+            JSON.parse(localStorage.getItem('ascend-habits-v1.2')) || [];
+        let journalEntries = JSON.parse(localStorage.getItem('ascend-journal-v1.3')) || {};
         let currentTheme = localStorage.getItem('ascend-theme') || 'ocean';
         let sidebarCollapsed = localStorage.getItem('ascend-sidebar-collapsed') === 'true';
         let currentCalendarDate = new Date();
+        let calView = 'month';
+        let currentModalDate = null;
+        let currentJournalDate = new Date().toDateString();
+        let journalSaveTimer = null;
         let charts = {};
 
         // INITIALIZATION
@@ -861,6 +2410,8 @@
                 pageElement.classList.add('active');
                 if (page === 'calendar') renderCalendar();
                 if (page === 'analytics') updateAnalytics();
+                if (page === 'settings') updateAboutStats();
+                if (page === 'journal') renderJournalPage();
             }
             if (window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('mobile-open');
@@ -888,14 +2439,16 @@
             document.documentElement.setAttribute('data-theme', theme);
             currentTheme = theme;
             localStorage.setItem('ascend-theme', theme);
-            document.querySelectorAll('.theme-option').forEach(option => {
-                option.classList.remove('active');
-            });
-            document.querySelector(`.theme-${theme}`).classList.add('active');
+            // Update settings theme cards
+            document.querySelectorAll('.settings-theme-card').forEach(card => card.classList.remove('active'));
+            const activeCard = document.querySelector(`.st-${theme}`);
+            if (activeCard) activeCard.classList.add('active');
+            // Update sidebar hint
+            const hint = document.getElementById('sidebar-theme-hint');
+            if (hint) hint.textContent = theme.charAt(0).toUpperCase() + theme.slice(1) + ' theme';
             if (!skipToast) {
                 showToast('success', '🎨 Theme Changed', `Switched to ${theme.charAt(0).toUpperCase() + theme.slice(1)}`);
             }
-            // Update charts if on analytics page
             if (window.location.hash === '#analytics') {
                 setTimeout(() => updateAnalytics(), 100);
             }
@@ -938,7 +2491,7 @@
                 habit.lastCompleted = today;
                 habit.streak++;
                 habit.history[today] = true;
-                
+
                 if ([7, 30, 100].includes(habit.streak)) {
                     triggerConfetti();
                     showToast('success', `🎉 ${habit.streak}-Day Milestone!`, `Amazing streak on "${habit.name}"!`);
@@ -963,7 +2516,12 @@
                     <div class="empty-state">
                         <div class="empty-state-icon">📋</div>
                         <h3>No habits yet</h3>
-                        <p>Start by adding your first habit above!</p>
+                        <p>Start by adding a habit above, or try a quick-start template.</p>
+                        <div class="empty-state-cta">
+                            <button class="btn" onclick="navigateTo('settings')">
+                                <span>⚡</span><span>Browse Templates</span>
+                            </button>
+                        </div>
                     </div>
                 `;
                 return;
@@ -996,10 +2554,26 @@
             const maxStreak = Math.max(...habits.map(h => h.streak), 0);
             const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-            document.getElementById('stat-streak').textContent = maxStreak;
-            document.getElementById('stat-total').textContent = total;
-            document.getElementById('stat-completed').textContent = completed;
+            animateCountUp('stat-streak', maxStreak);
+            animateCountUp('stat-total', total);
+            animateCountUp('stat-completed', completed);
             document.getElementById('stat-rate').textContent = rate + '%';
+        }
+
+        function animateCountUp(elId, target, duration = 600) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            const start = 0;
+            const startTime = performance.now();
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+                el.textContent = Math.round(start + (target - start) * eased);
+                if (progress < 1) requestAnimationFrame(step);
+                else el.textContent = target;
+            }
+            requestAnimationFrame(step);
         }
 
         function saveHabits() {
@@ -1023,11 +2597,33 @@
         }
 
         // CALENDAR
+        function setCalView(view) {
+            calView = view;
+            document.getElementById('cal-month-view').style.display = view === 'month' ? '' : 'none';
+            document.getElementById('cal-year-view').style.display = view === 'year' ? '' : 'none';
+            document.getElementById('view-month').classList.toggle('active', view === 'month');
+            document.getElementById('view-year').classList.toggle('active', view === 'year');
+            document.getElementById('cal-prev-btn').style.display = view === 'year' ? 'none' : '';
+            document.getElementById('cal-next-btn').style.display = view === 'year' ? 'none' : '';
+            renderCalendar();
+        }
+
+        function calPrev() { previousMonth(); }
+        function calNext() { nextMonth(); }
+
         function renderCalendar() {
+            if (calView === 'year') {
+                renderYearView();
+            } else {
+                renderMonthView();
+            }
+        }
+
+        function renderMonthView() {
             const year = currentCalendarDate.getFullYear();
             const month = currentCalendarDate.getMonth();
-            
-            document.getElementById('calendar-month-year').textContent = 
+
+            document.getElementById('calendar-month-year').textContent =
                 new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
             const firstDay = new Date(year, month, 1).getDay();
@@ -1039,23 +2635,18 @@
                 .map(day => `<div class="calendar-day-header">${day}</div>`)
                 .join('');
 
-            // Empty cells before first day
             for (let i = 0; i < firstDay; i++) {
                 grid.innerHTML += '<div class="calendar-day empty"></div>';
             }
 
-            // Days of month
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(year, month, day);
                 const dateStr = date.toDateString();
                 const isToday = dateStr === today;
-                
-                // Calculate completion level
+
                 let completedCount = 0;
                 habits.forEach(habit => {
-                    if (habit.history && habit.history[dateStr]) {
-                        completedCount++;
-                    }
+                    if (habit.history && habit.history[dateStr]) completedCount++;
                 });
 
                 const totalHabits = habits.length;
@@ -1074,13 +2665,88 @@
                     <div class="calendar-day ${isToday ? 'today' : ''}" 
                          data-completion="${completionLevel}"
                          onclick="showDayDetail('${dateStr}', ${day})">
+                        ${isToday ? '<div class="today-badge"></div>' : ''}
                         <div class="calendar-day-number">${day}</div>
+                        ${journalEntries[dateStr] ? '<div class="journal-dot"></div>' : ''}
                     </div>
                 `;
             }
         }
 
+        function renderYearView() {
+            const year = currentCalendarDate.getFullYear();
+            document.getElementById('calendar-month-year').textContent = year;
+            const grid = document.getElementById('year-grid');
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const today = new Date();
+
+            grid.innerHTML = monthNames.map((name, m) => {
+                const firstDay = new Date(year, m, 1).getDay();
+                const daysInMonth = new Date(year, m + 1, 0).getDate();
+
+                // Compute monthly avg
+                let totalRate = 0, counted = 0;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const ds = new Date(year, m, d).toDateString();
+                    let comp = 0, tot = 0;
+                    habits.forEach(h => {
+                        const created = new Date(h.createdAt);
+                        if (new Date(year, m, d) >= created) {
+                            tot++;
+                            if (h.history && h.history[ds]) comp++;
+                        }
+                    });
+                    if (tot > 0) { totalRate += comp / tot; counted++; }
+                }
+                const avg = counted > 0 ? Math.round((totalRate / counted) * 100) : 0;
+
+                // Build mini grid cells
+                let cells = '';
+                for (let e = 0; e < firstDay; e++) cells += `<div class="year-mini-day empty-day"></div>`;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const ds = new Date(year, m, d).toDateString();
+                    let comp = 0, tot = 0;
+                    habits.forEach(h => {
+                        const created = new Date(h.createdAt);
+                        if (new Date(year, m, d) >= created) {
+                            tot++;
+                            if (h.history && h.history[ds]) comp++;
+                        }
+                    });
+                    let lvl = 0;
+                    if (tot > 0) {
+                        const pct = comp / tot;
+                        if (pct > 0 && pct <= 0.33) lvl = 1;
+                        else if (pct <= 0.66) lvl = 2;
+                        else if (pct < 1) lvl = 3;
+                        else if (pct === 1) lvl = 4;
+                    }
+                    cells += `<div class="year-mini-day ${lvl > 0 ? 'has-data-' + lvl : ''}"></div>`;
+                }
+
+                return `
+                    <div class="year-month-card" onclick="jumpToMonth(${year}, ${m})">
+                        <div class="year-month-name">${name} ${year}</div>
+                        <div class="year-mini-grid">${cells}</div>
+                        <div class="year-month-avg">${avg > 0 ? avg + '% avg' : 'No data'}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function jumpToMonth(year, month) {
+            currentCalendarDate = new Date(year, month, 1);
+            setCalView('month');
+        }
+
         function showDayDetail(dateStr, day) {
+            currentModalDate = new Date(dateStr);
+            renderDayModal(currentModalDate);
+            document.getElementById('day-modal').classList.add('active');
+        }
+
+        function renderDayModal(date) {
+            const dateStr = date.toDateString();
             const completedHabits = [];
             const missedHabits = [];
 
@@ -1090,44 +2756,69 @@
                 const habitExisted = new Date(dateStr) >= new Date(createdDate);
 
                 if (habitExisted) {
-                    if (wasCompleted) {
-                        completedHabits.push(habit.name);
-                    } else {
-                        missedHabits.push(habit.name);
-                    }
+                    if (wasCompleted) completedHabits.push(habit.name);
+                    else missedHabits.push(habit.name);
                 }
             });
 
             const total = completedHabits.length + missedHabits.length;
             const rate = total > 0 ? Math.round((completedHabits.length / total) * 100) : 0;
+            const isToday = dateStr === new Date().toDateString();
+            const isFuture = date > new Date();
 
-            document.getElementById('modal-day-title').textContent = 
-                `${new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
-            
+            document.getElementById('modal-day-title').textContent =
+                date.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' });
+
+            // Disable next arrow if today or future
+            document.getElementById('modal-next-day').style.opacity = isFuture || isToday ? '0.3' : '1';
+            document.getElementById('modal-next-day').style.pointerEvents = isFuture || isToday ? 'none' : '';
+
+            const journalEntry = journalEntries[dateStr];
+
             document.getElementById('modal-day-content').innerHTML = `
-                <p style="margin-bottom: 1rem; font-size: 1.125rem; font-weight: 600;">
-                    ${completedHabits.length}/${total} habits completed (${rate}%)
+                <p style="margin-bottom: 1rem; font-size: 1.125rem; font-weight: 600; color: var(--accent-primary);">
+                    ${isFuture ? '— Future date —' : `${completedHabits.length}/${total} habits completed (${rate}%)`}
                 </p>
-                ${completedHabits.length > 0 ? `
+                ${!isFuture && completedHabits.length > 0 ? `
                     <h4 style="color: var(--success); margin-bottom: 0.5rem;">✓ Completed</h4>
                     <ul style="list-style: none; margin-bottom: 1rem;">
-                        ${completedHabits.map(h => `<li style="padding: 0.25rem 0;">✓ ${h}</li>`).join('')}
+                        ${completedHabits.map(h => `<li style="padding: 0.25rem 0; color: var(--success);">✓ ${h}</li>`).join('')}
                     </ul>
                 ` : ''}
-                ${missedHabits.length > 0 ? `
+                ${!isFuture && missedHabits.length > 0 ? `
                     <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">✗ Missed</h4>
-                    <ul style="list-style: none; opacity: 0.6;">
+                    <ul style="list-style: none; opacity: 0.6; margin-bottom: 1rem;">
                         ${missedHabits.map(h => `<li style="padding: 0.25rem 0;">✗ ${h}</li>`).join('')}
                     </ul>
                 ` : ''}
-                ${total === 0 ? '<p style="color: var(--text-secondary);">No habits were tracked on this day.</p>' : ''}
+                ${!isFuture && total === 0 ? '<p style="color: var(--text-secondary); margin-bottom: 1rem;">No habits were tracked on this day yet.</p>' : ''}
+                ${!isFuture ? `
+                    <div style="border-top: 1px solid var(--glass-border); padding-top: 1rem; margin-top: 0.5rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
+                            <h4 style="color: var(--text-secondary); font-size:0.875rem;">✏️ Journal</h4>
+                            <button class="btn btn-secondary" style="padding:0.3rem 0.8rem; font-size:0.75rem;" onclick="closeDayModal(); openJournalDate('${dateStr}')">Open in Journal →</button>
+                        </div>
+                        ${journalEntry ? `<p style="font-size:0.875rem; color:var(--text-primary); line-height:1.6; opacity:0.85;">${journalEntry.text.substring(0, 200)}${journalEntry.text.length > 200 ? '…' : ''}</p>` : `<p style="font-size:0.875rem; color:var(--text-tertiary); font-style:italic;">No journal entry for this day.</p>`}
+                    </div>
+                ` : ''}
             `;
+        }
 
-            document.getElementById('day-modal').classList.add('active');
+        function navigateDay(direction) {
+            if (!currentModalDate) return;
+            const newDate = new Date(currentModalDate);
+            newDate.setDate(newDate.getDate() + direction);
+            // Don't go past today
+            if (newDate > new Date()) return;
+            currentModalDate = newDate;
+            // Update calendar month if we crossed month boundary
+            currentCalendarDate = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
+            renderDayModal(currentModalDate);
         }
 
         function closeDayModal() {
             document.getElementById('day-modal').classList.remove('active');
+            currentModalDate = null;
         }
 
         function previousMonth() {
@@ -1142,21 +2833,196 @@
 
         function goToToday() {
             currentCalendarDate = new Date();
-            renderCalendar();
+            setCalView('month');
         }
 
         // ANALYTICS
         function updateAnalytics() {
             const days = parseInt(document.getElementById('analytics-range').value);
-            
-            // Trend Chart
+            renderInsights(days);
             renderTrendChart(days);
-            
-            // Performance Chart
+            renderDowChart();
             renderPerformanceChart();
-            
-            // Streak Table
             renderStreakTable();
+        }
+
+        function renderInsights(days) {
+            // --- Best Day of Week ---
+            const dowTotals = [0, 0, 0, 0, 0, 0, 0];
+            const dowCounts = [0, 0, 0, 0, 0, 0, 0];
+            const today = new Date();
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            for (let i = 89; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toDateString();
+                const dow = date.getDay();
+
+                let comp = 0, tot = 0;
+                habits.forEach(h => {
+                    const created = new Date(h.createdAt);
+                    if (date >= created) {
+                        tot++;
+                        if (h.history && h.history[dateStr]) comp++;
+                    }
+                });
+                if (tot > 0) {
+                    dowTotals[dow] += comp / tot;
+                    dowCounts[dow]++;
+                }
+            }
+
+            let bestDow = -1, bestRate = -1;
+            dowCounts.forEach((cnt, i) => {
+                if (cnt > 0) {
+                    const avg = dowTotals[i] / cnt;
+                    if (avg > bestRate) { bestRate = avg; bestDow = i; }
+                }
+            });
+
+            if (bestDow >= 0) {
+                document.getElementById('insight-best-day').textContent = dayNames[bestDow];
+                document.getElementById('insight-best-day-sub').textContent = `${Math.round(bestRate * 100)}% avg completion`;
+            } else {
+                document.getElementById('insight-best-day').textContent = '—';
+                document.getElementById('insight-best-day-sub').textContent = 'Complete habits to see';
+            }
+
+            // --- Most Consistent Habit ---
+            let bestHabit = null, bestHabitRate = -1;
+            habits.forEach(h => {
+                if (!h.history) return;
+                const totalDays = Math.max(1, Math.floor((Date.now() - new Date(h.createdAt)) / 86400000) + 1);
+                const comp = Object.keys(h.history).length;
+                const rate = comp / totalDays;
+                if (rate > bestHabitRate) { bestHabitRate = rate; bestHabit = h; }
+            });
+
+            if (bestHabit) {
+                const displayName = bestHabit.name.length > 18 ? bestHabit.name.substring(0, 18) + '…' : bestHabit.name;
+                document.getElementById('insight-consistent').textContent = displayName;
+                document.getElementById('insight-consistent-sub').textContent = `${Math.round(bestHabitRate * 100)}% success rate`;
+            } else {
+                document.getElementById('insight-consistent').textContent = '—';
+                document.getElementById('insight-consistent-sub').textContent = 'Add habits to see';
+            }
+
+            // --- Momentum ---
+            function getAvgForPeriod(startDaysAgo, endDaysAgo) {
+                let total = 0, count = 0;
+                for (let i = startDaysAgo; i >= endDaysAgo; i--) {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - i);
+                    const dateStr = date.toDateString();
+                    let comp = 0, tot = 0;
+                    habits.forEach(h => {
+                        const created = new Date(h.createdAt);
+                        if (date >= created) {
+                            tot++;
+                            if (h.history && h.history[dateStr]) comp++;
+                        }
+                    });
+                    if (tot > 0) { total += comp / tot; count++; }
+                }
+                return count > 0 ? total / count : 0;
+            }
+
+            const recent7 = getAvgForPeriod(6, 0);
+            const prev7 = getAvgForPeriod(13, 7);
+            const momentumEl = document.getElementById('insight-momentum');
+            const momentumSub = document.getElementById('insight-momentum-sub');
+
+            if (prev7 === 0 && recent7 === 0) {
+                momentumEl.textContent = '—';
+                momentumEl.className = 'insight-value';
+                momentumSub.textContent = 'Track for 14 days to see';
+            } else {
+                const diff = recent7 - prev7;
+                if (diff > 0.05) {
+                    momentumEl.innerHTML = '↑ Improving';
+                    momentumEl.className = 'insight-value momentum-up';
+                    momentumSub.textContent = `+${Math.round(diff * 100)}% vs last week`;
+                } else if (diff < -0.05) {
+                    momentumEl.innerHTML = '↓ Declining';
+                    momentumEl.className = 'insight-value momentum-down';
+                    momentumSub.textContent = `${Math.round(diff * 100)}% vs last week`;
+                } else {
+                    momentumEl.innerHTML = '→ Stable';
+                    momentumEl.className = 'insight-value momentum-stable';
+                    momentumSub.textContent = 'Consistent pace';
+                }
+            }
+
+            // --- Journal Streak ---
+            const jStreak = calcJournalStreak();
+            const jsEl = document.getElementById('insight-journal-streak');
+            const jsSub = document.getElementById('insight-journal-streak-sub');
+            if (jsEl) jsEl.textContent = jStreak;
+            if (jsSub) jsSub.textContent = jStreak === 1 ? 'consecutive day' : 'consecutive days';
+        }
+
+        function renderDowChart() {
+            const ctx = document.getElementById('dow-chart');
+            if (!ctx) return;
+
+            const dowLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const dowTotals = [0, 0, 0, 0, 0, 0, 0];
+            const dowCounts = [0, 0, 0, 0, 0, 0, 0];
+            const today = new Date();
+
+            for (let i = 89; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toDateString();
+                // Map JS day (0=Sun) to Mon-first index
+                const jsDow = date.getDay();
+                const dowIdx = jsDow === 0 ? 6 : jsDow - 1;
+
+                let comp = 0, tot = 0;
+                habits.forEach(h => {
+                    const created = new Date(h.createdAt);
+                    if (date >= created) {
+                        tot++;
+                        if (h.history && h.history[dateStr]) comp++;
+                    }
+                });
+                if (tot > 0) {
+                    dowTotals[dowIdx] += comp / tot;
+                    dowCounts[dowIdx]++;
+                }
+            }
+
+            const data = dowCounts.map((cnt, i) => cnt > 0 ? Math.round((dowTotals[i] / cnt) * 100) : 0);
+            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
+            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
+
+            if (charts.dow) charts.dow.destroy();
+            charts.dow = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dowLabels,
+                    datasets: [{
+                        data,
+                        backgroundColor: data.map(v => v >= 70 ? accentColor : v >= 40 ? accentColor + 'aa' : accentColor + '44'),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)', padding: 10,
+                            callbacks: { label: ctx => `${ctx.raw}% avg` }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, ticks: { color: textColor, callback: v => v + '%' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+                        x: { ticks: { color: textColor }, grid: { display: false } }
+                    }
+                }
+            });
         }
 
         function renderTrendChart(days) {
@@ -1171,12 +3037,12 @@
                 const date = new Date(today);
                 date.setDate(date.getDate() - i);
                 const dateStr = date.toDateString();
-                
+
                 labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-                
+
                 let completedCount = 0;
                 let totalHabits = 0;
-                
+
                 habits.forEach(habit => {
                     const createdDate = new Date(habit.createdAt).toDateString();
                     if (new Date(dateStr) >= new Date(createdDate)) {
@@ -1186,13 +3052,13 @@
                         }
                     }
                 });
-                
+
                 const rate = totalHabits > 0 ? Math.round((completedCount / totalHabits) * 100) : 0;
                 data.push(rate);
             }
 
             if (charts.trend) charts.trend.destroy();
-            
+
             const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
             const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
 
@@ -1246,21 +3112,21 @@
 
             habits.forEach(habit => {
                 if (!habit.history) habit.history = {};
-                
+
                 const totalDays = Math.floor((Date.now() - new Date(habit.createdAt)) / (1000 * 60 * 60 * 24)) + 1;
                 const completedDays = Object.keys(habit.history).length;
                 const rate = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
-                
+
                 labels.push(habit.name.length > 20 ? habit.name.substring(0, 20) + '...' : habit.name);
                 data.push(rate);
-                
+
                 if (rate >= 75) colors.push('#10b981');
                 else if (rate >= 50) colors.push('#f59e0b');
                 else colors.push('#ef4444');
             });
 
             if (charts.performance) charts.performance.destroy();
-            
+
             const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
 
             charts.performance = new Chart(ctx, {
@@ -1369,7 +3235,7 @@
             reader.onload = (e) => {
                 try {
                     const content = e.target.result;
-                    
+
                     if (file.name.endsWith('.json')) {
                         const data = JSON.parse(content);
                         if (data.habits) {
@@ -1389,9 +3255,9 @@
                     } else if (file.name.endsWith('.csv')) {
                         const lines = content.split('\n').slice(1); // Skip header
                         const imported = lines.filter(line => line.trim()).map(line => {
-                            const [name, streak, completedToday, lastCompleted, createdAt] = 
+                            const [name, streak, completedToday, lastCompleted, createdAt] =
                                 line.split(',').map(cell => cell.replace(/"/g, '').trim());
-                            
+
                             return {
                                 id: Date.now() + Math.random(),
                                 name,
@@ -1464,8 +3330,88 @@
 
         function updateStorageInfo() {
             const dataSize = new Blob([localStorage.getItem('ascend-habits-v1.2.1') || '']).size;
+            const sizeStr = `${(dataSize / 1024).toFixed(2)} KB`;
+            document.getElementById('storage-used').textContent = sizeStr;
+            document.getElementById('last-sync').textContent = new Date().toLocaleString();
+        }
+
+        function updateAboutStats() {
+            // Total days tracked (distinct days with any completion)
+            const allDays = new Set();
+            let totalCompletions = 0;
+            let longestStreak = 0;
+
+            habits.forEach(h => {
+                if (!h.history) return;
+                Object.keys(h.history).forEach(d => { allDays.add(d); totalCompletions++; });
+                longestStreak = Math.max(longestStreak, h.streak || 0);
+            });
+
+            const dataSize = new Blob([localStorage.getItem('ascend-habits-v1.2.1') || '']).size;
+
+            animateAboutStat('about-days', allDays.size);
+            animateAboutStat('about-completions', totalCompletions);
+            animateAboutStat('about-longest', longestStreak);
+            document.getElementById('about-storage').textContent = `${(dataSize / 1024).toFixed(1)} KB`;
             document.getElementById('storage-used').textContent = `${(dataSize / 1024).toFixed(2)} KB`;
             document.getElementById('last-sync').textContent = new Date().toLocaleString();
+        }
+
+        function animateAboutStat(elId, target, duration = 800) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            const startTime = performance.now();
+            function step(now) {
+                const p = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.round(target * eased);
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = target;
+            }
+            requestAnimationFrame(step);
+        }
+
+        // HABIT TEMPLATES
+        const TEMPLATES = {
+            morning: ['Meditate', 'Exercise', 'Journal'],
+            fitness: ['Workout', 'Drink 8 glasses of water', 'Eat protein'],
+            study: ['Read 30 minutes', 'Practice skills', 'Review notes'],
+            evening: ['Unplug from devices', 'Stretch', 'Sleep before 11pm'],
+            productivity: ['2 hours deep work', 'No social media', 'Plan tomorrow']
+        };
+
+        function applyTemplate(key) {
+            const templateHabits = TEMPLATES[key];
+            if (!templateHabits) return;
+
+            const added = [];
+            templateHabits.forEach(name => {
+                // Only add if not already present
+                if (!habits.find(h => h.name.toLowerCase() === name.toLowerCase())) {
+                    habits.push({
+                        id: Date.now() + Math.random(),
+                        name,
+                        streak: 0,
+                        completedToday: false,
+                        lastCompleted: null,
+                        createdAt: new Date().toISOString(),
+                        history: {}
+                    });
+                    added.push(name);
+                }
+            });
+
+            if (added.length === 0) {
+                showToast('info', 'Already Added', 'These habits are already in your list!');
+                return;
+            }
+
+            saveHabits();
+            renderHabits();
+            updateStats();
+            const templateNames = { morning: 'Morning Routine', fitness: 'Fitness', study: 'Study', evening: 'Evening Routine', productivity: 'Productivity' };
+            showToast('success', `✨ ${templateNames[key]}`, `Added ${added.length} habit${added.length !== 1 ? 's' : ''}!`);
+            setTimeout(() => navigateTo('habits'), 600);
         }
 
         // MODALS
@@ -1536,6 +3482,246 @@
             animate();
         }
 
+        // ============================================
+        // JOURNAL — v1.3
+        // ============================================
+
+        const JOURNAL_PROMPTS = [
+            "What made today's habits feel easy or hard?",
+            "One thing you want to remember about today.",
+            "What would tomorrow-you thank you for doing today?",
+            "What habit felt like a chore vs. felt genuinely good?",
+            "How did your energy levels track with your completions?",
+            "What distracted you most today, and how did you handle it?",
+            "Name one small win from today — big or tiny.",
+            "What would you do differently if you could replay today?",
+            "How does today compare to last week at this time?",
+            "What are you building toward, and did today move you closer?",
+            "Describe your mood in three words.",
+            "What's one habit you want to strengthen this week?",
+            "What did completing (or missing) habits teach you today?",
+            "If today had a title, what would it be?",
+            "Who or what supported your progress today?",
+            "What's the hardest part of your current routine?",
+            "What surprised you about yourself today?",
+            "Write freely — whatever's on your mind right now.",
+            "What does consistency mean to you this week?",
+            "What would a perfect version of tomorrow look like?"
+        ];
+
+        function getDailyPrompt(dateStr) {
+            // Deterministic prompt based on date so it doesn't change on re-render
+            const seed = new Date(dateStr).getTime();
+            return JOURNAL_PROMPTS[Math.abs(seed) % JOURNAL_PROMPTS.length];
+        }
+
+        function saveJournal() {
+            localStorage.setItem('ascend-journal-v1.3', JSON.stringify(journalEntries));
+        }
+
+        function calcJournalStreak() {
+            let streak = 0;
+            const today = new Date();
+            for (let i = 0; i < 365; i++) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                const ds = d.toDateString();
+                if (journalEntries[ds] && journalEntries[ds].text.trim().length > 0) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        function getWordCount(text) {
+            return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+        }
+
+        function openJournalDate(dateStr) {
+            currentJournalDate = dateStr;
+            navigateTo('journal');
+        }
+
+        function renderJournalPage() {
+            // Set up write panel for today (or last opened date)
+            loadJournalWritePanel(currentJournalDate);
+            // Render feed
+            renderJournalFeed();
+            // Update stats
+            updateJournalStats();
+        }
+
+        function loadJournalWritePanel(dateStr) {
+            currentJournalDate = dateStr;
+            const isToday = dateStr === new Date().toDateString();
+            const dateDisplay = isToday
+                ? 'Today — ' + new Date(dateStr).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+                : new Date(dateStr).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            document.getElementById('journal-write-date').textContent = dateDisplay;
+
+            // Habit stats for this day
+            let comp = 0, tot = 0;
+            habits.forEach(h => {
+                const created = new Date(h.createdAt);
+                if (new Date(dateStr) >= created) {
+                    tot++;
+                    if (h.history && h.history[dateStr]) comp++;
+                }
+            });
+            const statsEl = document.getElementById('journal-write-habit-stats');
+            if (statsEl) statsEl.textContent = tot > 0 ? `${comp}/${tot} habits completed` : 'No habits tracked';
+
+            // Prompt
+            const prompt = getDailyPrompt(dateStr);
+            const promptEl = document.getElementById('journal-prompt-text');
+            if (promptEl) promptEl.textContent = prompt;
+
+            // Load existing entry or clear
+            const entry = journalEntries[dateStr];
+            const ta = document.getElementById('journal-textarea');
+            if (ta) {
+                ta.value = entry ? entry.text : '';
+                updateJournalWordCount();
+            }
+
+            const statusEl = document.getElementById('journal-save-status');
+            if (statusEl) statusEl.textContent = entry ? '✓ Saved' : '—';
+            if (statusEl && entry) statusEl.classList.add('saved');
+        }
+
+        function onJournalInput() {
+            const ta = document.getElementById('journal-textarea');
+            if (!ta) return;
+            updateJournalWordCount();
+
+            // Show prompt bar only when empty
+            const promptBar = document.getElementById('journal-prompt-bar');
+            if (promptBar) promptBar.style.display = ta.value.trim() === '' ? '' : 'none';
+
+            const statusEl = document.getElementById('journal-save-status');
+            if (statusEl) { statusEl.textContent = 'Saving…'; statusEl.classList.remove('saved'); }
+
+            // Debounced save
+            clearTimeout(journalSaveTimer);
+            journalSaveTimer = setTimeout(() => {
+                const text = ta.value;
+                if (text.trim().length > 0) {
+                    journalEntries[currentJournalDate] = {
+                        text,
+                        savedAt: new Date().toISOString(),
+                        promptUsed: getDailyPrompt(currentJournalDate)
+                    };
+                } else {
+                    delete journalEntries[currentJournalDate];
+                }
+                saveJournal();
+                if (statusEl) { statusEl.textContent = '✓ Saved'; statusEl.classList.add('saved'); }
+                // Refresh feed and calendar dots
+                renderJournalFeed();
+                updateJournalStats();
+                // Refresh calendar if open so dots update
+                if (window.location.hash === '#calendar') renderCalendar();
+            }, 800);
+        }
+
+        function updateJournalWordCount() {
+            const ta = document.getElementById('journal-textarea');
+            const wc = document.getElementById('journal-wc');
+            if (ta && wc) {
+                const count = getWordCount(ta.value);
+                wc.textContent = `${count} word${count !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function clearJournalEntry() {
+            const ta = document.getElementById('journal-textarea');
+            if (!ta || ta.value.trim() === '') return;
+            if (!confirm('Clear this entry? This cannot be undone.')) return;
+            ta.value = '';
+            delete journalEntries[currentJournalDate];
+            saveJournal();
+            updateJournalWordCount();
+            const statusEl = document.getElementById('journal-save-status');
+            if (statusEl) { statusEl.textContent = '—'; statusEl.classList.remove('saved'); }
+            renderJournalFeed();
+            updateJournalStats();
+        }
+
+        function renderJournalFeed() {
+            const feed = document.getElementById('journal-feed');
+            const countBadge = document.getElementById('journal-count-badge');
+            if (!feed) return;
+
+            const entries = Object.entries(journalEntries)
+                .filter(([, v]) => v.text && v.text.trim().length > 0)
+                .sort((a, b) => new Date(b[0]) - new Date(a[0]));
+
+            if (countBadge) countBadge.textContent = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
+
+            if (entries.length === 0) {
+                feed.innerHTML = `
+                    <div class="journal-empty">
+                        <div class="journal-empty-icon">✍️</div>
+                        <h3 style="margin-bottom:0.5rem;">Your story starts here</h3>
+                        <p style="font-size:0.875rem;">Write your first entry using the panel →</p>
+                    </div>
+                `;
+                return;
+            }
+
+            feed.innerHTML = entries.map(([dateStr, entry]) => {
+                // Habit stats for this day
+                let comp = 0, tot = 0;
+                habits.forEach(h => {
+                    const created = new Date(h.createdAt);
+                    if (new Date(dateStr) >= created) {
+                        tot++;
+                        if (h.history && h.history[dateStr]) comp++;
+                    }
+                });
+                const rate = tot > 0 ? Math.round((comp / tot) * 100) : 0;
+                const isPerfect = tot > 0 && comp === tot;
+                const wc = getWordCount(entry.text);
+                const isActive = dateStr === currentJournalDate;
+                const dateLabel = new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+                return `
+                    <div class="journal-entry-card ${isActive ? 'active-entry' : ''}" onclick="loadJournalWritePanel('${dateStr}'); highlightFeedEntry('${dateStr}')">
+                        <div class="journal-entry-meta">
+                            <span class="journal-entry-date">${dateLabel}</span>
+                            <span class="journal-entry-badge ${isPerfect ? 'perfect' : ''}">${tot > 0 ? `${comp}/${tot} habits` : 'No habits'}</span>
+                        </div>
+                        <div class="journal-entry-preview">${entry.text}</div>
+                        <div class="journal-entry-footer">
+                            <span>✏️ ${wc} words</span>
+                            ${tot > 0 ? `<span>📊 ${rate}%</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function highlightFeedEntry(dateStr) {
+            document.querySelectorAll('.journal-entry-card').forEach(c => c.classList.remove('active-entry'));
+            event.currentTarget.classList.add('active-entry');
+        }
+
+        function updateJournalStats() {
+            const entries = Object.entries(journalEntries).filter(([, v]) => v.text && v.text.trim().length > 0);
+            const totalWords = entries.reduce((sum, [, v]) => sum + getWordCount(v.text), 0);
+            const streak = calcJournalStreak();
+
+            const elEntries = document.getElementById('journal-stat-entries');
+            const elStreak = document.getElementById('journal-stat-streak');
+            const elWords = document.getElementById('journal-stat-words');
+            if (elEntries) elEntries.textContent = entries.length;
+            if (elStreak) elStreak.textContent = streak;
+            if (elWords) elWords.textContent = totalWords;
+        }
+
         // KEYBOARD
         function handleKeyboard(e) {
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -1553,10 +3739,16 @@
                     closeConfirmModal();
                 }
             }
+            // Arrow key navigation inside day modal
+            if (document.getElementById('day-modal').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') { e.preventDefault(); navigateDay(-1); }
+                if (e.key === 'ArrowRight') { e.preventDefault(); navigateDay(1); }
+            }
         }
 
         // INIT
         init();
     </script>
 </body>
+
 </html>

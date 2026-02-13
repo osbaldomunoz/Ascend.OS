@@ -1,327 +1,314 @@
-# ✨ What's New in ASCEND v1.2.2
+# 🚀 ASCEND v1.3 - Notes & Journal Update
 
-## Quick Visual Guide
+## 🎯 Mission
 
----
-
-### 📅 Calendar: Year View
-
-**Before (v1.2.1):**
-- Month view only
-- Navigate month by month
-
-**Now (v1.2.2):**
-```
-┌─────────────────────────────────────┐
-│  [Month]  [Year] ← Toggle buttons   │
-├─────────────────────────────────────┤
-│                                     │
-│   Jan    Feb    Mar    Apr         │
-│  [grid] [grid] [grid] [grid]       │
-│                                     │
-│   May    Jun    Jul    Aug         │
-│  [grid] [grid] [grid] [grid]       │
-│                                     │
-│   Sep    Oct    Nov    Dec         │
-│  [grid] [grid] [grid] [grid]       │
-│                                     │
-│  Click any month → Jump there!      │
-└─────────────────────────────────────┘
-```
-**Impact:** See entire year's progress at once!
+v1.3 transforms ASCEND from a habit *tracker* into a daily *companion*.  
+Same habits. Same streaks. Now with a place to write the story behind the data.
 
 ---
 
-### 📅 Calendar: Day Navigation
+## 🆕 What's New in v1.3
 
-**Before (v1.2.1):**
-- Click day → Modal
-- Close modal → Pick another day
+### 📝 **Journal Page** (NEW)
 
-**Now (v1.2.2):**
-```
-┌────────────────────────────┐
-│  February 10, 2026  ← →   │ ← Arrow buttons!
-├────────────────────────────┤
-│  5/7 habits (71%)         │
-│                           │
-│  ✓ Meditate              │
-│  ✓ Exercise              │
-│  ✗ Journal               │
-│                           │
-│  [Close]                  │
-└────────────────────────────┘
-```
-**Impact:** Browse days fluidly without closing modal!
+A dedicated Journal page in the sidebar between Calendar and Analytics.
 
-**Keyboard:** ← → arrow keys also work!
+**Write Panel**
+- Full-width textarea for free writing
+- Auto-saves as you type (800ms debounce)
+- `✓ Saved` status indicator — no submit button needed
+- Live word count updates
+- Loads today's entry automatically on open
+- Click any past entry in the feed → loads it in the write panel
 
----
+**Reflection Prompts**
+- 20 rotating prompts appear when the textarea is empty
+- Deterministic per date — same prompt every time you open that day
+- Disappears the moment you start typing
+- Examples:
+  - *"What made today's habits feel easy or hard?"*
+  - *"One thing you want to remember about today."*
+  - *"What would tomorrow-you thank you for doing today?"*
+  - *"What habit felt like a chore vs. felt genuinely good?"*
+  - *"Name one small win from today — big or tiny."*
+  - *"If today had a title, what would it be?"*
+  - *"What surprised you about yourself today?"*
+  - *"Write freely — whatever's on your mind right now."*
 
-### 📈 Analytics: Quick Insights
+**Past Entries Feed**
+- Reverse-chronological list of all entries
+- Each card shows: date, habit completion badge (e.g. `3/5 habits`), entry preview (2 lines), word count
+- Perfect days show a green `perfect` badge
+- Click any card to open that day in the write panel
+- Active entry highlighted with accent border
 
-**New Section at Top:**
-```
-┌──────────────┬───────────────┬──────────────┐
-│  Best Day    │ Most Consist. │  Momentum    │
-│  Wednesday   │  Meditate     │  ↑ Improving │
-└──────────────┴───────────────┴──────────────┘
-```
-
-**What Each Means:**
-
-1. **Best Day:** Your strongest day of week
-   - "Schedule hard habits on Wednesday!"
-   
-2. **Most Consistent:** Your highest % habit
-   - "Meditate is working—do more like this"
-   
-3. **Momentum:** Are you improving?
-   - ↑ Improving = Last 7 days better than previous 7
-   - → Stable = Within 5%
-   - ↓ Declining = Need to refocus
-
-**Impact:** Actionable insights, not just charts!
+**Journal Stats Row** (top of page)
+- Total Entries written
+- Writing Streak (consecutive days)
+- Total Words written all-time
 
 ---
 
-### 📈 Analytics: Day of Week Chart
+### 📅 **Calendar Integration**
 
-**New Chart Between Trend and Performance:**
+**Journal Dot Indicator**
+- Days with a journal entry show a small amber dot at the bottom of the calendar cell
+- Visually distinct from the completion color fill
+- At a glance: did I complete habits AND did I reflect?
 
-```
-    Completion by Day
-100%│         █
-    │       █ █
- 75%│     █ █ █
-    │   █ █ █ █ █
- 50%│ █ █ █ █ █ █ █
-    │─────────────────
-     M T W T F S S
-```
-
-**Shows:** Average completion % for each day
-
-**Insight Example:**
-- Monday: 45% (struggle day!)
-- Wednesday: 87% (best day)
-- Sunday: 60% (okay day)
-
-**Action:** Reschedule hard habits from Mon → Wed!
+**Day Modal — Journal Preview**
+- Click any calendar day → modal now shows a journal section at the bottom
+- If an entry exists: shows first 200 characters of the text
+- If no entry: shows *"No journal entry for this day"*
+- `Open in Journal →` button navigates directly to that day's entry
 
 ---
 
-### ⚙️ Settings: Theme Cards
+### 📈 **Analytics — Journal Streak Insight**
 
-**Before (v1.2.1):**
-```
-Themes: ● ● ● ● ● ● ● ● ● ●
-        (tiny circles)
-```
+The Quick Insights panel now has a **4th card**:
 
-**Now (v1.2.2):**
-```
-┌─────────────┬─────────────┐
-│   Ocean  ✓  │   Sakura    │
-│ [gradient]  │ [gradient]  │
-└─────────────┴─────────────┘
-┌─────────────┬─────────────┐
-│   Cyber     │   Coral     │
-│ [gradient]  │ [gradient]  │
-└─────────────┴─────────────┘
-```
-
-**Features:**
-- Full theme name shown
-- Color preview gradient
-- ✓ badge on active theme
-- Much more discoverable!
-
-**Impact:** Users actually find and use themes now!
+| Card | Shows |
+|------|-------|
+| Best Day of Week | Your strongest habit day |
+| Most Consistent | Your highest success rate habit |
+| Momentum | ↑ Improving / → Stable / ↓ Declining |
+| **Journal Streak** ✨ | Consecutive days you've written |
 
 ---
 
-### ⚙️ Settings: Habit Templates
+### ⚙️ **Settings — Appearance Section** (MOVED)
 
-**New Section:**
+Theme selection moved from the sidebar footer into Settings → Appearance.
 
-```
-┌──────────────────────────────────────┐
-│  Habit Templates                     │
-│  Quick-start with pre-built sets     │
-├──────────────────────────────────────┤
-│                                      │
-│  🌅 Morning Routine    💪 Fitness   │
-│  Meditate              Workout       │
-│  Exercise              Water         │
-│  Journal               Protein       │
-│                                      │
-│  🧠 Study          😴 Evening        │
-│  Read              Unplug            │
-│  Practice          Stretch           │
-│  Review            Sleep early       │
-│                                      │
-│  🎯 Productivity                     │
-│  Deep work                           │
-│  No social media                     │
-│  Plan tomorrow                       │
-└──────────────────────────────────────┘
-```
+**Why the move:**
+- Sidebar was cluttered with 10 theme cards
+- Settings is the right home for preferences
+- Cleaner sidebar = better daily focus
 
-**How It Works:**
-1. Click any card
-2. All 3 habits added instantly
-3. Auto-navigates to Habits page
-4. Start tracking immediately!
-
-**Impact:** New users productive in 30 seconds!
+**What it looks like now:**
+- Large grid of themed preview cards (same as before)
+- Full theme name + color gradient swatch
+- `✓ Active` badge on current theme
+- Responsive grid — adapts to screen width
 
 ---
 
-### ✨ Micro-Animations
+### 🧭 **Sidebar — Cleaned Up**
 
-**Stats Count Up:**
-```
-Before:  47  (instant)
-Now:     0 → 47  (smooth count-up animation!)
-```
+**Before (v1.2.2):** Nav items + 10 theme cards crammed in footer  
+**After (v1.3):** Nav items only + subtle current theme name hint
 
-**Theme Switching:**
-```
-Before:  [instant color change]
-Now:     [smooth fade transition]
-```
-
-**Chart Updates:**
-```
-Before:  [pop in]
-Now:     [ease in with timing]
-```
-
-**Impact:** Feels premium, not generic!
+Sidebar now has exactly one job: navigate. Clean and focused.
 
 ---
 
-### 📊 Enhanced Stats
+## 📊 What's Improved from v1.2.2
 
-**New Metrics in Settings → About:**
+| Feature | v1.2.2 | v1.3 |
+|---------|--------|------|
+| Journal | None | Full write + history feed |
+| Reflection Prompts | None | 20 rotating daily prompts |
+| Calendar Day Modal | Habit data only | + Journal preview |
+| Calendar Dots | Completion color only | + Amber dot for journal |
+| Analytics Insights | 3 cards | 4 cards (+ Journal Streak) |
+| Theme Selector | Sidebar footer | Settings → Appearance |
+| Sidebar | Nav + theme cards | Nav only (clean) |
 
-**Before (v1.2.1):**
-- Version
-- Last Sync
-- Storage Used
+---
 
-**Now (v1.2.2):**
-- Version
-- **Total Days Tracked** ← NEW!
-- **Total Completions** ← NEW!
-- **Longest Streak Ever** ← NEW!
-- Last Sync
-- Storage Used
+## 🎨 Design Philosophy
 
-**Example:**
+**Journal as companion, not feature.**
+
+The journal isn't buried in settings or hidden behind a modal. It has its own page, its own nav item, its own stats. That's intentional — it signals to the user that reflection matters as much as completion.
+
+**Auto-save over submit.**  
+No "Save Entry" button. Writing should feel like thinking, not filing a form. The app saves quietly in the background so focus stays on the words.
+
+**Prompts as invitation, not assignment.**  
+The prompt disappears the moment you type. It's a starting point, not a requirement. Users who want to write freely never see it slow them down.
+
+**Dots over clutter.**  
+A 4px amber dot on a calendar cell communicates "you wrote here" without adding noise. Data density without visual chaos.
+
+---
+
+## 🗄️ Data Structure
+
+### Journal entries stored separately from habits:
+
 ```
-Total Days Tracked:    47 days
-Total Completions:     289
-Longest Streak Ever:   32 days
+localStorage key: 'ascend-journal-v1.3'
+
+{
+  "Thu Feb 12 2026": {
+    text: "Today was tough but I pushed through...",
+    savedAt: "2026-02-12T18:30:00.000Z",
+    promptUsed: "What made today's habits feel easy or hard?"
+  },
+  "Wed Feb 11 2026": {
+    text: "Really solid day. The morning routine clicked.",
+    savedAt: "2026-02-11T21:15:00.000Z",
+    promptUsed: "Name one small win from today — big or tiny."
+  }
+}
 ```
 
-**Impact:** Celebrate cumulative progress!
+**Why separate storage key?**
+- Zero collision risk with habit data
+- Can be cleared independently
+- Easy to export/backup separately in v1.4
 
 ---
 
-## 🎯 Key Improvements Summary
+## 🔄 Migration from v1.2.2
 
-| What | Before | After |
-|------|--------|-------|
-| Calendar | Month only | Month + Year view |
-| Day Browse | Click → Close → Click | Arrow buttons + keyboard |
-| Analytics | Raw data | Actionable insights |
-| Themes | Hidden circles | Large preview cards |
-| New Users | Slow start | Templates = 30 sec |
-| Animations | Static | Count-up + smooth |
-| Empty States | Dead-end | Guidance + CTA |
+**Automatic & seamless:**
+1. Open v1.3
+2. Habits load from v1.2.2 automatically (same key)
+3. Journal starts fresh — empty is fine, build from today
+4. Theme choice preserved
+5. Zero manual steps
 
 ---
 
-## 🚀 Try These First!
+## 📱 Mobile Experience
 
-**5-Minute Tour:**
-
-1. **Calendar → Year Button**
-   - See your entire year
-   - Click any past month
-   - Observe color patterns
-
-2. **Calendar → Click a Day**
-   - Use ← → arrows
-   - Browse your history
-   - Press keyboard arrows too!
-
-3. **Analytics → Top Insights**
-   - Note your Best Day
-   - See Momentum direction
-   - Check Day of Week chart
-
-4. **Settings → Templates**
-   - Click "Morning Routine"
-   - See 3 habits added
-   - Go track them!
-
-5. **Settings → Themes**
-   - Try 2-3 different themes
-   - Watch smooth transitions
-   - Pick your favorite!
+- Journal layout: write panel stacks above feed on narrow screens
+- Feed cards remain tappable at full width
+- Textarea resizes naturally with content
+- Prompt text wraps cleanly on small screens
+- Theme cards in Settings adapt to single column on mobile
 
 ---
 
-## 💬 What Users Are Saying
+## 🧪 Test Checklist (10 min)
 
-**"The year view is a game-changer. I can finally see patterns I couldn't see before."**
+**Phase 1: Sidebar & Settings (2 min)**
+- [ ] Sidebar shows no theme cards — clean nav only
+- [ ] Sidebar footer shows current theme name as subtle hint
+- [ ] Settings → Appearance shows 10 themed cards
+- [ ] Click any theme → `✓ Active` badge updates instantly
 
-**"Templates saved me so much time. I'm up and running in seconds."**
+**Phase 2: Journal Page (5 min)**
+- [ ] 📝 Journal nav item visible between Calendar and Analytics
+- [ ] Write panel shows today's date + habit count
+- [ ] Prompt appears in empty textarea
+- [ ] Start typing → prompt disappears
+- [ ] Wait 1 second after typing → `✓ Saved` appears
+- [ ] Word count updates live as you type
+- [ ] Reload page → entry persists
+- [ ] 3 stats at top update (entries, streak, words)
+- [ ] Entry appears in left feed
+- [ ] Click feed entry → loads in write panel
 
-**"The insights panel is brilliant. 'Best Day: Wednesday' made me reorganize my entire week!"**
+**Phase 3: Calendar Integration (2 min)**
+- [ ] Days with entries show amber dot at bottom of cell
+- [ ] Click a day → modal shows journal section
+- [ ] `Open in Journal →` button navigates correctly
 
-**"Those theme cards! I had no idea there were so many options."**
+**Phase 4: Analytics (1 min)**
+- [ ] 4th insight card shows Journal Streak
+- [ ] Streak count matches days written consecutively
 
-**"The animations make it feel like a premium app. So polished."**
-
----
-
-## 🎓 Philosophy Behind v1.2.2
-
-**Three Principles:**
-
-1. **Discovery Over Hiding**
-   - Themes: Small circles → Large cards
-   - Result: Users actually find them
-
-2. **Guidance Over Confusion**
-   - Empty states: Blank → Helpful text
-   - Result: Users know what to do next
-
-3. **Delight Over Function**
-   - Animations: None → Count-up + smooth
-   - Result: Users feel premium experience
-
-**Net Effect:** Same features, 2x better UX
-
----
-
-## ✅ Ready to Test!
-
-See **TEST-CHECKLIST-v1.2.2.md** for complete testing protocol.
-
-**Or quick test (2 min):**
-1. ✅ Click "Year" in Calendar
-2. ✅ Navigate day with arrows
-3. ✅ See 3 insights in Analytics
-4. ✅ Add Morning Routine template
-5. ✅ Try a new theme
-
-**All work? Deploy!** 🚀
+**If all pass → Deploy!** 🚀
 
 ---
 
-**Welcome to ASCEND v1.2.2 - Where Polish Meets Power** ✨
+## 💡 Pro Tips
+
+### Getting the Most from Journal
+- Write even 1 sentence — streaks reward consistency over length
+- The prompt is just a suggestion — ignore it and write freely
+- Use the Calendar to find days worth revisiting
+- Check Total Words in stats — it grows faster than you expect
+
+### Habit + Journal Pairing
+- If you complete all habits → write why it worked
+- If you miss habits → write what got in the way (no judgment)
+- Over time, patterns emerge that the analytics can't show
+
+### Writing Streak vs Habit Streak
+- Two separate streaks, two separate disciplines
+- A day where you miss habits but still write is still a writing win
+- Both matter. Neither cancels the other.
+
+---
+
+## 📈 Success Metrics
+
+**If v1.3 is successful, users will:**
+1. Write at least 3 days per week consistently
+2. Return to past entries to read their own history
+3. Notice correlation between reflection days and habit completion
+4. Feel ASCEND is "theirs" — personalized by their own words
+
+---
+
+## 🔮 What's Next (v1.4 Preview)
+
+With the journal foundation in place, v1.4 candidates:
+
+**Option A: Journal Search** 🔍
+- Full-text search across all entries
+- Filter by date range or habit completion rate
+- "Find all entries where I mentioned 'tired'"
+
+**Option B: Mood Tracking** 😊
+- 5-emoji mood per day (now that writing habit is built)
+- Mood overlaid on calendar
+- Mood vs completion correlation in Analytics
+
+**Option C: Categories/Tags** 🏷️
+- Organize habits by life area (Health, Work, Mind, etc.)
+- Color-coded habit groups
+- Filter Analytics by category
+
+---
+
+## 📝 Changelog
+
+```
+v1.3 (Notes & Journal Update)
++ Journal page with write panel and entry feed
++ 20 rotating daily reflection prompts
++ Auto-save with live status indicator
++ Journal stats: total entries, writing streak, total words
++ Calendar: amber journal dot on days with entries
++ Calendar day modal: journal preview + Open in Journal button
++ Analytics: 4th insight card — Journal Streak
++ Settings: Appearance section with full theme grid
+- Removed theme cards from sidebar footer
+- Sidebar cleaned up to navigation only
+```
+
+---
+
+## 🚀 Deployment
+
+```bash
+git add ascend-v1.3.html ASCEND-v1.3-README.md
+git commit -m "v1.3 - Notes & Journal update"
+git push origin main
+# Live in ~60 seconds on GitHub Pages
+```
+
+---
+
+## 🎉 Bottom Line
+
+**v1.3 = ASCEND becomes a companion.**
+
+Habits tell you *what* you did.  
+The journal tells you *why* it mattered.
+
+Together, they build something no app can give you:  
+**Your own record of becoming who you're trying to be.**
+
+---
+
+**Version:** 1.3  
+**Release Date:** February 2026  
+**Build:** Notes & Journal  
+**Philosophy:** Every day gets a story.
