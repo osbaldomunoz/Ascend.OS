@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCEND v1.3.1 - Your Growth Dashboard</title>
+    <title>ASCEND v1.3.2 - Your Growth Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         /* ============================================
@@ -155,123 +155,133 @@
             66% { transform: translate(-20px, 20px) rotate(240deg); }
         }
 
-        /* SIDEBAR */
+        /* ============================================================
+           SIDEBAR v1.3.2 — Clean rewrite. No min-width hacks.
+           The sidebar clips at 60px; items are centered via justify-content.
+           ============================================================ */
         .sidebar {
-            position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh;
+            position: fixed; top: 0; left: 0;
+            width: var(--sidebar-width); height: 100vh;
             background: var(--glass-bg); backdrop-filter: blur(20px);
             border-right: 1px solid var(--glass-border);
-            display: flex; flex-direction: column; z-index: var(--z-sticky);
+            display: flex; flex-direction: column;
+            z-index: var(--z-sticky);
             transition: width var(--transition-base);
             overflow: hidden;
         }
         .sidebar.collapsed { width: var(--sidebar-collapsed); }
+
+        /* HEADER */
         .sidebar-header {
-            padding: var(--space-md) var(--space-lg);
+            height: 64px; flex-shrink: 0;
+            padding: 0 14px;
+            display: flex; align-items: center; gap: 10px;
             border-bottom: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: space-between;
-            min-width: var(--sidebar-width); flex-shrink: 0; height: 64px;
         }
-        .sidebar-logo {
-            display: flex; align-items: center; gap: var(--space-sm);
-            transition: opacity var(--transition-base);
-            overflow: hidden;
+        .sidebar-logo-icon {
+            font-size: 1.35rem; flex-shrink: 0;
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
         }
-        .sidebar.collapsed .sidebar-logo { opacity: 0; pointer-events: none; }
-        .sidebar-logo-icon { font-size: 1.5rem; flex-shrink: 0; }
         .sidebar-logo-text {
-            font-size: 1.25rem; font-weight: 700; white-space: nowrap;
+            flex: 1; font-size: 1.15rem; font-weight: 700;
+            white-space: nowrap; overflow: hidden;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            opacity: 1; transition: opacity var(--transition-base);
         }
+        .sidebar.collapsed .sidebar-logo-text { opacity: 0; }
         .sidebar-toggle {
-            width: 32px; height: 32px; flex-shrink: 0;
+            flex-shrink: 0; width: 28px; height: 28px;
             display: flex; align-items: center; justify-content: center;
             background: var(--bg-tertiary); border: 1px solid var(--glass-border);
-            border-radius: var(--radius-sm); cursor: pointer;
-            transition: all var(--transition-fast); font-size: 0.75rem;
+            border-radius: 7px; cursor: pointer; font-size: 0.65rem;
             color: var(--text-secondary);
+            transition: all var(--transition-fast), opacity var(--transition-base);
         }
-        .sidebar-toggle:hover { background: var(--accent-primary); color: var(--bg-primary); border-color: var(--accent-primary); }
+        .sidebar-toggle:hover { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+        .sidebar.collapsed .sidebar-toggle { opacity: 0; pointer-events: none; }
 
-        /* Collapsed header — show logo icon centered */
-        .sidebar.collapsed .sidebar-header {
-            justify-content: center; padding: var(--space-md);
+        /* NAV */
+        .sidebar-nav {
+            flex: 1; padding: 8px; overflow-y: auto; overflow-x: hidden;
         }
-        .sidebar.collapsed .sidebar-toggle { display: none; }
-        .sidebar-collapsed-toggle {
-            display: none; width: 32px; height: 32px;
+
+        /* Expand button shown only when collapsed, at top of nav */
+        .sidebar-expand-btn {
+            display: none;
+            width: 36px; height: 36px; margin: 0 auto 6px;
             align-items: center; justify-content: center;
             background: var(--bg-tertiary); border: 1px solid var(--glass-border);
-            border-radius: var(--radius-sm); cursor: pointer;
-            transition: all var(--transition-fast); font-size: 0.75rem;
-            color: var(--text-secondary); margin-top: var(--space-sm);
+            border-radius: 9px; cursor: pointer; font-size: 0.65rem;
+            color: var(--text-secondary); transition: all var(--transition-fast);
         }
-        .sidebar.collapsed .sidebar-collapsed-toggle { display: flex; }
-        .sidebar-collapsed-toggle:hover { background: var(--accent-primary); color: var(--bg-primary); border-color: var(--accent-primary); }
+        .sidebar.collapsed .sidebar-expand-btn { display: flex; }
+        .sidebar-expand-btn:hover { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
 
-        .sidebar-nav {
-            flex: 1; padding: var(--space-md); overflow-y: auto; overflow-x: hidden;
-            min-width: var(--sidebar-width);
-        }
-        /* Collapsed nav — center icons */
-        .sidebar.collapsed .sidebar-nav { padding: var(--space-sm); min-width: var(--sidebar-collapsed); }
+        /* NAV ITEMS */
         .nav-item {
-            display: flex; align-items: center; gap: var(--space-md);
-            padding: 0.75rem var(--space-md); border-radius: var(--radius-md);
+            display: flex; align-items: center; gap: 12px;
+            height: 42px; padding: 0 12px;
+            border-radius: 9px; margin-bottom: 2px;
             color: var(--text-secondary); cursor: pointer;
-            transition: all var(--transition-fast);
-            position: relative; margin-bottom: 4px;
-            white-space: nowrap; overflow: hidden;
+            position: relative; overflow: hidden;
+            transition: background var(--transition-fast), color var(--transition-fast);
         }
         .nav-item::before {
-            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px;
-            background: var(--accent-primary); transform: scaleY(0);
+            content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px;
+            background: var(--accent-primary); border-radius: 0 3px 3px 0;
+            transform: scaleX(0); transform-origin: left;
             transition: transform var(--transition-fast);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
         }
         .nav-item:hover { background: var(--bg-tertiary); color: var(--text-primary); }
-        .nav-item.active { background: var(--bg-tertiary); color: var(--accent-primary); }
-        .nav-item.active::before { transform: scaleY(1); }
+        .nav-item.active { background: var(--bg-tertiary); color: var(--accent-primary); font-weight: 600; }
+        .nav-item.active::before { transform: scaleX(1); }
         .nav-item-icon {
-            font-size: 1.1rem; min-width: 22px; flex-shrink: 0;
+            font-size: 1.1rem; width: 22px; flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
         }
         .nav-item-text {
-            font-weight: 500; white-space: nowrap; font-size: 0.9rem;
+            font-size: 0.875rem; font-weight: 500; white-space: nowrap;
             transition: opacity var(--transition-base);
         }
-        .sidebar.collapsed .nav-item-text { opacity: 0; }
-        /* Collapsed nav items — icon centered with tooltip */
+
+        /* COLLAPSED STATE — center icons, hide text */
         .sidebar.collapsed .nav-item {
-            justify-content: center; padding: 0.75rem;
-            border-radius: var(--radius-md);
+            padding: 0; justify-content: center;
         }
+        .sidebar.collapsed .nav-item-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .nav-item-icon { font-size: 1.2rem; }
+
+        /* Tooltip on hover when collapsed */
         .sidebar.collapsed .nav-item::after {
             content: attr(data-tooltip);
-            position: absolute; left: calc(var(--sidebar-collapsed) + 8px); top: 50%;
+            position: absolute;
+            left: calc(var(--sidebar-collapsed) + 8px); top: 50%;
             transform: translateY(-50%);
-            background: var(--bg-tertiary); color: var(--text-primary);
-            padding: 4px 10px; border-radius: var(--radius-sm);
+            background: var(--bg-secondary); color: var(--text-primary);
+            padding: 5px 12px; border-radius: 8px;
             font-size: 0.8rem; font-weight: 600; white-space: nowrap;
             border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
             opacity: 0; pointer-events: none;
             transition: opacity var(--transition-fast);
             z-index: 9999;
         }
         .sidebar.collapsed .nav-item:hover::after { opacity: 1; }
 
+        /* FOOTER */
         .sidebar-footer {
-            padding: var(--space-sm) var(--space-md);
+            padding: 8px 14px;
             border-top: 1px solid var(--glass-border);
-            min-width: var(--sidebar-width);
             transition: opacity var(--transition-base);
         }
         .sidebar.collapsed .sidebar-footer { opacity: 0; pointer-events: none; }
         .sidebar-footer-hint {
             font-size: 0.7rem; color: var(--text-tertiary);
-            text-align: center; letter-spacing: 0.04em; padding: var(--space-xs) 0;
+            text-align: center; letter-spacing: 0.04em;
         }
-        /* THEME CARDS moved to Settings — sidebar is clean */
 
         /* MAIN CONTENT */
         .app-container { display: flex; min-height: 100vh; }
@@ -990,26 +1000,23 @@
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
+            <!-- Header: logo icon always visible, text + toggle fade out when collapsed -->
             <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <span class="sidebar-logo-icon">🚀</span>
-                    <span class="sidebar-logo-text">ASCEND</span>
-                </div>
-                <div class="sidebar-toggle" onclick="toggleSidebar()" title="Collapse">
-                    <span id="toggle-icon">◀</span>
-                </div>
+                <div class="sidebar-logo-icon" onclick="toggleSidebar()" title="Toggle sidebar">🚀</div>
+                <span class="sidebar-logo-text">ASCEND</span>
+                <div class="sidebar-toggle" onclick="toggleSidebar()" title="Collapse">◀</div>
             </div>
 
             <nav class="sidebar-nav">
-                <!-- Collapsed: expand button at top of nav -->
-                <div class="sidebar-collapsed-toggle" onclick="toggleSidebar()" title="Expand">▶</div>
+                <!-- Expand button: only visible when collapsed -->
+                <div class="sidebar-expand-btn" onclick="toggleSidebar()" title="Expand sidebar">▶</div>
 
-                <div class="nav-item active" onclick="navigateTo('dashboard')" data-page="dashboard" data-tooltip="Dashboard">
+                <div class="nav-item" onclick="navigateTo('dashboard')" data-page="dashboard" data-tooltip="Dashboard">
                     <span class="nav-item-icon">📊</span>
                     <span class="nav-item-text">Dashboard</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('habits')" data-page="habits" data-tooltip="Habits">
-                    <span class="nav-item-icon">✓</span>
+                    <span class="nav-item-icon">✅</span>
                     <span class="nav-item-text">Habits</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('calendar')" data-page="calendar" data-tooltip="Calendar">
@@ -1408,7 +1415,7 @@
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Version</div>
-                            <div>v1.3.1</div>
+                            <div>v1.3.2</div>
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Last Sync</div>
@@ -1477,7 +1484,6 @@
             if (sidebarCollapsed) {
                 document.getElementById('sidebar').classList.add('collapsed');
                 document.getElementById('main-content').classList.add('sidebar-collapsed');
-                document.getElementById('toggle-icon').textContent = '▶';
             }
             updateStats();
             renderHabits();
@@ -1518,11 +1524,9 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('main-content');
-            const icon = document.getElementById('toggle-icon');
             sidebar.classList.toggle('collapsed');
             mainContent.classList.toggle('sidebar-collapsed');
             sidebarCollapsed = sidebar.classList.contains('collapsed');
-            icon.textContent = sidebarCollapsed ? '▶' : '◀';
             localStorage.setItem('ascend-sidebar-collapsed', sidebarCollapsed);
         }
 
