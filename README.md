@@ -1,286 +1,222 @@
-# 🚀 ASCEND v1.3 - Notes & Journal Update
+# 🔧 ASCEND v1.3.1 - Bug Fixes & Polish
 
-## 🎯 Mission
+## 🎯 Overview
 
-v1.3 transforms ASCEND from a habit *tracker* into a daily *companion*.  
-Same habits. Same streaks. Now with a place to write the story behind the data.
-
----
-
-## 🆕 What's New in v1.3
-
-### 📝 **Journal Page** (NEW)
-
-A dedicated Journal page in the sidebar between Calendar and Analytics.
-
-**Write Panel**
-- Full-width textarea for free writing
-- Auto-saves as you type (800ms debounce)
-- `✓ Saved` status indicator — no submit button needed
-- Live word count updates
-- Loads today's entry automatically on open
-- Click any past entry in the feed → loads it in the write panel
-
-**Reflection Prompts**
-- 20 rotating prompts appear when the textarea is empty
-- Deterministic per date — same prompt every time you open that day
-- Disappears the moment you start typing
-- Examples:
-  - *"What made today's habits feel easy or hard?"*
-  - *"One thing you want to remember about today."*
-  - *"What would tomorrow-you thank you for doing today?"*
-  - *"What habit felt like a chore vs. felt genuinely good?"*
-  - *"Name one small win from today — big or tiny."*
-  - *"If today had a title, what would it be?"*
-  - *"What surprised you about yourself today?"*
-  - *"Write freely — whatever's on your mind right now."*
-
-**Past Entries Feed**
-- Reverse-chronological list of all entries
-- Each card shows: date, habit completion badge (e.g. `3/5 habits`), entry preview (2 lines), word count
-- Perfect days show a green `perfect` badge
-- Click any card to open that day in the write panel
-- Active entry highlighted with accent border
-
-**Journal Stats Row** (top of page)
-- Total Entries written
-- Writing Streak (consecutive days)
-- Total Words written all-time
+v1.3.1 is a focused patch release. No new pages, no scope creep.  
+Three bugs squashed, two quality-of-life features shipped.  
+ASCEND is now tighter, cleaner, and more professional.
 
 ---
 
-### 📅 **Calendar Integration**
+## 🐛 Bugs Fixed
 
-**Journal Dot Indicator**
-- Days with a journal entry show a small amber dot at the bottom of the calendar cell
-- Visually distinct from the completion color fill
-- At a glance: did I complete habits AND did I reflect?
+### 1. Ghost Theme List in Sidebar
+**What happened:** The old v1.2.2 sidebar theme cards were never removed from the HTML during the v1.3 migration — they were only hidden by CSS. When the sidebar collapsed, the `overflow: hidden` stopped clipping correctly and all 10 theme names leaked out below the sidebar boundary as plain text with checkmarks.
 
-**Day Modal — Journal Preview**
-- Click any calendar day → modal now shows a journal section at the bottom
-- If an entry exists: shows first 200 characters of the text
-- If no entry: shows *"No journal entry for this day"*
-- `Open in Journal →` button navigates directly to that day's entry
+**Root cause:** During v1.3 development, the Settings theme grid was added correctly but the original `sidebar-footer` block with `theme-selector` HTML was never deleted — it lived at line ~929 as a ghost node in the DOM.
+
+**Fix:** Deleted the entire duplicate `sidebar-footer` block from the HTML. One footer, one job: show the current theme name hint.
 
 ---
 
-### 📈 **Analytics — Journal Streak Insight**
+### 2. Analytics Insight Cards Overflowing
+**What happened:** The 4th insight card (Journal Streak) was being cut off on the right side. The grid was forcing `repeat(4, 1fr)` via an inline `style` attribute that overrode the CSS.
 
-The Quick Insights panel now has a **4th card**:
+**Root cause:** When the 4th card was added in v1.3, the inline style `style="grid-template-columns: repeat(4, 1fr)"` was added directly to the HTML element, hardcoding 4 equal columns regardless of viewport width.
 
-| Card | Shows |
-|------|-------|
-| Best Day of Week | Your strongest habit day |
-| Most Consistent | Your highest success rate habit |
-| Momentum | ↑ Improving / → Stable / ↓ Declining |
-| **Journal Streak** ✨ | Consecutive days you've written |
+**Fix:** Removed the inline style override. Grid now uses CSS: `repeat(2, 1fr)` — a clean 2×2 layout that's readable, professional, and responsive.
 
----
-
-### ⚙️ **Settings — Appearance Section** (MOVED)
-
-Theme selection moved from the sidebar footer into Settings → Appearance.
-
-**Why the move:**
-- Sidebar was cluttered with 10 theme cards
-- Settings is the right home for preferences
-- Cleaner sidebar = better daily focus
-
-**What it looks like now:**
-- Large grid of themed preview cards (same as before)
-- Full theme name + color gradient swatch
-- `✓ Active` badge on current theme
-- Responsive grid — adapts to screen width
-
----
-
-### 🧭 **Sidebar — Cleaned Up**
-
-**Before (v1.2.2):** Nav items + 10 theme cards crammed in footer  
-**After (v1.3):** Nav items only + subtle current theme name hint
-
-Sidebar now has exactly one job: navigate. Clean and focused.
-
----
-
-## 📊 What's Improved from v1.2.2
-
-| Feature | v1.2.2 | v1.3 |
-|---------|--------|------|
-| Journal | None | Full write + history feed |
-| Reflection Prompts | None | 20 rotating daily prompts |
-| Calendar Day Modal | Habit data only | + Journal preview |
-| Calendar Dots | Completion color only | + Amber dot for journal |
-| Analytics Insights | 3 cards | 4 cards (+ Journal Streak) |
-| Theme Selector | Sidebar footer | Settings → Appearance |
-| Sidebar | Nav + theme cards | Nav only (clean) |
-
----
-
-## 🎨 Design Philosophy
-
-**Journal as companion, not feature.**
-
-The journal isn't buried in settings or hidden behind a modal. It has its own page, its own nav item, its own stats. That's intentional — it signals to the user that reflection matters as much as completion.
-
-**Auto-save over submit.**  
-No "Save Entry" button. Writing should feel like thinking, not filing a form. The app saves quietly in the background so focus stays on the words.
-
-**Prompts as invitation, not assignment.**  
-The prompt disappears the moment you type. It's a starting point, not a requirement. Users who want to write freely never see it slow them down.
-
-**Dots over clutter.**  
-A 4px amber dot on a calendar cell communicates "you wrote here" without adding noise. Data density without visual chaos.
-
----
-
-## 🗄️ Data Structure
-
-### Journal entries stored separately from habits:
-
+**Before → After:**
 ```
-localStorage key: 'ascend-journal-v1.3'
+Before: [card1][card2][card3][card4→cut off]
+After:  [card1][card2]
+        [card3][card4]
+```
 
-{
-  "Thu Feb 12 2026": {
-    text: "Today was tough but I pushed through...",
-    savedAt: "2026-02-12T18:30:00.000Z",
-    promptUsed: "What made today's habits feel easy or hard?"
-  },
-  "Wed Feb 11 2026": {
-    text: "Really solid day. The morning routine clicked.",
-    savedAt: "2026-02-11T21:15:00.000Z",
-    promptUsed: "Name one small win from today — big or tiny."
-  }
+---
+
+### 3. "Most Consistent" Showing 200%+ Success Rate
+**What happened:** The Most Consistent insight card was showing habit names pulled from journal prompts and displaying mathematically impossible success rates like "200% success rate."
+
+**Root cause (two bugs):**
+1. `Object.keys(h.history).length` was counting ALL history entries (both completed and missed days), not just completions
+2. No cap was applied — if a habit was young (created recently) but had many entries from a date migration, the rate exceeded 100%
+
+**Fix:**
+```js
+// Before (broken)
+const comp = Object.keys(h.history).length;
+const rate = comp / totalDays;
+
+// After (correct)
+const comp = Object.values(h.history).filter(v => v === true || v === 1).length;
+const rate = Math.min(1, comp / totalDays); // hard cap at 100%
+```
+
+---
+
+## ✨ New Features
+
+### 4. Collapsed Sidebar — Icon-Only Mode
+
+The collapsed sidebar was showing only the Analytics icon and blank space. Now when collapsed it shows a clean, professional icon-only navigation.
+
+**What it looks like:**
+- All 6 nav icons centered vertically in their rows
+- Proper padding and spacing — icons don't crowd each other
+- Active state (accent color) still visible on the current page icon
+- Expand button lives inside the nav for easy access when collapsed
+
+**Tooltip system:**
+- Hover any collapsed nav icon → label tooltip appears to the right
+- Tooltips use `data-tooltip` HTML attribute + CSS `::after` pseudo-element
+- No JavaScript required — pure CSS, instant response
+- Tooltip disappears when sidebar is expanded (irrelevant)
+
+**Technical implementation:**
+```css
+.sidebar.collapsed .nav-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(var(--sidebar-collapsed) + 8px);
+    /* ... fade in on hover */
 }
 ```
 
-**Why separate storage key?**
-- Zero collision risk with habit data
-- Can be cleared independently
-- Easy to export/backup separately in v1.4
+---
+
+### 5. Light / Dark Mode Toggle
+
+**Location:** Settings → Appearance (top of section, above theme grid)
+
+**How it works:**
+- Animated pill switch (🌙 dark ↔ ☀️ light)
+- Toggle slides the knob, switch background changes color
+- Label updates: "Dark Mode" / "Light Mode"
+- Persists to `localStorage` — remembered across sessions and page reloads
+- Works with all 10 color themes
+
+**What light mode changes:**
+```
+--bg-primary:    dark bg → #f0f4f8 (cool light gray)
+--bg-secondary:  dark card → #ffffff (white cards)
+--bg-tertiary:   dark elevated → #e2e8f0
+--text-primary:  light text → #0f172a (near black)
+--text-secondary: → #475569
+--glass-bg:      dark glass → rgba(255,255,255,0.75)
+--glass-border:  glow border → rgba(0,0,0,0.08)
+```
+
+**What light mode preserves:**
+- Your selected accent color (Ocean cyan, Sakura pink, etc. all stay vibrant)
+- All component layouts and spacing
+- Chart.js graphs (re-render on mode switch)
+
+**Technical implementation:**
+```js
+// Brightness stored separately from theme
+localStorage: 'ascend-brightness' = 'dark' | 'light'
+
+// Applied as HTML attribute alongside data-theme
+document.documentElement.setAttribute('data-brightness', brightness);
+
+// CSS override block
+[data-brightness="light"] {
+    --bg-primary: #f0f4f8;
+    --bg-secondary: #ffffff;
+    // ...
+}
+```
+
+This means theme + brightness are fully independent. You can have Ocean Light, Ocean Dark, Sakura Light, Sakura Dark — all 20 combinations work.
 
 ---
 
-## 🔄 Migration from v1.2.2
+## 📊 What Changed from v1.3
 
-**Automatic & seamless:**
-1. Open v1.3
-2. Habits load from v1.2.2 automatically (same key)
-3. Journal starts fresh — empty is fine, build from today
-4. Theme choice preserved
-5. Zero manual steps
-
----
-
-## 📱 Mobile Experience
-
-- Journal layout: write panel stacks above feed on narrow screens
-- Feed cards remain tappable at full width
-- Textarea resizes naturally with content
-- Prompt text wraps cleanly on small screens
-- Theme cards in Settings adapt to single column on mobile
+| Area | v1.3 | v1.3.1 |
+|------|-------|---------|
+| Sidebar (collapsed) | Analytics icon only | All 6 icons + tooltips |
+| Sidebar (footer) | Ghost theme list leaking | Clean theme hint only |
+| Analytics grid | 4 cards cut off | 2×2 clean grid |
+| Most Consistent | Shows prompt text, 200% | Correct habit + capped % |
+| Brightness | Dark only | Dark + Light toggle |
+| Settings | Theme grid only | Brightness toggle + theme grid |
 
 ---
 
-## 🧪 Test Checklist (10 min)
+## 🗄️ Storage
 
-**Phase 1: Sidebar & Settings (2 min)**
-- [ ] Sidebar shows no theme cards — clean nav only
-- [ ] Sidebar footer shows current theme name as subtle hint
-- [ ] Settings → Appearance shows 10 themed cards
-- [ ] Click any theme → `✓ Active` badge updates instantly
+No new storage keys introduced. Additions:
 
-**Phase 2: Journal Page (5 min)**
-- [ ] 📝 Journal nav item visible between Calendar and Analytics
-- [ ] Write panel shows today's date + habit count
-- [ ] Prompt appears in empty textarea
-- [ ] Start typing → prompt disappears
-- [ ] Wait 1 second after typing → `✓ Saved` appears
-- [ ] Word count updates live as you type
-- [ ] Reload page → entry persists
-- [ ] 3 stats at top update (entries, streak, words)
-- [ ] Entry appears in left feed
-- [ ] Click feed entry → loads in write panel
+```
+localStorage key: 'ascend-brightness'
+Values: 'dark' | 'light'
+Default: 'dark'
+```
 
-**Phase 3: Calendar Integration (2 min)**
-- [ ] Days with entries show amber dot at bottom of cell
-- [ ] Click a day → modal shows journal section
-- [ ] `Open in Journal →` button navigates correctly
+All existing keys unchanged — full backward compatibility.
 
-**Phase 4: Analytics (1 min)**
-- [ ] 4th insight card shows Journal Streak
-- [ ] Streak count matches days written consecutively
+---
+
+## 🧪 Test Checklist (8 min)
+
+**Phase 1: Sidebar (2 min)**
+- [ ] Collapse sidebar → all 6 icons visible and centered
+- [ ] Hover each collapsed icon → tooltip appears to the right
+- [ ] Active page icon shows accent color when collapsed
+- [ ] Expand button in nav works
+- [ ] No theme names or text bleeding outside sidebar
+
+**Phase 2: Analytics (2 min)**
+- [ ] Navigate to Analytics
+- [ ] All 4 insight cards visible in a 2×2 grid
+- [ ] No card is cut off
+- [ ] Most Consistent shows a real habit name (not prompt text)
+- [ ] Success rate shows a value between 0%–100%
+
+**Phase 3: Light/Dark Mode (3 min)**
+- [ ] Settings → Appearance → toggle switch visible
+- [ ] Click toggle → app switches to light mode
+- [ ] Switch knob animates, label says "Light Mode"
+- [ ] All 10 themes look correct in light mode
+- [ ] Reload page → light mode persists
+- [ ] Toggle back → dark mode restores
+- [ ] Charts re-render correctly in both modes
+
+**Phase 4: Regression (1 min)**
+- [ ] Journal page still works
+- [ ] Calendar journal dots still appear
+- [ ] Theme switching still works in Settings
+- [ ] Habit completion still saves
 
 **If all pass → Deploy!** 🚀
 
 ---
 
-## 💡 Pro Tips
+## 💡 Design Notes
 
-### Getting the Most from Journal
-- Write even 1 sentence — streaks reward consistency over length
-- The prompt is just a suggestion — ignore it and write freely
-- Use the Calendar to find days worth revisiting
-- Check Total Words in stats — it grows faster than you expect
+### Why 2×2 for Insight Cards?
+Four cards in a single row requires very wide screens to be readable. At 1200px each card is only ~250px wide — not enough room for the value text. A 2×2 grid gives each card ~45% width, plenty of breathing room, and a clear visual hierarchy. It also scales gracefully to mobile (2×2 → 1×4).
 
-### Habit + Journal Pairing
-- If you complete all habits → write why it worked
-- If you miss habits → write what got in the way (no judgment)
-- Over time, patterns emerge that the analytics can't show
+### Why Separate Brightness from Theme?
+Putting light/dark as a property of the theme (e.g., "Ocean Light" vs "Ocean Dark" as separate themes) would double the theme count and confuse the UI. Separating them as independent axes (10 themes × 2 brightnesses = 20 combinations) is cleaner and mirrors how design systems actually work (e.g., Tailwind dark mode, iOS appearance settings).
 
-### Writing Streak vs Habit Streak
-- Two separate streaks, two separate disciplines
-- A day where you miss habits but still write is still a writing win
-- Both matter. Neither cancels the other.
-
----
-
-## 📈 Success Metrics
-
-**If v1.3 is successful, users will:**
-1. Write at least 3 days per week consistently
-2. Return to past entries to read their own history
-3. Notice correlation between reflection days and habit completion
-4. Feel ASCEND is "theirs" — personalized by their own words
-
----
-
-## 🔮 What's Next (v1.4 Preview)
-
-With the journal foundation in place, v1.4 candidates:
-
-**Option A: Journal Search** 🔍
-- Full-text search across all entries
-- Filter by date range or habit completion rate
-- "Find all entries where I mentioned 'tired'"
-
-**Option B: Mood Tracking** 😊
-- 5-emoji mood per day (now that writing habit is built)
-- Mood overlaid on calendar
-- Mood vs completion correlation in Analytics
-
-**Option C: Categories/Tags** 🏷️
-- Organize habits by life area (Health, Work, Mind, etc.)
-- Color-coded habit groups
-- Filter Analytics by category
+### Why CSS `data-brightness` Instead of a Class?
+Using `document.documentElement.setAttribute('data-brightness', ...)` mirrors exactly how `data-theme` works in the same file. Consistency. It also means both attributes can be read at a glance in DevTools: `<html data-theme="ocean" data-brightness="light">`.
 
 ---
 
 ## 📝 Changelog
 
 ```
-v1.3 (Notes & Journal Update)
-+ Journal page with write panel and entry feed
-+ 20 rotating daily reflection prompts
-+ Auto-save with live status indicator
-+ Journal stats: total entries, writing streak, total words
-+ Calendar: amber journal dot on days with entries
-+ Calendar day modal: journal preview + Open in Journal button
-+ Analytics: 4th insight card — Journal Streak
-+ Settings: Appearance section with full theme grid
-- Removed theme cards from sidebar footer
-- Sidebar cleaned up to navigation only
+v1.3.1 (Bug Fixes & Polish)
+fix: removed ghost sidebar theme card HTML from v1.2.2 that was leaking outside sidebar
+fix: removed inline style forcing 4-column analytics grid, replaced with responsive 2×2
+fix: Most Consistent calculation now counts only true completions, rate capped at 100%
+feat: collapsed sidebar now shows all nav icons centered with hover tooltips
+feat: light/dark mode toggle in Settings → Appearance
+feat: brightness persists to localStorage independently of theme
 ```
 
 ---
@@ -288,27 +224,14 @@ v1.3 (Notes & Journal Update)
 ## 🚀 Deployment
 
 ```bash
-git add ascend-v1.3.html ASCEND-v1.3-README.md
-git commit -m "v1.3 - Notes & Journal update"
+git add ascend-v1.3.1.html ASCEND-v1.3.1-README.md
+git commit -m "v1.3.1 - Bug fixes, light mode, collapsed sidebar icons"
 git push origin main
-# Live in ~60 seconds on GitHub Pages
 ```
 
 ---
 
-## 🎉 Bottom Line
-
-**v1.3 = ASCEND becomes a companion.**
-
-Habits tell you *what* you did.  
-The journal tells you *why* it mattered.
-
-Together, they build something no app can give you:  
-**Your own record of becoming who you're trying to be.**
-
----
-
-**Version:** 1.3  
-**Release Date:** February 2026  
-**Build:** Notes & Journal  
-**Philosophy:** Every day gets a story.
+**Version:** 1.3.1  
+**Type:** Patch (bug fixes + polish)  
+**Release:** February 2026  
+**Philosophy:** Ship it right, not just fast.
