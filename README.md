@@ -1,165 +1,123 @@
-# 🚀 ASCEND v1.3.6 — Rocket Loading Screen + SVG Icon System
+# 🚀 ASCEND v1.3.7 — Goal Card Bug Fixes
 
 ## Overview
 
-v1.3.6 is a polish release focused on first impressions and professionalism. The app now opens with a branded loading screen and every emoji has been replaced with clean, scalable SVG icons that work across all themes and both light/dark modes.
+v1.3.7 is a targeted bug-fix release. Three regressions introduced during the v1.3.6 emoji→SVG migration broke goal card rendering. All three are resolved.
 
 ---
 
-## ✨ New Feature: Rocket Loading Screen
+## 🐛 Bug Reports & Root Cause Diagnoses
 
-When ASCEND opens, users see a 2.25-second branded intro before the dashboard appears.
+### Bug 1 — Goal card action buttons missing (trophy / edit / delete)
 
-**Sequence:**
+**Symptom:** The three action buttons in the top-right corner of each goal card were invisible.
 
-1. ASCEND wordmark fades in with letter-spacing expansion (0.3em → 0.18em)
-2. "Your Growth Dashboard" tagline slides up beneath it
-3. Rocket SVG launches upward with thruster flame animation
-4. Progress bar fills left to right over the full duration
-5. At 2.25s — screen fades out over 0.5s, then removes itself from the DOM entirely
+**Root cause:** During the v1.3.6 SVG migration, the SVG markup strings were embedded directly inside JS template literals using `&quot;` HTML entities to escape the inner double-quotes. This looked like:
 
-**Why remove from DOM?** Once dismissed, the loading screen is gone — no hidden overlay sitting behind the app consuming memory or blocking potential pointer events.
+```js
+`<button ...><svg xmlns=&quot;http://...&quot; ...></svg></button>`;
+```
 
-**Animations used:**
+When this string is assigned to `innerHTML`, the browser's HTML parser decodes `&quot;` → `"` — but by then the attribute quoting structure is broken. The parser sees an SVG whose attributes are not properly quoted in the original source string context, so the tags are either skipped or rendered as raw text nodes. The buttons ended up as invisible or zero-size elements.
 
-```css
-rocketLaunch  — translateY upward with opacity fade (1.4s, 0.5s delay)
-thrusterFlame — scaleY pulse for flickering flame effect (0.25s infinite)
-exhaustTrail  — opacity fade on exhaust plume (0.3s infinite)
-wordmarkIn    — letter-spacing + opacity entrance (0.7s)
-taglineIn     — translateY slide up (0.6s, 0.5s delay)
-loaderBar     — width 0% → 100% (2s, matches overall duration)
+**Fix:** Extracted all three SVG icons into a `GOAL_SVG` constant object defined once above `renderGoalCard`, using JavaScript escaped single-quotes (`\'`) for SVG attribute values:
+
+```js
+const GOAL_SVG = {
+  trophy: "<svg ... stroke='currentColor' ...>...</svg>",
+  edit: "<svg ...>...</svg>",
+  trash: "<svg ...>...</svg>",
+};
+```
+
+The template literal then uses `${GOAL_SVG.trophy}` etc. — clean variable interpolation with no entity encoding issues.
+
+---
+
+### Bug 2 — Area badge shows single letter ("H", "R") instead of full label
+
+**Symptom:** The area badge on each goal card displayed only a single letter — `H` for Health, `R` for Relationships, etc.
+
+**Root cause:** In v1.3.6, the `AREA_META` object's `icon` field was changed from emoji (e.g. `❤️`) to single-letter stubs (`'H'`, `'M'`, `'R'`, etc.) as a placeholder during the SVG migration. The goal card badge template was:
+
+```js
+<span class="goal-area-badge">
+  ${area.icon} ${area.label}
+</span>
+```
+
+Combined with the `text-transform: uppercase` CSS on `.goal-area-badge`, this rendered as `H HEALTH` — but the Bug 1 SVG parsing corruption was also disrupting the surrounding HTML, causing the label portion to be swallowed. The letter stub was the only thing reliably surviving the broken parse.
+
+**Fix:** Removed `area.icon` from the badge entirely. The badge now displays only the label, which is already uppercased by CSS:
+
+```js
+<span class="goal-area-badge">${area.label}</span>
+```
+
+The `icon` field remains in `AREA_META` (as single letters) but is no longer used in the card — it was only ever a migration artifact with no active rendering role.
+
+---
+
+### Bug 3 — Goal card body appears mostly empty with title/meta pushed to the bottom
+
+**Symptom:** A large blank area filled the top portion of each goal card body; the title and progress bar appeared crammed at the bottom.
+
+**Root cause:** This was a direct consequence of Bug 1. The malformed SVG strings produced by the `&quot;` entity problem were injected as text nodes into the DOM. The browser interpreted the broken SVG attribute strings as visible text content inside the `goal-card-body`, creating invisible-but-layout-consuming text nodes that pushed all real content downward. Because the text had no explicit height or color, it appeared as whitespace — but it occupied vertical space in the flex column.
+
+**Fix:** Resolved automatically by fixing Bug 1. With properly interpolated SVG constants, the card body contains only the expected elements: header, title, meta row, progress bar, milestones, and habit chips.
+
+---
+
+## ✅ Changes in v1.3.7
+
+```
+v1.3.7 — Goal Card Bug Fixes
+fix: goal card action buttons now render correctly (trophy, edit, delete)
+fix: area badge displays full label ("Health", "Relationships") not stub letter
+fix: goal card body layout correct — no blank area above title
+refactor: extracted GOAL_SVG constant object for safe SVG interpolation in template literals
+refactor: removed area.icon from goal-area-badge template (single-letter stubs were never valid display values)
+refactor: removed lingering emoji (📍 🔗) from goal-card-meta milestone/habit count strings
 ```
 
 ---
 
-## 🎨 SVG Icon System
+## 🧪 Test Checklist (3 min)
 
-Every emoji in the UI has been replaced with Feather-style SVG icons — 2px stroke, `currentColor`, so they automatically inherit the active theme color and respond to light/dark mode.
+**Goal card fixes:**
 
-### Navigation Icons
-
-| Page      | Icon                    |
-| --------- | ----------------------- |
-| Dashboard | 4-square grid           |
-| Habits    | Checkbox with checkmark |
-| Calendar  | Calendar grid           |
-| Journal   | Document with lines     |
-| Goals     | Crosshair / target      |
-| Analytics | Pulse waveform          |
-| Settings  | Gear with spokes        |
-
-### Goal Card Actions
-
-| Action        | Icon            |
-| ------------- | --------------- |
-| Mark Achieved | Trophy cup      |
-| Edit          | Pen on document |
-| Delete        | Trash can       |
-
-### Goal Form — Life Area Picker
-
-| Area          | Icon        |
-| ------------- | ----------- |
-| Health        | Heart       |
-| Mind          | Brain       |
-| Finance       | Dollar sign |
-| Career        | Briefcase   |
-| Relationships | Two people  |
-| Creative      | Palette     |
-
-### Analytics Insight Cards
-
-| Card             | Icon     |
-| ---------------- | -------- |
-| Streak Days      | Calendar |
-| Best Habit       | Trophy   |
-| Completion Trend | Waveform |
-| Journal          | Document |
-
-### Other Replacements
-
-- Quick action buttons — SVG inline icons
-- Export CSV button — upload arrow icon
-- Settings danger zone — warning triangle icon
-- Journal empty state — decorative star (✦)
-- Goals empty state — circle symbol (◎)
-- All toast messages — emoji-free plain text
-- All JS notification strings — emoji-free
-
-### What Was Kept
-
-The light/dark mode toggle knob uses 🌙 and ☀️ — these are functional UI indicators on an interactive control, not decorative content, so they stay.
-
----
-
-## Why SVG Over Emoji?
-
-|                   | Emoji                       | SVG Icons                         |
-| ----------------- | --------------------------- | --------------------------------- |
-| Rendering         | OS-dependent, inconsistent  | Identical everywhere              |
-| Color             | Fixed                       | Inherits theme via `currentColor` |
-| Scale             | Fuzzy at non-standard sizes | Crisp at any size                 |
-| Light/Dark        | May not adapt               | Automatically adapts              |
-| Professional feel | Consumer / casual           | Product / SaaS                    |
-| Stroke weight     | N/A                         | Consistent 2px throughout         |
-
----
-
-## 🧪 Test Checklist (5 min)
-
-**Loading screen:**
-
-- [ ] Open/refresh the app → loading screen appears
-- [ ] Rocket launches upward during load
-- [ ] Progress bar fills across the bottom
-- [ ] After ~2.25s → loading screen fades out cleanly
-- [ ] App is fully interactive after fade completes
-
-**Icon system:**
-
-- [ ] All 7 sidebar nav items show SVG icons (no emoji)
-- [ ] Collapsed sidebar — icons still visible and centered
-- [ ] Hover a nav item — icon nudges right with the item
-- [ ] Goals page — area picker shows SVG icons per area
-- [ ] Goal card — trophy, edit, delete are SVG buttons
-- [ ] Analytics page — insight card icons are SVG
-- [ ] Both light mode and dark mode — icons are visible and correctly colored
-- [ ] All 10 themes — icons adapt to accent color
+- [ ] Create a goal → card appears with trophy, edit (pen), delete (trash) buttons top-right
+- [ ] Achieved goal → trophy button hidden, "Goal Achieved" banner visible
+- [ ] Badge shows full word: "HEALTH", "RELATIONSHIPS", "CREATIVE" (not "H", "R", "Cr")
+- [ ] Card body fills correctly — title appears near top, no blank space above it
+- [ ] Click trash → confirm modal → goal deleted
+- [ ] Click pen → goal modal opens pre-filled with correct data
+- [ ] Click trophy → goal marked achieved, banner appears
 
 **Regression:**
 
-- [ ] All pages navigate correctly
-- [ ] Goals save and load
-- [ ] Light/dark toggle still works (🌙/☀️ on knob is intentional)
-- [ ] Theme switching still works
-- [ ] Analytics trend chart still shows null gap (v1.3.5 fix intact)
+- [ ] Loading screen appears and fades correctly
+- [ ] All 7 nav icons still render (SVG system from v1.3.6 intact)
+- [ ] Area picker icons in goal form still show (SVG in static HTML, unaffected)
+- [ ] Analytics, Habits, Journal, Calendar pages unaffected
+- [ ] Light/dark toggle and all 10 themes work
+- [ ] Goals persist across page refresh (localStorage key `ascend-goals-v1.3.4`)
 
 ---
 
 ## 📝 Changelog
 
 ```
-v1.3.6 — Rocket Loading Screen + SVG Icon System
-feat: branded rocket loading screen with 2.25s duration
-feat: rocketLaunch, thrusterFlame, exhaustTrail CSS animations
-feat: wordmark letter-spacing entrance animation
-feat: loading progress bar fill animation
-feat: loading screen self-removes from DOM after fade
-feat: complete SVG icon system replacing all emoji
-feat: SVG nav icons (dashboard, habits, calendar, journal, goals, analytics, settings)
-feat: SVG goal card action icons (trophy, edit, delete)
-feat: SVG area picker icons in goal creation modal (health, mind, finance, career, relationships, creative)
-feat: SVG analytics insight card icons
-feat: SVG quick action button icons
-refactor: all toast/notification strings are emoji-free
-refactor: all JS notification strings cleaned of emoji
-refactor: journal and goals empty states use typographic symbols
+v1.3.7 — 2026-02 — Goal Card Bug Fixes (patch)
+v1.3.6 — 2026-02 — Rocket Loading Screen + SVG Icon System
+v1.3.5 — 2026-02 — Analytics Fix + Entrance Animations
+v1.3.4 — 2026-02 — Goals & Milestones
+v1.3   — 2026-02 — Journal
 ```
 
 ---
 
-**Version:** 1.3.6
-**Type:** Polish / Design System
-**Release:** February 2026
-**Mantra:** First impressions are built before the first click.
+**Version:** 1.3.7  
+**Type:** Bug Fix  
+**Release:** February 2026  
+**Mantra:** A card that renders is worth a thousand that don't.
