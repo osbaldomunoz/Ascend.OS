@@ -1,123 +1,82 @@
-# 🚀 ASCEND v1.3.7 — Goal Card Bug Fixes
+# 🚀 ASCEND v1.3.8 — Cinematic Loading Screen + 3 New Themes
 
 ## Overview
 
-v1.3.7 is a targeted bug-fix release. Three regressions introduced during the v1.3.6 emoji→SVG migration broke goal card rendering. All three are resolved.
+v1.3.8 is a polish and visual identity release. The loading screen has been fully rebuilt as a cinematic 4-phase sequence, and three new color themes join the palette: Nature, Mono, and Earth.
 
 ---
 
-## 🐛 Bug Reports & Root Cause Diagnoses
+## 🎬 Cinematic Loading Screen (v1.3.8 Overhaul)
 
-### Bug 1 — Goal card action buttons missing (trophy / edit / delete)
+The 2.25s single-animation screen has been replaced with a 3.6s orchestrated sequence across 4 distinct phases.
 
-**Symptom:** The three action buttons in the top-right corner of each goal card were invisible.
+### Phase Timeline
 
-**Root cause:** During the v1.3.6 SVG migration, the SVG markup strings were embedded directly inside JS template literals using `&quot;` HTML entities to escape the inner double-quotes. This looked like:
+| Phase | Time | What happens |
+|-------|------|--------------|
+| 1 — Star field | 0–0.9s | 80 stars materialise at randomised positions, sizes, and delays |
+| 2 — Wordmark | 0.6–1.4s | "ASCEND" letters drop in one by one with blur-to-sharp entrance |
+| 3 — Countdown + Launch | 1.4–2.6s | Rocket on pad; 3→2→1→GO countdown; rocket shakes then launches |
+| 4 — Exhaust + Exit | 2.6–3.6s | Exhaust trail grows behind rocket; bar completes; screen fades |
 
-```js
-`<button ...><svg xmlns=&quot;http://...&quot; ...></svg></button>`;
-```
+### Animations: rocketSit, rocketShake, padGlow, thrusterFlame, rocketLaunch, exhaustGrow, cdTick, cdGo, starAppear, letterDrop, taglineIn, padIn, loaderBar (5-keyframe eased), statusIn
 
-When this string is assigned to `innerHTML`, the browser's HTML parser decodes `&quot;` → `"` — but by then the attribute quoting structure is broken. The parser sees an SVG whose attributes are not properly quoted in the original source string context, so the tags are either skipped or rendered as raw text nodes. The buttons ended up as invisible or zero-size elements.
-
-**Fix:** Extracted all three SVG icons into a `GOAL_SVG` constant object defined once above `renderGoalCard`, using JavaScript escaped single-quotes (`\'`) for SVG attribute values:
-
-```js
-const GOAL_SVG = {
-  trophy: "<svg ... stroke='currentColor' ...>...</svg>",
-  edit: "<svg ...>...</svg>",
-  trash: "<svg ...>...</svg>",
-};
-```
-
-The template literal then uses `${GOAL_SVG.trophy}` etc. — clean variable interpolation with no entity encoding issues.
+### Status Line
+Cycles: Initialising systems → Loading habit data → Syncing goals → Preparing dashboard → Ready for launch → Launching
 
 ---
 
-### Bug 2 — Area badge shows single letter ("H", "R") instead of full label
+## 🎨 New Themes (13 Total)
 
-**Symptom:** The area badge on each goal card displayed only a single letter — `H` for Health, `R` for Relationships, etc.
+**Nature** — `#0b130d` bg / `#5a9e6f` accent — forest floor, moss, bark
+**Mono** — `#0a0a0a` bg / `#e8e8e8` accent — true black, near-white, ash grays
+**Earth** — `#150e0a` bg / `#c4703a` accent — dark clay, burnt terracotta, warm sand
 
-**Root cause:** In v1.3.6, the `AREA_META` object's `icon` field was changed from emoji (e.g. `❤️`) to single-letter stubs (`'H'`, `'M'`, `'R'`, etc.) as a placeholder during the SVG migration. The goal card badge template was:
-
-```js
-<span class="goal-area-badge">
-  ${area.icon} ${area.label}
-</span>
-```
-
-Combined with the `text-transform: uppercase` CSS on `.goal-area-badge`, this rendered as `H HEALTH` — but the Bug 1 SVG parsing corruption was also disrupting the surrounding HTML, causing the label portion to be swallowed. The letter stub was the only thing reliably surviving the broken parse.
-
-**Fix:** Removed `area.icon` from the badge entirely. The badge now displays only the label, which is already uppercased by CSS:
-
-```js
-<span class="goal-area-badge">${area.label}</span>
-```
-
-The `icon` field remains in `AREA_META` (as single letters) but is no longer used in the card — it was only ever a migration artifact with no active rendering role.
+All three are light/dark mode compatible.
 
 ---
 
-### Bug 3 — Goal card body appears mostly empty with title/meta pushed to the bottom
+## 🧪 Test Checklist
 
-**Symptom:** A large blank area filled the top portion of each goal card body; the title and progress bar appeared crammed at the bottom.
+**Loading screen:**
+- [ ] Star field appears on refresh
+- [ ] ASCEND letters drop in one by one
+- [ ] Countdown: 3 → 2 → 1 → GO
+- [ ] Rocket shakes, then launches upward
+- [ ] Exhaust trail behind rocket
+- [ ] Status cycles through messages
+- [ ] Fades at ~3.6s, app interactive after
 
-**Root cause:** This was a direct consequence of Bug 1. The malformed SVG strings produced by the `&quot;` entity problem were injected as text nodes into the DOM. The browser interpreted the broken SVG attribute strings as visible text content inside the `goal-card-body`, creating invisible-but-layout-consuming text nodes that pushed all real content downward. Because the text had no explicit height or color, it appeared as whitespace — but it occupied vertical space in the flex column.
-
-**Fix:** Resolved automatically by fixing Bug 1. With properly interpolated SVG constants, the card body contains only the expected elements: header, title, meta row, progress bar, milestones, and habit chips.
-
----
-
-## ✅ Changes in v1.3.7
-
-```
-v1.3.7 — Goal Card Bug Fixes
-fix: goal card action buttons now render correctly (trophy, edit, delete)
-fix: area badge displays full label ("Health", "Relationships") not stub letter
-fix: goal card body layout correct — no blank area above title
-refactor: extracted GOAL_SVG constant object for safe SVG interpolation in template literals
-refactor: removed area.icon from goal-area-badge template (single-letter stubs were never valid display values)
-refactor: removed lingering emoji (📍 🔗) from goal-card-meta milestone/habit count strings
-```
-
----
-
-## 🧪 Test Checklist (3 min)
-
-**Goal card fixes:**
-
-- [ ] Create a goal → card appears with trophy, edit (pen), delete (trash) buttons top-right
-- [ ] Achieved goal → trophy button hidden, "Goal Achieved" banner visible
-- [ ] Badge shows full word: "HEALTH", "RELATIONSHIPS", "CREATIVE" (not "H", "R", "Cr")
-- [ ] Card body fills correctly — title appears near top, no blank space above it
-- [ ] Click trash → confirm modal → goal deleted
-- [ ] Click pen → goal modal opens pre-filled with correct data
-- [ ] Click trophy → goal marked achieved, banner appears
+**New themes:**
+- [ ] Nature / Mono / Earth swatches in Settings grid
+- [ ] Each theme applies correct accent color throughout
+- [ ] Light mode readable on all 3
 
 **Regression:**
-
-- [ ] Loading screen appears and fades correctly
-- [ ] All 7 nav icons still render (SVG system from v1.3.6 intact)
-- [ ] Area picker icons in goal form still show (SVG in static HTML, unaffected)
-- [ ] Analytics, Habits, Journal, Calendar pages unaffected
-- [ ] Light/dark toggle and all 10 themes work
-- [ ] Goals persist across page refresh (localStorage key `ascend-goals-v1.3.4`)
+- [ ] All 10 original themes work
+- [ ] Goal card buttons render (v1.3.7)
+- [ ] Area badges show full labels (v1.3.7)
+- [ ] All 7 nav SVG icons intact
 
 ---
 
-## 📝 Changelog
+## Changelog
 
 ```
-v1.3.7 — 2026-02 — Goal Card Bug Fixes (patch)
-v1.3.6 — 2026-02 — Rocket Loading Screen + SVG Icon System
-v1.3.5 — 2026-02 — Analytics Fix + Entrance Animations
-v1.3.4 — 2026-02 — Goals & Milestones
-v1.3   — 2026-02 — Journal
+v1.3.8 — Cinematic Loading Screen + 3 New Themes
+feat: 4-phase cinematic loading screen (3.6s)
+feat: 80-star JS-generated field with randomised delays
+feat: letter-by-letter wordmark entrance with blur-to-sharp
+feat: launchpad SVG scene
+feat: 3-2-1-GO countdown animations
+feat: rocketShake tremor before launch
+feat: padGlow thruster glow
+feat: exhaustGrow trail on launch
+feat: status line with 5-message cycle
+feat: Nature theme (forest green / moss)
+feat: Mono theme (true black / near-white)
+feat: Earth theme (dark clay / terracotta)
 ```
 
----
-
-**Version:** 1.3.7  
-**Type:** Bug Fix  
-**Release:** February 2026  
-**Mantra:** A card that renders is worth a thousand that don't.
+**Version:** 1.3.8 | **Release:** February 2026
+**Next:** v1.3.9 — Social Hub (friend codes, leaderboard, feed)

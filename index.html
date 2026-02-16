@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCEND v1.3.7 - Your Growth Dashboard</title>
+    <title>ASCEND v1.3.8 - Your Growth Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         /* ============================================
@@ -99,6 +99,27 @@
             --text-primary: #e0e7ff; --text-secondary: #c7d2fe; --text-tertiary: #a5b4fc;
             --success: #34d399; --warning: #fbbf24; --danger: #f87171;
             --glass-bg: rgba(39, 26, 66, 0.6); --glass-border: rgba(129, 140, 248, 0.2);
+        }
+        [data-theme="nature"] {
+            --bg-primary: #0b130d; --bg-secondary: #121d14; --bg-tertiary: #1c2e1e;
+            --accent-primary: #5a9e6f; --accent-secondary: #3d7a52;
+            --text-primary: #ddeedd; --text-secondary: #a8c5a8; --text-tertiary: #6e9470;
+            --success: #4ade80; --warning: #d97706; --danger: #ef4444;
+            --glass-bg: rgba(28, 46, 30, 0.65); --glass-border: rgba(90, 158, 111, 0.18);
+        }
+        [data-theme="mono"] {
+            --bg-primary: #0a0a0a; --bg-secondary: #141414; --bg-tertiary: #1f1f1f;
+            --accent-primary: #e8e8e8; --accent-secondary: #b0b0b0;
+            --text-primary: #f5f5f5; --text-secondary: #aaaaaa; --text-tertiary: #666666;
+            --success: #6ee7b7; --warning: #fbbf24; --danger: #f87171;
+            --glass-bg: rgba(31, 31, 31, 0.7); --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        [data-theme="earth"] {
+            --bg-primary: #150e0a; --bg-secondary: #221610; --bg-tertiary: #322018;
+            --accent-primary: #c4703a; --accent-secondary: #a85a2a;
+            --text-primary: #f5e6d8; --text-secondary: #d4b89a; --text-tertiary: #9e7d60;
+            --success: #6abf69; --warning: #e8a838; --danger: #e05252;
+            --glass-bg: rgba(50, 32, 24, 0.65); --glass-border: rgba(196, 112, 58, 0.2);
         }
 
         /* ---- LIGHT MODE OVERRIDES ---- */
@@ -1142,6 +1163,9 @@
         .st-gold .settings-theme-swatch { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
         .st-arctic .settings-theme-swatch { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
         .st-midnight .settings-theme-swatch { background: linear-gradient(135deg, #818cf8, #6366f1); }
+        .st-nature  .settings-theme-swatch { background: linear-gradient(135deg, #5a9e6f, #3d7a52); }
+        .st-mono    .settings-theme-swatch { background: linear-gradient(135deg, #e8e8e8, #888888); }
+        .st-earth   .settings-theme-swatch { background: linear-gradient(135deg, #c4703a, #a85a2a); }
 
         /* ============================================
            V1.3.4 — GOALS & MILESTONES STYLES
@@ -1233,128 +1257,307 @@
         .goals-empty-icon { font-size:3.5rem; margin-bottom:var(--space-md); opacity:0.4; }
 
         /* ============================================
-           LOADING SCREEN — v1.3.6
+           LOADING SCREEN — v1.3.8 CINEMATIC OVERHAUL
+           4 phases over ~3.6s
+           Phase 1 (0–0.9s):   Star field materialises
+           Phase 2 (0.6–1.5s): ASCEND wordmark letter-by-letter
+           Phase 3 (1.4–3.0s): Rocket on pad → countdown → launch
+           Phase 4 (3.0–3.6s): Exhaust lingers, bar completes, fade out
            ============================================ */
         #loading-screen {
             position: fixed; inset: 0; z-index: 99999;
-            background: var(--bg-primary);
+            background: #050508;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            gap: 28px;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            gap: 0;
+            transition: opacity 0.55s ease, visibility 0.55s ease;
+            overflow: hidden;
         }
         #loading-screen.hidden {
             opacity: 0; visibility: hidden; pointer-events: none;
         }
-        .loader-rocket-wrap {
-            position: relative; width: 80px; height: 120px;
+
+        /* ---- STAR FIELD ---- */
+        .loader-stars {
+            position: absolute; inset: 0; pointer-events: none;
         }
-        /* SVG rocket launch animation */
+        .loader-star {
+            position: absolute; border-radius: 50%;
+            background: white;
+            animation: starAppear 0.6s ease both;
+        }
+        @keyframes starAppear {
+            from { opacity: 0; transform: scale(0); }
+            to   { opacity: var(--star-opacity, 0.7); transform: scale(1); }
+        }
+
+        /* ---- LAUNCH PAD ---- */
+        .loader-scene {
+            position: relative;
+            width: 200px; height: 220px;
+            display: flex; align-items: flex-end; justify-content: center;
+            margin-bottom: 32px;
+        }
+        .loader-pad {
+            position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 90px; height: 12px;
+            background: linear-gradient(180deg, #4a4a5a, #2a2a38);
+            border-radius: 3px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            animation: padIn 0.5s cubic-bezier(0.22,1,0.36,1) 1.3s both;
+        }
+        .loader-pad::before {
+            content: ''; position: absolute; bottom: 12px; left: 50%;
+            transform: translateX(-50%);
+            width: 4px; height: 24px;
+            background: #3a3a4a; border-radius: 2px;
+        }
+        @keyframes padIn {
+            from { opacity: 0; transform: translateX(-50%) scaleX(0.4); }
+            to   { opacity: 1; transform: translateX(-50%) scaleX(1); }
+        }
+
+        /* ---- ROCKET ---- */
+        .loader-rocket-wrap {
+            position: absolute;
+            bottom: 22px;
+            display: flex; flex-direction: column; align-items: center;
+            animation:
+                rocketSit   0.6s cubic-bezier(0.22,1,0.36,1) 1.3s both,
+                rocketShake 0.12s ease-in-out 2.15s 3,
+                rocketLaunch 0.9s cubic-bezier(0.4, 0, 0.2, 1) 2.58s both;
+        }
+        @keyframes rocketSit {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rocketShake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25%       { transform: translateX(-2px) rotate(-1deg); }
+            75%       { transform: translateX(2px) rotate(1deg); }
+        }
         @keyframes rocketLaunch {
-            0%   { transform: translateY(0) rotate(-45deg); opacity: 1; }
-            60%  { transform: translateY(-60px) rotate(-45deg); opacity: 1; }
-            100% { transform: translateY(-120px) rotate(-45deg); opacity: 0; }
+            0%   { transform: translateY(0);    opacity: 1; }
+            30%  { transform: translateY(-20px); opacity: 1; }
+            100% { transform: translateY(-280px); opacity: 0; }
+        }
+
+        /* Thruster glow while sitting on pad */
+        .loader-pad-glow {
+            position: absolute; bottom: 8px; left: 50%;
+            transform: translateX(-50%);
+            width: 40px; height: 40px; border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-primary, #00d4ff) 0%, transparent 70%);
+            opacity: 0;
+            animation: padGlow 0.3s ease-in-out 2.15s 10 alternate;
+        }
+        @keyframes padGlow {
+            from { opacity: 0; transform: translateX(-50%) scale(0.8); }
+            to   { opacity: 0.55; transform: translateX(-50%) scale(1.3); }
+        }
+
+        /* Thruster flame */
+        .loader-flame {
+            animation: thrusterFlame 0.18s ease-in-out 2.15s infinite;
+            transform-origin: top center;
         }
         @keyframes thrusterFlame {
             0%, 100% { transform: scaleY(1) scaleX(1); opacity: 0.9; }
-            50%       { transform: scaleY(1.4) scaleX(0.8); opacity: 0.6; }
-        }
-        @keyframes exhaustTrail {
-            0%   { opacity: 0.6; transform: translateY(0) scaleX(1); }
-            100% { opacity: 0; transform: translateY(40px) scaleX(0.3); }
-        }
-        .loader-rocket {
-            animation: rocketLaunch 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
-        }
-        .loader-flame {
-            animation: thrusterFlame 0.25s ease-in-out infinite;
-            transform-origin: top center;
-        }
-        .loader-trail {
-            animation: exhaustTrail 0.3s ease-out infinite;
+            50%       { transform: scaleY(1.5) scaleX(0.75); opacity: 0.65; }
         }
 
-        /* Wordmark */
-        @keyframes wordmarkIn {
-            from { opacity: 0; letter-spacing: 0.3em; }
-            to   { opacity: 1; letter-spacing: 0.18em; }
+        /* Exhaust trail while launching */
+        .loader-exhaust {
+            position: absolute; bottom: 14px; left: 50%;
+            transform: translateX(-50%);
+            width: 18px; height: 0;
+            border-radius: 0 0 50% 50%;
+            background: linear-gradient(180deg, var(--accent-primary, #00d4ff) 0%, transparent 100%);
+            opacity: 0;
+            animation: exhaustGrow 0.9s ease-out 2.58s both;
         }
-        .loader-wordmark {
-            font-size: 2rem; font-weight: 800;
-            letter-spacing: 0.18em;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        @keyframes exhaustGrow {
+            0%   { height: 0; opacity: 0.8; }
+            40%  { height: 80px; opacity: 0.6; }
+            100% { height: 140px; opacity: 0; }
+        }
+
+        /* ---- COUNTDOWN ---- */
+        .loader-countdown {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3.5rem; font-weight: 900;
+            color: var(--accent-primary, #00d4ff);
+            letter-spacing: -0.02em;
+            opacity: 0;
+            text-shadow: 0 0 30px var(--accent-primary, #00d4ff);
+        }
+        .loader-countdown.cd-3 { animation: cdTick 0.38s ease-out 1.58s both; }
+        .loader-countdown.cd-2 { animation: cdTick 0.38s ease-out 1.96s both; }
+        .loader-countdown.cd-1 { animation: cdTick 0.38s ease-out 2.34s both; }
+        .loader-countdown.cd-go {
+            font-size: 2.2rem; letter-spacing: 0.08em;
+            animation: cdGo 0.5s cubic-bezier(0.22,1,0.36,1) 2.55s both;
+        }
+        @keyframes cdTick {
+            0%   { opacity: 0; transform: translate(-50%,-50%) scale(1.6); }
+            25%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+            70%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%,-50%) scale(0.7); }
+        }
+        @keyframes cdGo {
+            0%   { opacity: 0; transform: translate(-50%,-50%) scale(2); }
+            40%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+            80%  { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%,-50%) scale(0.5); }
+        }
+
+        /* ---- WORDMARK ---- */
+        .loader-wordmark-wrap {
+            display: flex; gap: 0.04em;
+            animation: none;
+            margin-bottom: 10px;
+        }
+        .loader-letter {
+            font-size: 2.6rem; font-weight: 900;
+            letter-spacing: 0.04em;
+            background: linear-gradient(135deg, var(--accent-primary, #00d4ff), var(--accent-secondary, #0095ff));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: wordmarkIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both;
+            opacity: 0;
+            display: inline-block;
+            animation: letterDrop 0.45s cubic-bezier(0.22,1,0.36,1) both;
         }
-        /* Tagline */
-        @keyframes taglineIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .loader-letter:nth-child(1) { animation-delay: 0.6s; }
+        .loader-letter:nth-child(2) { animation-delay: 0.72s; }
+        .loader-letter:nth-child(3) { animation-delay: 0.84s; }
+        .loader-letter:nth-child(4) { animation-delay: 0.96s; }
+        .loader-letter:nth-child(5) { animation-delay: 1.08s; }
+        .loader-letter:nth-child(6) { animation-delay: 1.20s; }
+        @keyframes letterDrop {
+            from { opacity: 0; transform: translateY(-18px) scale(1.2); filter: blur(4px); }
+            to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
+
+        /* ---- TAGLINE ---- */
         .loader-tagline {
-            font-size: 0.8rem; color: var(--text-tertiary);
-            letter-spacing: 0.12em; text-transform: uppercase;
-            animation: taglineIn 0.6s ease 0.5s both;
+            font-size: 0.72rem; color: rgba(255,255,255,0.4);
+            letter-spacing: 0.22em; text-transform: uppercase;
+            margin-bottom: 36px;
+            opacity: 0;
+            animation: taglineIn 0.7s ease 1.35s both;
         }
-        /* Progress bar */
-        @keyframes loaderBar {
-            from { width: 0%; }
-            to   { width: 100%; }
+        @keyframes taglineIn {
+            from { opacity: 0; transform: translateY(6px); letter-spacing: 0.38em; }
+            to   { opacity: 1; transform: translateY(0); letter-spacing: 0.22em; }
         }
+
+        /* ---- PROGRESS BAR ---- */
         .loader-bar-track {
-            width: 160px; height: 2px;
-            background: var(--bg-tertiary); border-radius: 2px; overflow: hidden;
+            width: 180px; height: 2px;
+            background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
+            margin-top: 0;
         }
         .loader-bar-fill {
             height: 100%; border-radius: 2px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            animation: loaderBar 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+            background: linear-gradient(90deg, var(--accent-primary, #00d4ff), var(--accent-secondary, #0095ff));
+            animation: loaderBar 3.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s both;
         }
+        @keyframes loaderBar {
+            0%   { width: 0%; }
+            20%  { width: 15%; }
+            50%  { width: 45%; }
+            75%  { width: 72%; }
+            90%  { width: 88%; }
+            100% { width: 100%; }
+        }
+
+        /* ---- STATUS LINE ---- */
+        .loader-status {
+            font-size: 0.65rem; color: rgba(255,255,255,0.25);
+            letter-spacing: 0.14em; text-transform: uppercase;
+            margin-top: 12px; height: 1em;
+            animation: statusIn 0.4s ease 0.8s both;
+        }
+        @keyframes statusIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        /* cycle through status messages via JS */
     </style>
 </head>
 <body>
-    <!-- LOADING SCREEN -->
+    <!-- LOADING SCREEN v1.3.8 — CINEMATIC -->
     <div id="loading-screen">
-        <div class="loader-rocket-wrap">
-            <svg class="loader-rocket" width="64" height="100" viewBox="0 0 64 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Exhaust trail -->
-                <g class="loader-trail" transform="translate(27, 80)">
-                    <ellipse cx="5" cy="0" rx="5" ry="12" fill="var(--accent-primary)" opacity="0.3"/>
-                </g>
-                <!-- Flame -->
-                <g class="loader-flame" transform="translate(22, 72)">
-                    <path d="M10 0 C6 8 2 14 5 20 C7 24 13 24 15 20 C18 14 14 8 10 0Z"
-                          fill="url(#flameGrad)"/>
-                </g>
-                <!-- Rocket body -->
-                <path d="M32 2 C32 2 16 20 16 52 L48 52 C48 20 32 2 32 2Z"
-                      fill="var(--accent-primary)"/>
-                <!-- Nose cone highlight -->
-                <path d="M32 2 C32 2 24 18 24 52 L32 52 C32 20 32 2 32 2Z"
-                      fill="var(--accent-secondary)" opacity="0.7"/>
-                <!-- Window -->
-                <circle cx="32" cy="36" r="7" fill="var(--bg-primary)" opacity="0.9"/>
-                <circle cx="32" cy="36" r="5" fill="var(--accent-secondary)" opacity="0.6"/>
-                <!-- Left fin -->
-                <path d="M16 52 L6 70 L20 62 Z" fill="var(--accent-secondary)"/>
-                <!-- Right fin -->
-                <path d="M48 52 L58 70 L44 62 Z" fill="var(--accent-secondary)"/>
-                <!-- Body base -->
-                <rect x="20" y="50" width="24" height="6" rx="2" fill="var(--accent-primary)"/>
-                <!-- Flame gradient -->
-                <defs>
-                    <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="var(--warning)"/>
-                        <stop offset="100%" stop-color="var(--accent-primary)" stop-opacity="0"/>
-                    </linearGradient>
-                </defs>
-            </svg>
+        <!-- Star field (generated by JS) -->
+        <div class="loader-stars" id="loader-stars"></div>
+
+        <!-- Wordmark — letter by letter -->
+        <div class="loader-wordmark-wrap">
+            <span class="loader-letter">A</span>
+            <span class="loader-letter">S</span>
+            <span class="loader-letter">C</span>
+            <span class="loader-letter">E</span>
+            <span class="loader-letter">N</span>
+            <span class="loader-letter">D</span>
         </div>
-        <div class="loader-wordmark">ASCEND</div>
         <div class="loader-tagline">Your Growth Dashboard</div>
+
+        <!-- Rocket scene -->
+        <div class="loader-scene">
+            <!-- Countdown digits (overlap in center of scene) -->
+            <div class="loader-countdown cd-3">3</div>
+            <div class="loader-countdown cd-2">2</div>
+            <div class="loader-countdown cd-1">1</div>
+            <div class="loader-countdown cd-go">GO</div>
+
+            <!-- Exhaust column (appears during launch) -->
+            <div class="loader-exhaust"></div>
+
+            <!-- Pad glow -->
+            <div class="loader-pad-glow"></div>
+
+            <!-- Rocket -->
+            <div class="loader-rocket-wrap">
+                <svg width="54" height="90" viewBox="0 0 54 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Thruster flame (sits below rocket body) -->
+                    <g class="loader-flame" transform="translate(16, 68)">
+                        <path d="M11 0 C7 9 3 16 6 23 C8 27 14 27 16 23 C19 16 15 9 11 0Z"
+                              fill="url(#flameGrad2)"/>
+                    </g>
+                    <!-- Rocket body -->
+                    <path d="M27 2 C27 2 13 18 13 48 L41 48 C41 18 27 2 27 2Z"
+                          fill="var(--accent-primary, #00d4ff)"/>
+                    <!-- Nose highlight -->
+                    <path d="M27 2 C27 2 20 16 20 48 L27 48 C27 18 27 2 27 2Z"
+                          fill="var(--accent-secondary, #0095ff)" opacity="0.6"/>
+                    <!-- Porthole -->
+                    <circle cx="27" cy="32" r="7" fill="#050508" opacity="0.85"/>
+                    <circle cx="27" cy="32" r="5" fill="var(--accent-secondary, #0095ff)" opacity="0.5"/>
+                    <circle cx="24.5" cy="29.5" r="1.5" fill="white" opacity="0.6"/>
+                    <!-- Fins -->
+                    <path d="M13 48 L4 64 L17 56 Z" fill="var(--accent-secondary, #0095ff)"/>
+                    <path d="M41 48 L50 64 L37 56 Z" fill="var(--accent-secondary, #0095ff)"/>
+                    <!-- Base band -->
+                    <rect x="17" y="46" width="20" height="5" rx="1.5" fill="var(--accent-primary, #00d4ff)" opacity="0.8"/>
+                    <defs>
+                        <linearGradient id="flameGrad2" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#fbbf24"/>
+                            <stop offset="55%" stop-color="var(--accent-primary, #00d4ff)" stop-opacity="0.7"/>
+                            <stop offset="100%" stop-color="transparent"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <!-- Launch pad -->
+            <div class="loader-pad"></div>
+        </div>
+
+        <!-- Progress bar -->
         <div class="loader-bar-track">
             <div class="loader-bar-fill"></div>
         </div>
+        <div class="loader-status" id="loader-status">Initialising systems</div>
     </div>
 
 
@@ -1741,6 +1944,9 @@
                         <div class="settings-theme-card st-gold" onclick="setTheme('gold')"><div class="settings-theme-swatch"></div><div class="settings-theme-label"><span class="settings-theme-name">Gold</span><span class="settings-theme-check">✓ Active</span></div></div>
                         <div class="settings-theme-card st-arctic" onclick="setTheme('arctic')"><div class="settings-theme-swatch"></div><div class="settings-theme-label"><span class="settings-theme-name">Arctic</span><span class="settings-theme-check">✓ Active</span></div></div>
                         <div class="settings-theme-card st-midnight" onclick="setTheme('midnight')"><div class="settings-theme-swatch"></div><div class="settings-theme-label"><span class="settings-theme-name">Midnight</span><span class="settings-theme-check">✓ Active</span></div></div>
+                        <div class="settings-theme-card st-nature"   onclick="setTheme('nature')"><div class="settings-theme-swatch"></div><div class="settings-theme-label"><span class="settings-theme-name">Nature</span><span class="settings-theme-check">✓ Active</span></div></div>
+                        <div class="settings-theme-card st-mono"     onclick="setTheme('mono')"><div class="settings-theme-swatch"></div><div class="settings-theme-label"><span class="settings-theme-name">Mono</span><span class="settings-theme-check">✓ Active</span></div></div>
+                        <div class="settings-theme-card st-earth"    onclick="setTheme('earth')"><div class="settings-theme-swatch"></div><div class="settings-theme-label"><span class="settings-theme-name">Earth</span><span class="settings-theme-check">✓ Active</span></div></div>
                     </div>
                 </div>
 
@@ -3793,14 +3999,53 @@
         // INIT
         init();
 
-        // LOADING SCREEN — dismiss after 2.25s
+        // LOADING SCREEN v1.3.8 — cinematic 3.6s controller
         (function() {
             const screen = document.getElementById('loading-screen');
             if (!screen) return;
+
+            // Generate star field
+            const starContainer = document.getElementById('loader-stars');
+            if (starContainer) {
+                const starCount = 80;
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'loader-star';
+                    const size = Math.random() * 2.2 + 0.6;
+                    const opacity = Math.random() * 0.5 + 0.2;
+                    star.style.cssText = [
+                        `width:${size}px`, `height:${size}px`,
+                        `left:${Math.random()*100}%`, `top:${Math.random()*100}%`,
+                        `--star-opacity:${opacity}`,
+                        `animation-delay:${Math.random()*0.8}s`,
+                        `animation-duration:${0.4 + Math.random()*0.4}s`
+                    ].join(';');
+                    starContainer.appendChild(star);
+                }
+            }
+
+            // Cycle status messages
+            const statusEl = document.getElementById('loader-status');
+            const messages = [
+                'Initialising systems',
+                'Loading habit data',
+                'Syncing goals',
+                'Preparing dashboard',
+                'Ready for launch',
+            ];
+            let msgIdx = 0;
+            const msgInterval = setInterval(() => {
+                msgIdx = (msgIdx + 1) % messages.length;
+                if (statusEl) statusEl.textContent = messages[msgIdx];
+            }, 680);
+
+            // Dismiss after 3.6s total
             setTimeout(() => {
+                clearInterval(msgInterval);
+                if (statusEl) statusEl.textContent = 'Launching';
                 screen.classList.add('hidden');
-                setTimeout(() => screen.remove(), 520);
-            }, 2250);
+                setTimeout(() => screen.remove(), 580);
+            }, 3600);
         })();
     </script>
 </body>
