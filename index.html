@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCEND v1.3.4 - Your Growth Dashboard</title>
+    <title>ASCEND v1.3.5 - Your Growth Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         /* ============================================
@@ -549,6 +549,154 @@
         @keyframes scaleIn {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
+        }
+
+        /* ============ ASCEND ANIMATION SYSTEM v1.3.5 ============ */
+
+        /* Page entrance — every page fades + slides up when activated */
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .page.active {
+            animation: pageEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        /* Staggered card children */
+        @keyframes cardPop {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .stat-card, .goal-card, .insight-card, .card,
+        .journal-entry-card, .habit-item, .year-month-card {
+            animation: cardPop 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        /* Stagger delays for grids */
+        .stat-card:nth-child(1), .goal-card:nth-child(1), .insight-card:nth-child(1) { animation-delay: 0.05s; }
+        .stat-card:nth-child(2), .goal-card:nth-child(2), .insight-card:nth-child(2) { animation-delay: 0.10s; }
+        .stat-card:nth-child(3), .goal-card:nth-child(3), .insight-card:nth-child(3) { animation-delay: 0.15s; }
+        .stat-card:nth-child(4), .goal-card:nth-child(4), .insight-card:nth-child(4) { animation-delay: 0.20s; }
+        .stat-card:nth-child(5), .goal-card:nth-child(5) { animation-delay: 0.25s; }
+        .stat-card:nth-child(6), .goal-card:nth-child(6) { animation-delay: 0.30s; }
+
+        /* Habit list stagger */
+        .habit-item:nth-child(1) { animation-delay: 0.04s; }
+        .habit-item:nth-child(2) { animation-delay: 0.08s; }
+        .habit-item:nth-child(3) { animation-delay: 0.12s; }
+        .habit-item:nth-child(4) { animation-delay: 0.16s; }
+        .habit-item:nth-child(5) { animation-delay: 0.20s; }
+        .habit-item:nth-child(6) { animation-delay: 0.24s; }
+
+        /* Progress bar fill animation */
+        @keyframes progressFill {
+            from { width: 0%; }
+        }
+        .goal-progress-fill, .widget-goal-bar-fill {
+            animation: progressFill 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+            animation-delay: 0.3s;
+        }
+
+        /* Streak / stat number pulse on update */
+        @keyframes statPulse {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .stat-value.updated {
+            animation: statPulse 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Milestone check bounce */
+        @keyframes checkBounce {
+            0%   { transform: scale(0); }
+            60%  { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+        .milestone-check.just-checked {
+            animation: checkBounce 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Habit completion ripple */
+        @keyframes completionRipple {
+            from { box-shadow: 0 0 0 0 rgba(var(--accent-rgb, 0,212,255), 0.5); }
+            to   { box-shadow: 0 0 0 14px rgba(var(--accent-rgb, 0,212,255), 0); }
+        }
+        .habit-item.just-completed {
+            animation: completionRipple 0.5s ease-out;
+        }
+
+        /* Toast slide-in from bottom */
+        @keyframes toastIn {
+            from { transform: translateY(80px) scale(0.9); opacity: 0; }
+            to   { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes toastOut {
+            from { transform: translateY(0) scale(1); opacity: 1; }
+            to   { transform: translateY(80px) scale(0.9); opacity: 0; }
+        }
+        .toast { animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .toast.hiding { animation: toastOut 0.25s ease-in both; }
+
+        /* Nav item hover bounce */
+        .nav-item {
+            transition: background var(--transition-fast), color var(--transition-fast),
+                        transform var(--transition-fast);
+        }
+        .nav-item:hover { transform: translateX(3px); }
+        .sidebar.collapsed .nav-item:hover { transform: scale(1.08); }
+
+        /* Button press feel */
+        .btn { transition: all var(--transition-fast); }
+        .btn:active { transform: scale(0.96); }
+
+        /* Goal card hover lift (more pronounced) */
+        .goal-card {
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.25s ease,
+                        border-color var(--transition-fast);
+        }
+        .goal-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+        }
+
+        /* Insight card hover */
+        .insight-card {
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.25s ease,
+                        border-color var(--transition-fast);
+        }
+
+        /* Settings theme card hover pulse */
+        .settings-theme-card {
+            transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), border-color var(--transition-fast);
+        }
+        .settings-theme-card:hover { transform: scale(1.04); }
+        .settings-theme-card.active { transform: scale(1.06); }
+
+        /* Journal textarea focus glow */
+        .journal-textarea {
+            transition: border-color var(--transition-fast),
+                        box-shadow var(--transition-fast);
+        }
+        .journal-textarea:focus {
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb, 0,212,255), 0.15);
+        }
+
+        /* Page title entrance */
+        .page-title {
+            animation: fadeInUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        .page-subtitle {
+            animation: fadeInUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.07s both;
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         /* MOBILE */
@@ -1565,7 +1713,7 @@
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Version</div>
-                            <div>v1.3.4</div>
+                            <div>v1.3.5</div>
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Last Sync</div>
@@ -1843,22 +1991,33 @@
                 habit.lastCompleted = today;
                 habit.streak++;
                 habit.history[today] = true;
-                
+
                 if ([7, 30, 100].includes(habit.streak)) {
                     triggerConfetti();
                     showToast('success', `🎉 ${habit.streak}-Day Milestone!`, `Amazing streak on "${habit.name}"!`);
                 } else {
-                    showToast('success', '✓ Completed!', `${habit.name} - ${habit.streak} day streak`);
+                    showToast('success', '✓ Completed!', `${habit.name} · ${habit.streak} day streak`);
                 }
             } else {
                 habit.streak = Math.max(0, habit.streak - 1);
                 delete habit.history[today];
-                showToast('info', 'Unchecked', `${habit.name} marked as incomplete`);
+                showToast('info', 'Unchecked', `${habit.name} marked incomplete`);
             }
 
             saveHabits();
             renderHabits();
             updateStats();
+
+            // Ripple animation on the item just toggled
+            setTimeout(() => {
+                const items = document.querySelectorAll('.habit-item');
+                items.forEach(el => {
+                    if (el.getAttribute('onclick')?.includes(String(id))) {
+                        el.classList.add('just-completed');
+                        setTimeout(() => el.classList.remove('just-completed'), 600);
+                    }
+                });
+            }, 30);
         }
 
         function renderHabits() {
@@ -2392,24 +2551,35 @@
                 const date = new Date(today);
                 date.setDate(date.getDate() - i);
                 const dateStr = date.toDateString();
-                
+
                 labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-                
+
                 let completedCount = 0;
                 let totalHabits = 0;
-                
+                let anyActivity = false;
+
                 habits.forEach(habit => {
-                    const createdDate = new Date(habit.createdAt).toDateString();
-                    if (new Date(dateStr) >= new Date(createdDate)) {
+                    const habitCreated = new Date(habit.createdAt);
+                    // Normalize to start of day for fair comparison
+                    habitCreated.setHours(0, 0, 0, 0);
+                    const dayDate = new Date(date);
+                    dayDate.setHours(0, 0, 0, 0);
+
+                    if (dayDate >= habitCreated) {
                         totalHabits++;
+                        anyActivity = true;
                         if (habit.history && habit.history[dateStr]) {
                             completedCount++;
                         }
                     }
                 });
-                
-                const rate = totalHabits > 0 ? Math.round((completedCount / totalHabits) * 100) : 0;
-                data.push(rate);
+
+                // Push null for days before any habits existed — Chart.js skips null points cleanly
+                if (!anyActivity) {
+                    data.push(null);
+                } else {
+                    data.push(Math.round((completedCount / totalHabits) * 100));
+                }
             }
 
             if (charts.trend) charts.trend.destroy();
@@ -2427,7 +2597,11 @@
                         borderColor: accentColor,
                         backgroundColor: accentColor + '20',
                         tension: 0.4,
-                        fill: true
+                        fill: true,
+                        spanGaps: false,
+                        pointRadius: 3,
+                        pointHoverRadius: 6,
+                        borderWidth: 2.5
                     }]
                 },
                 options: {
@@ -2785,20 +2959,23 @@
         }
 
         // TOAST
-        function showToast(type, title, message) {
+        function showToast(type, title, message, duration = 4000) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            const icons = { success: '✓', error: '✗', info: 'ℹ' };
+            const icons = { success: '✓', error: '✗', info: 'ℹ', warning: '⚠' };
             toast.innerHTML = `
-                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-icon">${icons[type] || 'ℹ'}</div>
                 <div>
                     <div style="font-weight: 600;">${title}</div>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">${message}</div>
+                    ${message ? `<div style="font-size: 0.875rem; color: var(--text-secondary);">${message}</div>` : ''}
                 </div>
             `;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 5000);
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 280);
+            }, duration);
         }
 
         // CONFETTI
@@ -3270,11 +3447,24 @@
             if (!goal.linkedHabits?.length && goal.milestones.every(x => x.completed)) {
                 goal.status = 'achieved';
                 showToast('success', '🏆 Goal Achieved!', goal.title);
+            } else if (m.completed) {
+                showToast('success', '📍 Milestone hit!', m.label);
             }
             saveGoals();
             renderGoalsGrid();
             updateGoalStats();
             renderDashboardGoalsWidget();
+
+            // Bounce animation on the check
+            setTimeout(() => {
+                document.querySelectorAll('.milestone-check').forEach(el => {
+                    const item = el.closest('.milestone-item');
+                    if (item?.querySelector('.milestone-label')?.textContent?.trim() === m.label) {
+                        el.classList.add('just-checked');
+                        setTimeout(() => el.classList.remove('just-checked'), 400);
+                    }
+                });
+            }, 20);
         }
 
         function markGoalAchieved(goalId) {

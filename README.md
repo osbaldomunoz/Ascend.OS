@@ -1,198 +1,137 @@
-# 🎯 ASCEND v1.3.4 - Goals & Milestones
+# ✨ ASCEND v1.3.5 — Analytics Fix + Animation System
 
 ## Overview
 
-v1.3.4 introduces the Goals & Milestones page — the first step toward making ASCEND a place where you can ascend _any_ part of your life, not just track daily habits.
-
-**Philosophy:** Habits are the _how_. Goals are the _why_. Every habit you check off now feeds into something bigger.
+v1.3.5 fixes the analytics trend chart bug and introduces a full animation system across every page. ASCEND now feels alive.
 
 ---
 
-## ✨ New Feature: Goals & Milestones Page
+## 🐛 Bug Fixed: Analytics Trend Chart
 
-### What You Can Do
+**What you saw:** The completion trend line started at 0% for the first several days, then spiked to near 100%, creating a fake hill shape that didn't reflect actual usage.
 
-**Create a goal:**
+**Root cause:** Days before any habits were created were being treated as "0% completion" instead of being skipped. If you created habits on Feb 10, every day from Feb 1–9 was pushing `0` into the chart — pulling the average down and making the eventual real data look like a spike.
 
-- Give it a title ("Run a 5K", "Read 12 books", "Save $500")
-- Pick a life area (Health, Mind, Finance, Career, Relationships, Creative)
-- Optional: set a target date
-- Add up to 5 milestone checkpoints
-- Link existing habits — they auto-track progress
+**Fix — three changes:**
+1. **`anyActivity` flag** — each chart day checks if any habit existed yet. If none did, `null` is pushed instead of `0`
+2. **`spanGaps: false`** — Chart.js now cleanly skips null points rather than interpolating through them
+3. **Day normalization** — `setHours(0,0,0,0)` ensures habit creation dates are compared at midnight, not mid-day, preventing off-by-one errors on the creation day itself
 
-**Track it:**
-
-- Progress bar fills automatically as linked habits complete
-- Check off milestones manually as you hit them
-- Mark a goal achieved at any time (or it auto-achieves when all milestones are done)
-
-**Filter by:** All · Active · Achieved · any life area
+**Before → After:**
+```
+Before: 0% 0% 0% 0% 0% 0% 97% 95% 80%  ← fake spike
+After:  [gap] [gap] [gap] [gap] 97% 95% 80%  ← honest line
+```
 
 ---
 
-## 📐 Architecture
+## ✨ Animation System
 
-### Progress Formula
+### Page Transitions
+Every page fades in and slides up 16px when navigated to. Smooth, not flashy. Uses `cubic-bezier(0.22, 1, 0.36, 1)` — the same easing Apple uses in iOS.
 
-Progress combines two signals, weighted by what's available:
-
-```
-If habits + milestones linked:
-  progress = (habitProgress × 0.7) + (milestoneProgress × 0.3)
-
-If habits only:
-  progress = habitProgress
-
-If milestones only:
-  progress = milestoneProgress
-
-If neither:
-  progress = manualProgress (always 0 for now, editable in v1.3.5+)
-```
-
-**habitProgress** = % of days in the last 30 where all linked habits were completed  
-**milestoneProgress** = % of milestones checked off
-
-### Life Areas & Colors
-
-| Area          | Color   | Hex       |
-| ------------- | ------- | --------- |
-| Health        | Emerald | `#10b981` |
-| Mind          | Purple  | `#8b5cf6` |
-| Finance       | Amber   | `#f59e0b` |
-| Career        | Blue    | `#3b82f6` |
-| Relationships | Pink    | `#ec4899` |
-| Creative      | Orange  | `#f97316` |
-
-Each area gets its own CSS custom property token (`--area-color`, `--area-bg`) so the color flows through the entire card — accent bar, badge, progress fill, milestone dots — all from one value.
-
-### Data Structure
-
-```js
-// localStorage key: 'ascend-goals-v1.3.4'
-{
-  "goal_abc123": {
-    id: "goal_abc123",
-    title: "Run a 5K",
-    area: "health",                    // health | mind | finance | career | relationships | creative
-    targetDate: "2026-04-01",          // ISO date string | null
-    milestones: [
-      {
-        id: "ms_1707123456",
-        label: "Complete Week 1 training",
-        completed: true,
-        completedAt: "2026-02-10T14:32:00.000Z"  // | null
-      }
-    ],
-    linkedHabits: ["habit_xyz789"],    // array of habit IDs
-    manualProgress: 0,                 // 0–100, future use
-    status: "active",                  // active | achieved
-    createdAt: "2026-02-13T...",
-    updatedAt: "2026-02-13T..."
-  }
+```css
+@keyframes pageEnter {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 ```
 
----
+### Staggered Card Pop-ins
+Stat cards, goal cards, insight cards, and habit items stagger their entrance with 50ms delays between each one — creating a cascade effect instead of everything appearing at once.
 
-## 🖥️ Pages Touched
-
-### New: Goals Page
-
-- Stats strip: Active · Achieved · Milestones Hit · Avg Progress
-- Filter tabs: All · Active · Achieved · 6 area filters
-- Responsive goal card grid (auto-fill, min 300px per card)
-- Each card: area badge, title, meta (days left, milestone count, habit count), progress bar, milestone checklist, linked habit chips
-- Achieved banner on completed goals
-
-### Updated: Dashboard
-
-- Quick Actions: added "View Goals" button
-- New Goals widget: shows up to 4 active goals with mini progress bars
-- Widget links directly to Goals page
-
-### Updated: Sidebar
-
-- Goals nav item (🎯) between Journal and Analytics
-- Works in both expanded and collapsed states with tooltip
-
----
-
-## 🧪 Test Checklist (10 min)
-
-**Phase 1: Navigation (1 min)**
-
-- [ ] Goals appears in sidebar between Journal and Analytics
-- [ ] 🎯 icon visible when sidebar is collapsed
-- [ ] Hover collapsed icon → "Goals" tooltip appears
-
-**Phase 2: Create a Goal (3 min)**
-
-- [ ] Click "+ New Goal" → modal opens
-- [ ] Enter a title
-- [ ] Select a life area → card highlights in that area's color
-- [ ] Set a target date
-- [ ] Add 2–3 milestones (Enter key also works)
-- [ ] Link 1 existing habit (if you have habits)
-- [ ] Save → goal card appears in grid
-- [ ] Toast notification appears
-
-**Phase 3: Interact with goal (3 min)**
-
-- [ ] Click a milestone checkbox → toggles done/undone
-- [ ] Done milestones show strikethrough + completion date
-- [ ] Progress bar updates when milestones change
-- [ ] Click 🏆 → goal moves to Achieved with banner
-- [ ] Click ✏️ → modal re-opens pre-filled
-
-**Phase 4: Filtering (1 min)**
-
-- [ ] "Active" tab → shows only active goals
-- [ ] "Achieved" tab → shows achieved
-- [ ] Area tab (e.g. "Health") → filters correctly
-
-**Phase 5: Dashboard widget (1 min)**
-
-- [ ] Dashboard shows "Active Goals" widget
-- [ ] Active goals appear with mini progress bars
-- [ ] "View all →" link navigates to Goals page
-
-**Phase 6: Persistence (1 min)**
-
-- [ ] Reload page → goals still there
-- [ ] Check a milestone → reload → still checked
-
----
-
-## 🗺️ Roadmap
-
+```css
+.goal-card:nth-child(1) { animation-delay: 0.05s; }
+.goal-card:nth-child(2) { animation-delay: 0.10s; }
+/* ... up to 6 */
 ```
-v1.3.4  ✓ Goals & Milestones page (this release)
-v1.3.5    Manual progress slider on goals with no habits/milestones
-v1.3.6    Goals shown in Analytics — completion rate chart
-v1.3.7    Calendar integration — goal target dates as markers
-v1.5.0    Budget & Financial tracking page
+
+### Progress Bar Fill
+Goal progress bars animate from 0% width to their actual value when the Goals page loads. 0.8s ease, 0.3s delay so the bar starts filling after the card appears.
+
+### Milestone Bounce
+Checking a milestone makes the circle bounce — scales to 0, springs to 1.25×, settles at 1. Instant tactile feedback without being distracting.
+
+### Habit Completion Ripple
+Completing a habit triggers an expanding ring around the item — a ripple that fades out over 0.5s. Makes every checkoff feel satisfying.
+
+### Toast Slide-in / Slide-out
+Toasts now slide up from below and pop into view. When dismissed, they slide back down instead of just vanishing. The `.hiding` class triggers the exit animation 280ms before removal from the DOM.
+
+### Micro-interactions
+- **Nav items:** `translateX(3px)` on hover — a subtle nudge right when expanded, scale bump when collapsed
+- **Buttons:** `scale(0.96)` on `:active` — physical press feel
+- **Goal cards:** More pronounced hover lift (`translateY(-5px) scale(1.01)`) with enhanced shadow
+- **Settings theme cards:** Scale up on hover, scale up more when active (selected)
+- **Journal textarea:** Focus glow using accent color at 15% opacity
+
+### Page Title Entrance
+`page-title` and `page-subtitle` each have their own `fadeInUp` entrance with a 70ms offset between them.
+
+### Accessibility
+```css
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
 ```
+Users who have "Reduce Motion" enabled in their OS settings get instant transitions instead of animations. No one is excluded.
+
+---
+
+## 🧪 Test Checklist (5 min)
+
+**Analytics fix:**
+- [ ] Navigate to Analytics
+- [ ] Completion Trend line only shows data from when you started adding habits
+- [ ] No artificial 0% days before your first habit
+- [ ] Gap/break in line where no habits existed (not a fake 0)
+
+**Animations:**
+- [ ] Navigate between pages → each page slides up into view
+- [ ] Go to Dashboard → stat cards pop in one by one
+- [ ] Go to Goals → goal cards appear in cascade, progress bars fill after cards appear
+- [ ] Check a milestone → circle bounces
+- [ ] Complete a habit → ripple ring appears
+- [ ] Any action → toast slides up from bottom, slides back down when dismissed
+- [ ] Hover nav items → subtle rightward nudge
+- [ ] Click any button → slight scale-down press feel
+- [ ] Hover goal cards → lift + shadow
+
+**Regression:**
+- [ ] All 7 pages navigate correctly
+- [ ] Goals still save and load
+- [ ] Journal auto-save still works
+- [ ] Theme switching still works
 
 ---
 
 ## 📝 Changelog
 
 ```
-v1.3.4 — Goals & Milestones
-feat: Goals page with full CRUD (create, edit, delete, achieve)
-feat: 6 life areas with color-coded cards (Health, Mind, Finance, Career, Relationships, Creative)
-feat: Milestone checkboxes with completion timestamps
-feat: Habit-linked auto-progress (70% weight) + milestone progress (30% weight)
-feat: Filter tabs by status and life area
-feat: Dashboard goals widget showing top 4 active goals
-feat: Goals nav item between Journal and Analytics
-feat: Auto-achieve when all milestones completed (milestone-only goals)
+v1.3.5 — Analytics Fix + Animation System
+fix: trend chart now pushes null for days before any habits existed
+fix: spanGaps: false prevents Chart.js from interpolating through null gaps
+fix: habit creation date normalized to midnight to prevent off-by-one errors
+feat: pageEnter animation on every page transition
+feat: staggered cardPop entrance for stat/goal/insight cards and habit items
+feat: progress bar fill animation (0 → actual %) on Goals page load
+feat: milestone check bounce animation
+feat: habit completion ripple animation
+feat: toast slide-in from below + animated slide-out
+feat: nav item hover nudge (expanded: right, collapsed: scale)
+feat: button active scale press effect
+feat: goal card enhanced hover lift
+feat: journal textarea focus glow
+feat: page title/subtitle staggered entrance
+feat: prefers-reduced-motion media query disables all animations for accessibility
 ```
 
 ---
 
-**Version:** 1.3.4  
-**Type:** Feature  
-**Release:** February 2026  
-**Mantra:** Habits show what you do. Goals show who you're becoming.
+**Version:** 1.3.5
+**Type:** Bug fix + Polish
+**Release:** February 2026
+**Feel:** The app should feel as good as it looks.
