@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCEND v1.3.5 - Your Growth Dashboard</title>
+    <title>ASCEND v1.3.6 - Your Growth Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         /* ============================================
@@ -256,7 +256,7 @@
             border-radius: 9px;
         }
         .sidebar.collapsed .nav-item-text { opacity: 0; width: 0; overflow: hidden; }
-        .sidebar.collapsed .nav-item-icon { font-size: 1.2rem; width: auto; }
+        .sidebar.collapsed .nav-item-icon { font-size: 1.2rem; width: auto; display:flex; align-items:center; justify-content:center; }
         /* suppress active bar in collapsed — too narrow */
         .sidebar.collapsed .nav-item::before { display: none; }
 
@@ -884,7 +884,7 @@
         }
         .template-card:hover { transform: translateY(-4px); border-color: var(--accent-primary); }
         .template-card:hover::before { opacity: 0.08; }
-        .template-emoji { font-size: 2rem; margin-bottom: var(--space-sm); position: relative; }
+        .template-label { font-size: 2rem; margin-bottom: var(--space-sm); position: relative; }
         .template-name {
             font-size: 1rem; font-weight: 700; margin-bottom: var(--space-xs); position: relative;
         }
@@ -1204,7 +1204,7 @@
         .area-option { padding:10px 6px; border-radius:var(--radius-sm); border:2px solid var(--glass-border); cursor:pointer; text-align:center; font-size:0.78rem; font-weight:700; transition:all var(--transition-fast); background:var(--bg-secondary); }
         .area-option:hover { border-color:var(--accent-primary); }
         .area-option.selected { border-color:var(--area-color); background:var(--area-bg); color:var(--area-color); }
-        .area-option-icon { font-size:1.3rem; display:block; margin-bottom:4px; }
+        .area-option-icon { display:flex; align-items:center; justify-content:center; margin-bottom:6px; }
 
         .milestone-add-row { display:flex; gap:var(--space-sm); margin-top:var(--space-sm); }
         .milestone-add-row input { flex:1; }
@@ -1231,9 +1231,133 @@
 
         .goals-empty { grid-column:1/-1; text-align:center; padding:var(--space-2xl) var(--space-lg); color:var(--text-secondary); }
         .goals-empty-icon { font-size:3.5rem; margin-bottom:var(--space-md); opacity:0.4; }
+
+        /* ============================================
+           LOADING SCREEN — v1.3.6
+           ============================================ */
+        #loading-screen {
+            position: fixed; inset: 0; z-index: 99999;
+            background: var(--bg-primary);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 28px;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #loading-screen.hidden {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        .loader-rocket-wrap {
+            position: relative; width: 80px; height: 120px;
+        }
+        /* SVG rocket launch animation */
+        @keyframes rocketLaunch {
+            0%   { transform: translateY(0) rotate(-45deg); opacity: 1; }
+            60%  { transform: translateY(-60px) rotate(-45deg); opacity: 1; }
+            100% { transform: translateY(-120px) rotate(-45deg); opacity: 0; }
+        }
+        @keyframes thrusterFlame {
+            0%, 100% { transform: scaleY(1) scaleX(1); opacity: 0.9; }
+            50%       { transform: scaleY(1.4) scaleX(0.8); opacity: 0.6; }
+        }
+        @keyframes exhaustTrail {
+            0%   { opacity: 0.6; transform: translateY(0) scaleX(1); }
+            100% { opacity: 0; transform: translateY(40px) scaleX(0.3); }
+        }
+        .loader-rocket {
+            animation: rocketLaunch 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
+        }
+        .loader-flame {
+            animation: thrusterFlame 0.25s ease-in-out infinite;
+            transform-origin: top center;
+        }
+        .loader-trail {
+            animation: exhaustTrail 0.3s ease-out infinite;
+        }
+
+        /* Wordmark */
+        @keyframes wordmarkIn {
+            from { opacity: 0; letter-spacing: 0.3em; }
+            to   { opacity: 1; letter-spacing: 0.18em; }
+        }
+        .loader-wordmark {
+            font-size: 2rem; font-weight: 800;
+            letter-spacing: 0.18em;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: wordmarkIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both;
+        }
+        /* Tagline */
+        @keyframes taglineIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .loader-tagline {
+            font-size: 0.8rem; color: var(--text-tertiary);
+            letter-spacing: 0.12em; text-transform: uppercase;
+            animation: taglineIn 0.6s ease 0.5s both;
+        }
+        /* Progress bar */
+        @keyframes loaderBar {
+            from { width: 0%; }
+            to   { width: 100%; }
+        }
+        .loader-bar-track {
+            width: 160px; height: 2px;
+            background: var(--bg-tertiary); border-radius: 2px; overflow: hidden;
+        }
+        .loader-bar-fill {
+            height: 100%; border-radius: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            animation: loaderBar 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+        }
     </style>
 </head>
 <body>
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loader-rocket-wrap">
+            <svg class="loader-rocket" width="64" height="100" viewBox="0 0 64 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Exhaust trail -->
+                <g class="loader-trail" transform="translate(27, 80)">
+                    <ellipse cx="5" cy="0" rx="5" ry="12" fill="var(--accent-primary)" opacity="0.3"/>
+                </g>
+                <!-- Flame -->
+                <g class="loader-flame" transform="translate(22, 72)">
+                    <path d="M10 0 C6 8 2 14 5 20 C7 24 13 24 15 20 C18 14 14 8 10 0Z"
+                          fill="url(#flameGrad)"/>
+                </g>
+                <!-- Rocket body -->
+                <path d="M32 2 C32 2 16 20 16 52 L48 52 C48 20 32 2 32 2Z"
+                      fill="var(--accent-primary)"/>
+                <!-- Nose cone highlight -->
+                <path d="M32 2 C32 2 24 18 24 52 L32 52 C32 20 32 2 32 2Z"
+                      fill="var(--accent-secondary)" opacity="0.7"/>
+                <!-- Window -->
+                <circle cx="32" cy="36" r="7" fill="var(--bg-primary)" opacity="0.9"/>
+                <circle cx="32" cy="36" r="5" fill="var(--accent-secondary)" opacity="0.6"/>
+                <!-- Left fin -->
+                <path d="M16 52 L6 70 L20 62 Z" fill="var(--accent-secondary)"/>
+                <!-- Right fin -->
+                <path d="M48 52 L58 70 L44 62 Z" fill="var(--accent-secondary)"/>
+                <!-- Body base -->
+                <rect x="20" y="50" width="24" height="6" rx="2" fill="var(--accent-primary)"/>
+                <!-- Flame gradient -->
+                <defs>
+                    <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="var(--warning)"/>
+                        <stop offset="100%" stop-color="var(--accent-primary)" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <div class="loader-wordmark">ASCEND</div>
+        <div class="loader-tagline">Your Growth Dashboard</div>
+        <div class="loader-bar-track">
+            <div class="loader-bar-fill"></div>
+        </div>
+    </div>
+
+
     <div class="bg-gradient bg-gradient-1"></div>
     <div class="bg-gradient bg-gradient-2"></div>
     <canvas id="confetti-canvas"></canvas>
@@ -1245,7 +1369,7 @@
         <aside class="sidebar" id="sidebar">
             <!-- Header: logo icon always visible, text + toggle fade out when collapsed -->
             <div class="sidebar-header">
-                <div class="sidebar-logo-icon" onclick="toggleSidebar()" title="Toggle sidebar">🚀</div>
+                <div class="sidebar-logo-icon" onclick="toggleSidebar()" title="Toggle sidebar"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
                 <span class="sidebar-logo-text">ASCEND</span>
                 <div class="sidebar-toggle" onclick="toggleSidebar()" title="Collapse">◀</div>
             </div>
@@ -1255,31 +1379,31 @@
                 <div class="sidebar-expand-btn" onclick="toggleSidebar()" title="Expand sidebar">▶</div>
 
                 <div class="nav-item" onclick="navigateTo('dashboard')" data-page="dashboard" data-tooltip="Dashboard">
-                    <span class="nav-item-icon">📊</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
                     <span class="nav-item-text">Dashboard</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('habits')" data-page="habits" data-tooltip="Habits">
-                    <span class="nav-item-icon">✅</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
                     <span class="nav-item-text">Habits</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('calendar')" data-page="calendar" data-tooltip="Calendar">
-                    <span class="nav-item-icon">📅</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
                     <span class="nav-item-text">Calendar</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('journal')" data-page="journal" data-tooltip="Journal">
-                    <span class="nav-item-icon">📝</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
                     <span class="nav-item-text">Journal</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('goals')" data-page="goals" data-tooltip="Goals">
-                    <span class="nav-item-icon">🎯</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
                     <span class="nav-item-text">Goals</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('analytics')" data-page="analytics" data-tooltip="Analytics">
-                    <span class="nav-item-icon">📈</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
                     <span class="nav-item-text">Analytics</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('settings')" data-page="settings" data-tooltip="Settings">
-                    <span class="nav-item-icon">⚙️</span>
+                    <span class="nav-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
                     <span class="nav-item-text">Settings</span>
                 </div>
             </nav>
@@ -1321,16 +1445,16 @@
                     <h3 style="margin-bottom: 1rem;">Quick Actions</h3>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <button class="btn" onclick="navigateTo('habits')">
-                            <span>✓</span><span>Track Habits</span>
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span>Track Habits</span>
                         </button>
                         <button class="btn" onclick="navigateTo('calendar')">
-                            <span>📅</span><span>View Calendar</span>
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span>View Calendar</span>
                         </button>
                         <button class="btn" onclick="navigateTo('goals')">
-                            <span>🎯</span><span>View Goals</span>
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span>View Goals</span>
                         </button>
                         <button class="btn" onclick="navigateTo('analytics')">
-                            <span>📈</span><span>See Analytics</span>
+                            <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span><span>See Analytics</span>
                         </button>
                     </div>
                 </div>
@@ -1338,7 +1462,7 @@
                 <!-- Goals widget -->
                 <div class="dashboard-goals-widget" id="dashboard-goals-widget">
                     <div class="widget-header">
-                        <span class="widget-title">🎯 Active Goals</span>
+                        <span class="widget-title">Active Goals</span>
                         <span class="widget-link" onclick="navigateTo('goals')">View all →</span>
                     </div>
                     <div id="dashboard-goals-list">
@@ -1487,12 +1611,12 @@
                         <div class="goals-filter-tab active" onclick="filterGoals('all', this)">All</div>
                         <div class="goals-filter-tab" onclick="filterGoals('active', this)">Active</div>
                         <div class="goals-filter-tab" onclick="filterGoals('achieved', this)">Achieved</div>
-                        <div class="goals-filter-tab" onclick="filterGoals('health', this)">💚 Health</div>
-                        <div class="goals-filter-tab" onclick="filterGoals('mind', this)">💜 Mind</div>
-                        <div class="goals-filter-tab" onclick="filterGoals('finance', this)">💛 Finance</div>
-                        <div class="goals-filter-tab" onclick="filterGoals('career', this)">💙 Career</div>
-                        <div class="goals-filter-tab" onclick="filterGoals('relationships', this)">🩷 Relationships</div>
-                        <div class="goals-filter-tab" onclick="filterGoals('creative', this)">🧡 Creative</div>
+                        <div class="goals-filter-tab" onclick="filterGoals('health', this)">Health</div>
+                        <div class="goals-filter-tab" onclick="filterGoals('mind', this)">Mind</div>
+                        <div class="goals-filter-tab" onclick="filterGoals('finance', this)">Finance</div>
+                        <div class="goals-filter-tab" onclick="filterGoals('career', this)">Career</div>
+                        <div class="goals-filter-tab" onclick="filterGoals('relationships', this)">Relationships</div>
+                        <div class="goals-filter-tab" onclick="filterGoals('creative', this)">Creative</div>
                     </div>
                     <button class="btn btn-primary" onclick="openGoalModal()">+ New Goal</button>
                 </div>
@@ -1511,25 +1635,25 @@
                 <!-- Quick Insights Panel -->
                 <div class="insights-grid" id="insights-grid">
                     <div class="insight-card">
-                        <div class="insight-icon">📅</div>
+                        <div class="insight-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
                         <div class="insight-label">Best Day of Week</div>
                         <div class="insight-value" id="insight-best-day">—</div>
                         <div class="insight-sub" id="insight-best-day-sub">Complete habits to see</div>
                     </div>
                     <div class="insight-card">
-                        <div class="insight-icon">🏆</div>
+                        <div class="insight-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>
                         <div class="insight-label">Most Consistent</div>
                         <div class="insight-value" id="insight-consistent">—</div>
                         <div class="insight-sub" id="insight-consistent-sub">Add habits to see</div>
                     </div>
                     <div class="insight-card">
-                        <div class="insight-icon">📊</div>
+                        <div class="insight-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
                         <div class="insight-label">Momentum</div>
                         <div class="insight-value" id="insight-momentum">—</div>
                         <div class="insight-sub" id="insight-momentum-sub">Track for 14 days to see</div>
                     </div>
                     <div class="insight-card">
-                        <div class="insight-icon">✍️</div>
+                        <div class="insight-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
                         <div class="insight-label">Journal Streak</div>
                         <div class="insight-value" id="insight-journal-streak">0</div>
                         <div class="insight-sub" id="insight-journal-streak-sub">consecutive days</div>
@@ -1625,27 +1749,27 @@
                     <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:1rem;">Quick-start with pre-built habit sets. Click any card to add all 3 habits instantly.</p>
                     <div class="templates-grid">
                         <div class="template-card" onclick="applyTemplate('morning')">
-                            <div class="template-emoji">🌅</div>
+                            <div class="template-label">AM</div>
                             <div class="template-name">Morning Routine</div>
                             <div class="template-habits">Meditate · Exercise · Journal</div>
                         </div>
                         <div class="template-card" onclick="applyTemplate('fitness')">
-                            <div class="template-emoji">💪</div>
+                            <div class="template-label">FIT</div>
                             <div class="template-name">Fitness</div>
                             <div class="template-habits">Workout · Drink 8 glasses of water · Eat protein</div>
                         </div>
                         <div class="template-card" onclick="applyTemplate('study')">
-                            <div class="template-emoji">🧠</div>
+                            <div class="template-label">MND</div>
                             <div class="template-name">Study</div>
                             <div class="template-habits">Read 30 minutes · Practice skills · Review notes</div>
                         </div>
                         <div class="template-card" onclick="applyTemplate('evening')">
-                            <div class="template-emoji">😴</div>
+                            <div class="template-label">ZZZ</div>
                             <div class="template-name">Evening Routine</div>
                             <div class="template-habits">Unplug from devices · Stretch · Sleep before 11pm</div>
                         </div>
                         <div class="template-card" onclick="applyTemplate('productivity')">
-                            <div class="template-emoji">🎯</div>
+                            <div class="template-label">GTD</div>
                             <div class="template-name">Productivity</div>
                             <div class="template-habits">2 hours deep work · No social media · Plan tomorrow</div>
                         </div>
@@ -1657,7 +1781,7 @@
                     <div class="card">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                             <button class="btn" onclick="exportCSV()">
-                                <span>📊</span><span>Export CSV</span>
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span><span>Export CSV</span>
                             </button>
                             <button class="btn" onclick="exportJSON()">
                                 <span>💾</span><span>Export JSON</span>
@@ -1683,7 +1807,7 @@
                         <div class="settings-item" style="border-bottom: none;">
                             <div>
                                 <div class="settings-label">Clear All Data</div>
-                                <div class="settings-description">⚠️ Permanently delete everything</div>
+                                <div class="settings-description" style="display:flex;align-items:center;gap:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Permanently delete everything</div>
                             </div>
                             <button class="btn-danger btn" onclick="clearAllData()">Clear All</button>
                         </div>
@@ -1713,7 +1837,7 @@
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Version</div>
-                            <div>v1.3.5</div>
+                            <div>v1.3.6</div>
                         </div>
                         <div class="settings-item">
                             <div class="settings-label">Last Sync</div>
@@ -1747,22 +1871,22 @@
                     <label class="goal-form-label">Life Area</label>
                     <div class="area-picker" id="gf-area-picker">
                         <div class="area-option area-health" data-area="health" onclick="selectArea('health')">
-                            <span class="area-option-icon">💚</span>Health
+                            <span class="area-option-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Health
                         </div>
                         <div class="area-option area-mind" data-area="mind" onclick="selectArea('mind')">
-                            <span class="area-option-icon">💜</span>Mind
+                            <span class="area-option-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg></span>Mind
                         </div>
                         <div class="area-option area-finance" data-area="finance" onclick="selectArea('finance')">
-                            <span class="area-option-icon">💛</span>Finance
+                            <span class="area-option-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Finance
                         </div>
                         <div class="area-option area-career" data-area="career" onclick="selectArea('career')">
-                            <span class="area-option-icon">💙</span>Career
+                            <span class="area-option-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></span>Career
                         </div>
                         <div class="area-option area-relationships" data-area="relationships" onclick="selectArea('relationships')">
-                            <span class="area-option-icon">🩷</span>Relationships
+                            <span class="area-option-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Relationships
                         </div>
                         <div class="area-option area-creative" data-area="creative" onclick="selectArea('creative')">
-                            <span class="area-option-icon">🧡</span>Creative
+                            <span class="area-option-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>Creative
                         </div>
                     </div>
                 </div>
@@ -1924,7 +2048,7 @@
             }
 
             if (!skipToast) {
-                showToast('success', brightness === 'light' ? '☀️ Light Mode' : '🌙 Dark Mode',
+                showToast('success', brightness === 'light' ? 'Light Mode' : 'Dark Mode',
                     brightness === 'light' ? 'Switched to light mode' : 'Switched to dark mode');
             }
 
@@ -1994,9 +2118,9 @@
 
                 if ([7, 30, 100].includes(habit.streak)) {
                     triggerConfetti();
-                    showToast('success', `🎉 ${habit.streak}-Day Milestone!`, `Amazing streak on "${habit.name}"!`);
+                    showToast('success', `${habit.streak}-Day Milestone!`, `Amazing streak on "${habit.name}"!`);
                 } else {
-                    showToast('success', '✓ Completed!', `${habit.name} · ${habit.streak} day streak`);
+                    showToast('success', 'Completed!', `${habit.name} · ${habit.streak} day streak`);
                 }
             } else {
                 habit.streak = Math.max(0, habit.streak - 1);
@@ -2306,7 +2430,7 @@
                 ${!isFuture ? `
                     <div style="border-top: 1px solid var(--glass-border); padding-top: 1rem; margin-top: 0.5rem;">
                         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                            <h4 style="color: var(--text-secondary); font-size:0.875rem;">✏️ Journal</h4>
+                            <h4 style="color: var(--text-secondary); font-size:0.875rem;">Journal</h4>
                             <button class="btn btn-secondary" style="padding:0.3rem 0.8rem; font-size:0.75rem;" onclick="closeDayModal(); openJournalDate('${dateStr}')">Open in Journal →</button>
                         </div>
                         ${journalEntry ? `<p style="font-size:0.875rem; color:var(--text-primary); line-height:1.6; opacity:0.85;">${journalEntry.text.substring(0, 200)}${journalEntry.text.length > 200 ? '…' : ''}</p>` : `<p style="font-size:0.875rem; color:var(--text-tertiary); font-style:italic;">No journal entry for this day.</p>`}
@@ -2741,7 +2865,7 @@
                 .join('\n');
 
             downloadFile(csv, 'ascend-habits.csv', 'text/csv');
-            showToast('success', '📊 Exported', 'CSV file downloaded');
+            showToast('success', 'Exported', 'CSV file downloaded');
         }
 
         function exportJSON() {
@@ -2852,7 +2976,7 @@
                     localStorage.removeItem('ascend-last-reset');
                     renderHabits();
                     updateStats();
-                    showToast('success', '🗑️ Cleared', 'All data has been deleted');
+                    showToast('success', 'Cleared', 'All data has been deleted');
                 }
             );
         }
@@ -2963,7 +3087,7 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            const icons = { success: '✓', error: '✗', info: 'ℹ', warning: '⚠' };
+            const icons = { success: '✓', error: '✕', info: 'i', warning: '!' };
             toast.innerHTML = `
                 <div class="toast-icon">${icons[type] || 'ℹ'}</div>
                 <div>
@@ -3196,7 +3320,7 @@
             if (entries.length === 0) {
                 feed.innerHTML = `
                     <div class="journal-empty">
-                        <div class="journal-empty-icon">✍️</div>
+                        <div class="journal-empty-icon">✦</div>
                         <h3 style="margin-bottom:0.5rem;">Your story starts here</h3>
                         <p style="font-size:0.875rem;">Write your first entry using the panel →</p>
                     </div>
@@ -3228,8 +3352,8 @@
                         </div>
                         <div class="journal-entry-preview">${entry.text}</div>
                         <div class="journal-entry-footer">
-                            <span>✏️ ${wc} words</span>
-                            ${tot > 0 ? `<span>📊 ${rate}%</span>` : ''}
+                            <span>${wc} words</span>
+                            ${tot > 0 ? `<span>${rate}%</span>` : ''}
                         </div>
                     </div>
                 `;
@@ -3267,12 +3391,12 @@
         let currentGoalFilter = 'all';
 
         const AREA_META = {
-            health:        { label: 'Health',        icon: '💚', color: '#10b981' },
-            mind:          { label: 'Mind',           icon: '💜', color: '#8b5cf6' },
-            finance:       { label: 'Finance',        icon: '💛', color: '#f59e0b' },
-            career:        { label: 'Career',         icon: '💙', color: '#3b82f6' },
-            relationships: { label: 'Relationships',  icon: '🩷', color: '#ec4899' },
-            creative:      { label: 'Creative',       icon: '🧡', color: '#f97316' },
+            health:        { label: 'Health',        icon: 'H',  color: '#10b981' },
+            mind:          { label: 'Mind',           icon: 'M',  color: '#8b5cf6' },
+            finance:       { label: 'Finance',        icon: 'F',  color: '#f59e0b' },
+            career:        { label: 'Career',         icon: 'C',  color: '#3b82f6' },
+            relationships: { label: 'Relationships',  icon: 'R',  color: '#ec4899' },
+            creative:      { label: 'Creative',       icon: 'Cr', color: '#f97316' },
         };
 
         function genGoalId() {
@@ -3365,7 +3489,7 @@
 
             if (list.length === 0) {
                 grid.innerHTML = `<div class="goals-empty">
-                    <div class="goals-empty-icon">🎯</div>
+                    <div class="goals-empty-icon">◎</div>
                     <h3 style="margin-bottom:0.5rem;">No goals yet</h3>
                     <p style="font-size:0.875rem; margin-bottom:1.5rem;">Every achievement starts with a decision to try.</p>
                     <button class="btn btn-primary" onclick="openGoalModal()">+ Set Your First Goal</button>
@@ -3385,7 +3509,7 @@
             let dateStr = '';
             if (goal.targetDate) {
                 const diff = Math.ceil((new Date(goal.targetDate) - new Date()) / 86400000);
-                dateStr = diff > 0 ? `📅 ${diff}d left` : diff === 0 ? '📅 Today!' : '📅 Overdue';
+                dateStr = diff > 0 ? `${diff}d left` : diff === 0 ? 'Today' : 'Overdue';
             }
 
             // Linked habits display
@@ -3410,9 +3534,9 @@
                         <div class="goal-card-header">
                             <span class="goal-area-badge">${area.icon} ${area.label}</span>
                             <div class="goal-card-menu">
-                                ${!isAchieved ? `<button onclick="markGoalAchieved('${goal.id}')" title="Mark achieved">🏆</button>` : ''}
-                                <button onclick="openGoalModal('${goal.id}')" title="Edit">✏️</button>
-                                <button onclick="deleteGoal('${goal.id}')" title="Delete">🗑️</button>
+                                ${!isAchieved ? `<button onclick="markGoalAchieved('${goal.id}')" title="Mark achieved"><svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; ><path d=&quot;M6 9H4.5a2.5 2.5 0 0 1 0-5H6&quot;/><path d=&quot;M18 9h1.5a2.5 2.5 0 0 0 0-5H18&quot;/><path d=&quot;M4 22h16&quot;/><path d=&quot;M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22&quot;/><path d=&quot;M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22&quot;/><path d=&quot;M18 2H6v7a6 6 0 0 0 12 0V2z&quot;/></svg></button>` : ''}
+                                <button onclick="openGoalModal('${goal.id}')" title="Edit"><svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; ><path d=&quot;M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7&quot;/><path d=&quot;M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z&quot;/></svg></button>
+                                <button onclick="deleteGoal('${goal.id}')" title="Delete"><svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; ><polyline points=&quot;3 6 5 6 21 6&quot;/><path d=&quot;M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2&quot;/></svg></button>
                             </div>
                         </div>
                         <div class="goal-card-title">${goal.title}</div>
@@ -3431,7 +3555,7 @@
                         ${goal.milestones?.length ? `<div class="goal-milestones"><div class="goal-milestones-title">Milestones</div>${milestonesHtml}</div>` : ''}
                         ${habitsHtml}
                     </div>
-                    ${isAchieved ? `<div class="goal-achieved-banner">🏆 Goal Achieved!</div>` : ''}
+                    ${isAchieved ? `<div class="goal-achieved-banner">Goal Achieved</div>` : ''}
                 </div>`;
         }
 
@@ -3446,9 +3570,9 @@
             // Auto-achieve if all milestones done and no habits
             if (!goal.linkedHabits?.length && goal.milestones.every(x => x.completed)) {
                 goal.status = 'achieved';
-                showToast('success', '🏆 Goal Achieved!', goal.title);
+                showToast('success', 'Goal Achieved!', goal.title);
             } else if (m.completed) {
-                showToast('success', '📍 Milestone hit!', m.label);
+                showToast('success', 'Milestone reached!', m.label);
             }
             saveGoals();
             renderGoalsGrid();
@@ -3471,7 +3595,7 @@
             if (!goals[goalId]) return;
             goals[goalId].status = 'achieved';
             saveGoals();
-            showToast('success', '🏆 Goal Achieved!', goals[goalId].title);
+            showToast('success', 'Goal Achieved!', goals[goalId].title);
             renderGoalsPage();
         }
 
@@ -3625,7 +3749,7 @@
 
             saveGoals();
             closeGoalModal();
-            showToast('success', goalModalMode === 'edit' ? '✏️ Goal Updated' : '🎯 Goal Created', title);
+            showToast('success', goalModalMode === 'edit' ? 'Goal Updated' : 'Goal Created', title);
             renderGoalsPage();
         }
 
@@ -3661,6 +3785,16 @@
 
         // INIT
         init();
+
+        // LOADING SCREEN — dismiss after 2.25s
+        (function() {
+            const screen = document.getElementById('loading-screen');
+            if (!screen) return;
+            setTimeout(() => {
+                screen.classList.add('hidden');
+                setTimeout(() => screen.remove(), 520);
+            }, 2250);
+        })();
     </script>
 </body>
 </html>
