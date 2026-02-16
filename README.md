@@ -1,174 +1,198 @@
-# 🔧 ASCEND v1.3.2 - Sidebar Rewrite
+# 🎯 ASCEND v1.3.4 - Goals & Milestones
 
 ## Overview
 
-v1.3.2 is a surgical patch. One thing was broken, one thing was ugly.  
-Both are now fixed properly — not patched over, actually fixed.
+v1.3.4 introduces the Goals & Milestones page — the first step toward making ASCEND a place where you can ascend _any_ part of your life, not just track daily habits.
+
+**Philosophy:** Habits are the _how_. Goals are the _why_. Every habit you check off now feeds into something bigger.
 
 ---
 
-## 🐛 Bug Fixed
+## ✨ New Feature: Goals & Milestones Page
 
-### Collapsed Sidebar — Icons Not Showing
+### What You Can Do
 
-**What you saw:** Collapsing the sidebar left a near-empty strip — just a floating ▶ button and a blank square box below it. No icons, no nav, nothing useful.
+**Create a goal:**
 
-**Root cause:** The previous implementation used `min-width: var(--sidebar-width)` on `.sidebar-nav` and `.sidebar-header`. This locked the internal layout at 220px wide, even when the sidebar's outer width was clipped to 60px via `overflow: hidden`. The icons were actually rendered — they were just 160px off-screen to the right, hidden by the clip.
+- Give it a title ("Run a 5K", "Read 12 books", "Save $500")
+- Pick a life area (Health, Mind, Finance, Career, Relationships, Creative)
+- Optional: set a target date
+- Add up to 5 milestone checkpoints
+- Link existing habits — they auto-track progress
 
-The ghost square was `sidebar-collapsed-toggle`: a `display: none → flex` div inside the nav that had no visible content because the icon inside it was also clipped.
+**Track it:**
 
-**Fix:** Complete rewrite of the sidebar CSS. No more `min-width` hacks.
+- Progress bar fills automatically as linked habits complete
+- Check off milestones manually as you hit them
+- Mark a goal achieved at any time (or it auto-achieves when all milestones are done)
 
-**New approach:**
-
-- Sidebar `overflow: hidden` clips at 60px (unchanged)
-- `.sidebar-nav` has no `min-width` — flows naturally
-- Nav items use `justify-content: center` when collapsed → icons land exactly in the center of the 60px strip
-- `width: 0` on text when collapsed so it doesn't push icon off-center
-- Expand button (`.sidebar-expand-btn`) uses `display: none → flex` correctly with `margin: 0 auto` so it centers
-- Toggle button in header fades out (`opacity: 0`) when collapsed instead of `display: none` — smoother
-
----
-
-## ✨ Improvement: Collapsed Sidebar Icon Rail
-
-The collapsed sidebar now works the way it should have from the start.
-
-**What it looks like collapsed (60px wide):**
-
-```
-┌──────┐
-│  🚀  │  ← Logo icon (click to expand)
-├──────┤
-│  ▶   │  ← Expand button
-│  📊  │  ← Dashboard
-│  ✅  │  ← Habits
-│  📅  │  ← Calendar
-│  📝  │  ← Journal
-│  📈  │  ← Analytics
-│  ⚙️  │  ← Settings
-└──────┘
-```
-
-**On hover (any icon):** tooltip slides in from the right:
-
-```
-│  📅  │──▶ [ Calendar ]
-```
-
-**Clicking the 🚀 logo icon** also toggles the sidebar — natural UX, nothing wasted.
+**Filter by:** All · Active · Achieved · any life area
 
 ---
 
-## 📐 Technical Changes
+## 📐 Architecture
 
-### CSS Architecture
+### Progress Formula
 
-**Removed:**
+Progress combines two signals, weighted by what's available:
 
-- `min-width: var(--sidebar-width)` from `.sidebar-nav`
-- `min-width: var(--sidebar-width)` from `.sidebar-header`
-- `.sidebar-collapsed-toggle` class entirely
-- `.sidebar-logo` wrapper div (flattened into header directly)
-- `id="toggle-icon"` span (no longer needed)
+```
+If habits + milestones linked:
+  progress = (habitProgress × 0.7) + (milestoneProgress × 0.3)
 
-**Added:**
+If habits only:
+  progress = habitProgress
 
-- `.sidebar-expand-btn` — clean expand button, `display: none` by default, `display: flex` when `.sidebar.collapsed`
-- `width: 0` on `.sidebar.collapsed .nav-item-text` (was `opacity: 0` only — opacity alone doesn't collapse the space)
-- Logo icon (`sidebar-logo-icon`) is now `cursor: pointer` and calls `toggleSidebar()` directly
+If milestones only:
+  progress = milestoneProgress
 
-**Simplified:**
-
-- `toggleSidebar()` — removed `getElementById('toggle-icon')` reference, now just toggles classes and saves state
-
-### HTML Structure
-
-**Before:**
-
-```html
-<div class="sidebar-header">
-  <div class="sidebar-logo">
-    ← wrapper div
-    <span class="sidebar-logo-icon">🚀</span>
-    <span class="sidebar-logo-text">ASCEND</span>
-  </div>
-  <div class="sidebar-toggle">
-    <span id="toggle-icon">◀</span> ← span updated by JS
-  </div>
-</div>
-<nav>
-  <div class="sidebar-collapsed-toggle">▶</div>
-  ← ghost box bug ...
-</nav>
+If neither:
+  progress = manualProgress (always 0 for now, editable in v1.3.5+)
 ```
 
-**After:**
+**habitProgress** = % of days in the last 30 where all linked habits were completed  
+**milestoneProgress** = % of milestones checked off
 
-```html
-<div class="sidebar-header">
-  <div class="sidebar-logo-icon" onclick="toggleSidebar()">🚀</div>
-  ← clickable
-  <span class="sidebar-logo-text">ASCEND</span>
-  <div class="sidebar-toggle" onclick="toggleSidebar()">◀</div>
-  ← pure CSS arrow
-</div>
-<nav>
-  <div class="sidebar-expand-btn" onclick="toggleSidebar()">▶</div>
-  ← correct ...
-</nav>
+### Life Areas & Colors
+
+| Area          | Color   | Hex       |
+| ------------- | ------- | --------- |
+| Health        | Emerald | `#10b981` |
+| Mind          | Purple  | `#8b5cf6` |
+| Finance       | Amber   | `#f59e0b` |
+| Career        | Blue    | `#3b82f6` |
+| Relationships | Pink    | `#ec4899` |
+| Creative      | Orange  | `#f97316` |
+
+Each area gets its own CSS custom property token (`--area-color`, `--area-bg`) so the color flows through the entire card — accent bar, badge, progress fill, milestone dots — all from one value.
+
+### Data Structure
+
+```js
+// localStorage key: 'ascend-goals-v1.3.4'
+{
+  "goal_abc123": {
+    id: "goal_abc123",
+    title: "Run a 5K",
+    area: "health",                    // health | mind | finance | career | relationships | creative
+    targetDate: "2026-04-01",          // ISO date string | null
+    milestones: [
+      {
+        id: "ms_1707123456",
+        label: "Complete Week 1 training",
+        completed: true,
+        completedAt: "2026-02-10T14:32:00.000Z"  // | null
+      }
+    ],
+    linkedHabits: ["habit_xyz789"],    // array of habit IDs
+    manualProgress: 0,                 // 0–100, future use
+    status: "active",                  // active | achieved
+    createdAt: "2026-02-13T...",
+    updatedAt: "2026-02-13T..."
+  }
+}
 ```
 
 ---
 
-## 🧪 Test Checklist (5 min)
+## 🖥️ Pages Touched
 
-**Collapsed sidebar:**
+### New: Goals Page
 
-- [ ] Click ◀ toggle → sidebar collapses to ~60px
-- [ ] All 6 icons visible and centered in the strip
-- [ ] No ghost boxes or blank squares
-- [ ] Active page icon shows accent color
-- [ ] Hover any icon → tooltip appears to the right with page name
-- [ ] Click 🚀 logo icon → sidebar expands
-- [ ] Click ▶ expand button in nav → sidebar expands
+- Stats strip: Active · Achieved · Milestones Hit · Avg Progress
+- Filter tabs: All · Active · Achieved · 6 area filters
+- Responsive goal card grid (auto-fill, min 300px per card)
+- Each card: area badge, title, meta (days left, milestone count, habit count), progress bar, milestone checklist, linked habit chips
+- Achieved banner on completed goals
 
-**Expanded sidebar:**
+### Updated: Dashboard
 
-- [ ] ASCEND text visible and gradient-colored
-- [ ] All 6 nav labels readable
-- [ ] ◀ collapse button visible in header
-- [ ] No layout shift when toggling
+- Quick Actions: added "View Goals" button
+- New Goals widget: shows up to 4 active goals with mini progress bars
+- Widget links directly to Goals page
 
-**Persistence:**
+### Updated: Sidebar
 
-- [ ] Collapse sidebar, reload page → stays collapsed
-- [ ] Expand sidebar, reload page → stays expanded
+- Goals nav item (🎯) between Journal and Analytics
+- Works in both expanded and collapsed states with tooltip
 
-**Regression:**
+---
 
-- [ ] All 6 pages navigate correctly from both states
-- [ ] Light/dark toggle still works in Settings
-- [ ] Journal page loads and saves correctly
-- [ ] Analytics insight cards in 2×2 grid
+## 🧪 Test Checklist (10 min)
+
+**Phase 1: Navigation (1 min)**
+
+- [ ] Goals appears in sidebar between Journal and Analytics
+- [ ] 🎯 icon visible when sidebar is collapsed
+- [ ] Hover collapsed icon → "Goals" tooltip appears
+
+**Phase 2: Create a Goal (3 min)**
+
+- [ ] Click "+ New Goal" → modal opens
+- [ ] Enter a title
+- [ ] Select a life area → card highlights in that area's color
+- [ ] Set a target date
+- [ ] Add 2–3 milestones (Enter key also works)
+- [ ] Link 1 existing habit (if you have habits)
+- [ ] Save → goal card appears in grid
+- [ ] Toast notification appears
+
+**Phase 3: Interact with goal (3 min)**
+
+- [ ] Click a milestone checkbox → toggles done/undone
+- [ ] Done milestones show strikethrough + completion date
+- [ ] Progress bar updates when milestones change
+- [ ] Click 🏆 → goal moves to Achieved with banner
+- [ ] Click ✏️ → modal re-opens pre-filled
+
+**Phase 4: Filtering (1 min)**
+
+- [ ] "Active" tab → shows only active goals
+- [ ] "Achieved" tab → shows achieved
+- [ ] Area tab (e.g. "Health") → filters correctly
+
+**Phase 5: Dashboard widget (1 min)**
+
+- [ ] Dashboard shows "Active Goals" widget
+- [ ] Active goals appear with mini progress bars
+- [ ] "View all →" link navigates to Goals page
+
+**Phase 6: Persistence (1 min)**
+
+- [ ] Reload page → goals still there
+- [ ] Check a milestone → reload → still checked
+
+---
+
+## 🗺️ Roadmap
+
+```
+v1.3.4  ✓ Goals & Milestones page (this release)
+v1.3.5    Manual progress slider on goals with no habits/milestones
+v1.3.6    Goals shown in Analytics — completion rate chart
+v1.3.7    Calendar integration — goal target dates as markers
+v1.5.0    Budget & Financial tracking page
+```
 
 ---
 
 ## 📝 Changelog
 
 ```
-v1.3.2 (Sidebar Rewrite)
-fix: collapsed sidebar now correctly shows all nav icons centered
-fix: removed ghost blank square (sidebar-collapsed-toggle) from nav
-fix: removed min-width hacks that were preventing icons from appearing
-refactor: complete rewrite of sidebar CSS — no layout tricks, pure flexbox
-refactor: logo icon now directly clickable to toggle sidebar
-refactor: toggleSidebar() no longer manipulates DOM text nodes
+v1.3.4 — Goals & Milestones
+feat: Goals page with full CRUD (create, edit, delete, achieve)
+feat: 6 life areas with color-coded cards (Health, Mind, Finance, Career, Relationships, Creative)
+feat: Milestone checkboxes with completion timestamps
+feat: Habit-linked auto-progress (70% weight) + milestone progress (30% weight)
+feat: Filter tabs by status and life area
+feat: Dashboard goals widget showing top 4 active goals
+feat: Goals nav item between Journal and Analytics
+feat: Auto-achieve when all milestones completed (milestone-only goals)
 ```
 
 ---
 
-**Version:** 1.3.2  
-**Type:** Patch  
+**Version:** 1.3.4  
+**Type:** Feature  
 **Release:** February 2026  
-**One rule:** If it needs a hack to work, it isn't working.
+**Mantra:** Habits show what you do. Goals show who you're becoming.
